@@ -55,4 +55,4 @@
 
 @push('after-script')
     @include('pages.jenisBuku.scripts')
-@endpu
+@endpush()

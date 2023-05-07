@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBukuController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,8 +21,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::controller(JenisBukuController::class)->group(function () {
@@ -32,3 +34,18 @@ Route::controller(JenisBukuController::class)->group(function () {
     Route::post('jenis-buku/destroy', 'destroy')->name('jenis-buku.destroy');
     Route::post('jenis-buku/destroy/selected', 'destroySelected')->name('jenis-buku.destroySelected');
 });
+
+Auth::routes();
+
+Route::prefix('anggota')->middleware(['auth', 'user-role:anggota'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
+
+Route::prefix('pimpinan')->middleware(['auth', 'user-role:pimpinan'])->group(function () {
+    Route::get('/home', [HomeController::class, 'pimpinan'])->name('pimpinan');
+});
+
+Route::get('logout', function () {
+    Auth::logout();
+    return redirect('login');
+})->name('logout');
