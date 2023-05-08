@@ -27,13 +27,10 @@
                                         <th width="1%">No</th>
                                         <th>Kategori</th>
                                         <th>Judul</th>
-                                        <th>Isbn</th>
-                                        <th>Penerbit</th>
                                         <th>Tahun</th>
                                         <th>Jumlah</th>
-                                        <th>Rak</th>
                                         <th>Gambar</th>
-                                        <th>Action</th>
+                                        <th width="15%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -42,18 +39,20 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->name }}</td>
                                             <td>{{ $item->judul_buku }}</td>
-                                            <td>{{ $item->no_isbn }}</td>
-                                            <td>{{ $item->penerbit_buku }}</td>
                                             <td>{{ $item->tahun_terbit }}</td>
                                             <td>{{ $item->jumlah_buku }}</td>
-                                            <td>{{ $item->nama_rak }}</td>
                                             <td><img src="{{ Storage::url('public/buku/' . $item->gambar) }} "
-                                                    alt="" width="80" class="img-thumbnail rounded"></td>
+                                                    alt="" width="50" class="img-thumbnail"></td>
                                             <td>
 
                                                 <a href="{{ route('buku.edit', $item->id) }}"
                                                     class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt">
-                                                        Edit</i></a>
+                                                    </i></a>
+
+                                                <a href="{{ route('buku.show', $item->id) }}"
+                                                    class="btn btn-dark btn-sm"><i class="fas fa-eye">
+                                                    </i></a>
+
                                                 <form action="{{ route('buku.destroy', $item->id) }}" method="POST"
                                                     style="display: inline">
                                                     @csrf
@@ -61,7 +60,7 @@
                                                     <button type="submit" class="btn btn-danger btn-sm hapus"><i
                                                             class="fas fa-trash"
                                                             onclick="return confirm('Apakah Yakin Ingin Menghapus Data Ini?')">
-                                                            Hapus</i></button>
+                                                        </i></button>
                                                 </form>
                                             </td>
                                         </tr>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -92,7 +93,14 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        //
+        $data['buku'] = DB::table('books')
+            ->join('jenis_bukus', 'books.jenis_buku_id', '=', 'jenis_bukus.id')
+            ->join('rak_bukus', 'books.rak_buku_id', '=', 'rak_bukus.id')
+            ->select('books.*', 'jenis_bukus.name', 'rak_bukus.no_rak', 'rak_bukus.nama_rak')
+            ->where('books.id', $id)
+            ->get();
+
+        return view('pages.buku.detail', $data);
     }
 
     /**
@@ -103,7 +111,11 @@ class BookController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['kategori'] = DB::table('jenis_bukus')->get();
+        $data['rak'] = DB::table('rak_bukus')->get();
+        $data['buku'] = Book::findOrFail($id);
+
+        return view('pages.buku.edit', $data);
     }
 
     /**
@@ -115,7 +127,59 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'jenis_buku_id' => 'required',
+            'judul_buku' => 'required',
+            'no_isbn' => 'required',
+            'tahun_terbit' => 'required',
+            'penerbit_buku' => 'required',
+            'pengarang_buku' => 'required',
+            'rak_buku_id' => 'required',
+            'jumlah_buku' => 'required',
+            'gambar'     => 'nullable|image|mimes:png,jpg,jpeg',
+        ]);
+
+        //get data Buku by ID
+        $buku = Book::findOrFail($id);
+
+        if ($request->file('gambar') == "") {
+
+            $buku->update([
+                'jenis_buku_id' => $request->jenis_buku_id,
+                'judul_buku' => $request->judul_buku,
+                'no_isbn' => $request->no_isbn,
+                'tahun_terbit' => $request->tahun_terbit,
+                'penerbit_buku' => $request->penerbit_buku,
+                'pengarang_buku' => $request->pengarang_buku,
+                'rak_buku_id' => $request->rak_buku_id,
+                'jumlah_buku' => $request->jumlah_buku,
+            ]);
+        } else {
+
+            //hapus old image
+            Storage::disk('local')->delete('public/buku/' . $buku->gambar);
+
+            //upload new image
+            $image = $request->file('gambar');
+            $image->storeAs('public/buku', $image->hashName());
+
+            $buku->update([
+                'gambar'     => $image->hashName(),
+                'jenis_buku_id' => $request->jenis_buku_id,
+                'judul_buku' => $request->judul_buku,
+                'no_isbn' => $request->no_isbn,
+                'tahun_terbit' => $request->tahun_terbit,
+                'penerbit_buku' => $request->penerbit_buku,
+                'pengarang_buku' => $request->pengarang_buku,
+                'rak_buku_id' => $request->rak_buku_id,
+                'jumlah_buku' => $request->jumlah_buku,
+            ]);
+        }
+
+        if ($buku) {
+            //redirect dengan pesan sukses
+            return redirect()->route('buku.index')->with(['success' => 'Data Berhasil Diupdate!']);
+        }
     }
 
     /**
@@ -126,6 +190,13 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $buku = Book::findOrFail($id);
+        Storage::disk('local')->delete('public/buku/' . $buku->gambar);
+        $buku->delete();
+
+        if ($buku) {
+            //redirect dengan pesan sukses
+            return redirect()->route('buku.index')->with(['success' => 'Data Berhasil Dihapus!']);
+        }
     }
 }
