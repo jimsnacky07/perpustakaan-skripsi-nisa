@@ -58,6 +58,14 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('buku.index') }}" class="nav-link {{ Route::is('buku.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Data Buku
+                        </p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">
