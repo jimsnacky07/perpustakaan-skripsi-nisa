@@ -35,8 +35,15 @@
                 </li>
 
                 <li class="nav-item">
-                    <a href="{{ route('jenis-buku') }}"
-                        class="nav-link {{ request()->is('jenis-buku') ? 'active' : '' }}">
+                    <a href="{{ route('user') }}" class="nav-link {{ Route::is('user') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Data User
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('jenis-buku') }}" class="nav-link {{ Route::is('jenis-buku') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
                             Jenis Buku
