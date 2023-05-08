@@ -58,7 +58,7 @@
             });
         }
 
-        //  Menyimpan Data User
+        //  Menyimpan Data Rak Buku
         $(document).on('submit', '#addFormRakBuku', function(e) {
             e.preventDefault();
 
@@ -94,7 +94,7 @@
             });
         });
 
-        //edit Data User
+        //edit Data Rak Buku
         $(document).on('click', '#btnEditRak', function(e) {
             e.preventDefault();
 
@@ -116,7 +116,7 @@
         });
 
 
-        //  Update Data User
+        //  Update Data Rak Buku
         $(document).on('submit', '#editFormRakBuku', function(e) {
             e.preventDefault();
 
@@ -153,7 +153,7 @@
             });
         });
 
-        //Delete Data User
+        //Delete Data Rak Buku
         $(document).on('click', '#btnDeleteRak', function(e) {
             e.preventDefault();
 

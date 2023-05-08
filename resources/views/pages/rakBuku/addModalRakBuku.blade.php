@@ -16,7 +16,7 @@
                             <div class="form-group">
                                 <label for="addModalRakBukuLabel">Nomor Rak Buku</label>
                                 <input type="text" class="form-control" name="no_rak">
-                                <span class="text-danger error-text name_error"></span>
+                                <span class="text-danger error-text no_rak_error"></span>
                             </div>
                         </div>
 
@@ -24,7 +24,7 @@
                             <div class="form-group">
                                 <label for="addModalRakBukuLabel">Nama Rak Buku</label>
                                 <input type="text" class="form-control" name="nama_rak" autocomplete="off">
-                                <span class="text-danger error-text email_error"></span>
+                                <span class="text-danger error-text nama_rak_error"></span>
                             </div>
                         </div>
 
@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <label for="addModalRakBukuLabel">Kapasitas Rak Buku</label>
                                 <input type="text" class="form-control" name="kapasitas_rak">
-                                <span class="text-danger error-text name_error"></span>
+                                <span class="text-danger error-text kapasitas_rak_error"></span>
                             </div>
                         </div>
 

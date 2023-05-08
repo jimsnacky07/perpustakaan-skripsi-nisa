@@ -73,8 +73,8 @@ class RakBukuController extends Controller
             'kapasitas_rak' => 'required|string',
         ], [
             'no_rak.required' => 'Field Nama Wajib Diisi',
-            'nama_rak.required' => 'Field role Wajib Diisi',
-            'kapasitas_rak.required' => 'Field Password Wajib Diisi',
+            'nama_rak.required' => 'Field Wajib Diisi',
+            'kapasitas_rak.required' => 'Field Wajib Diisi',
         ]);
 
         if ($validation->fails()) {
