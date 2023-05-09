@@ -1,59 +1,57 @@
 @extends('layouts.main')
 
-@section('title', 'Data Buku')
+@section('title', 'Data Peminjaman')
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Buku</h3>
+                    <h3 class="card-title">Peminjaman</h3>
                 </div>
 
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12 mb-3">
-                            <a href="{{ route('buku.create') }}" class="btn btn-warning"><i class="fas fa-plus-square">
-                                    Create Buku</i>
+                            <a href="{{ route('peminjaman.create') }}" class="btn btn-warning"><i class="fas fa-plus-square">
+                                    Create Peminjaman</i>
                             </a>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <table id="example2" class="table table-bordered table-hover">
+                            <table id="table" class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th width="1%">No</th>
-                                        <th>Kategori</th>
-                                        <th>Judul</th>
-                                        <th>Tahun</th>
-                                        <th>Jumlah Buku</th>
-                                        <th>Gambar</th>
+                                        <th>Kode Peminjaman</th>
+                                        <th>Nama Peminjam</th>
+                                        <th>Tgl Pinjam</th>
+                                        <th>Tgl Kembali</th>
                                         <th width="15%">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($buku as $item)
+                                    @foreach ($peminjaman as $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $item->name }}</td>
-                                            <td>{{ $item->judul_buku }}</td>
-                                            <td>{{ $item->tahun_terbit }}</td>
-                                            <td>{{ $item->jumlah_buku }}</td>
-                                            <td><img src="{{ Storage::url('public/buku/' . $item->gambar) }} "
-                                                    alt="" width="50" class="img-thumbnail"></td>
+                                            <td>{{ $item->kode_peminjaman }}</td>
+                                            <td>{{ $item->nama }}</td>
+                                            <td>{{ date('d F Y', strtotime($data->tgl_pinjam)) }}</td>
+                                            <td>{{ date('d F Y', strtotime($data->tgl_kembali)) }}</td>
+
                                             <td>
 
-                                                <a href="{{ route('buku.edit', $item->id) }}"
-                                                    class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt">
+                                                <a href="{{ route('cetak-bukti-peminjaman') }}"
+                                                    class="btn btn-primary btn-sm"><i class="fas fa-print">
                                                     </i></a>
 
-                                                <a href="{{ route('buku.show', $item->id) }}" class="btn btn-dark btn-sm"><i
+                                                <a href="{{ route('detail-peminjaman') }}" class="btn btn-dark btn-sm"><i
                                                         class="fas fa-eye">
                                                     </i></a>
 
-                                                <form action="{{ route('buku.destroy', $item->id) }}" method="POST"
+                                                <form action="{{ route('peminjaman.destroy') }}" method="POST"
                                                     style="display: inline">
                                                     @csrf
                                                     @method('DELETE')
@@ -89,11 +87,7 @@
     @endif
     <script>
         $(document).ready(function() {
-            $('#example2').DataTable();
+            $('#table').DataTable();
         });
-
-        $('#release-date').datetimepicker({
-            format: 'YYYY-MM-DD'
-        })
     </script>
 @endpush

@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBukuController;
+use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\RakBukuController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -59,6 +60,16 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
         Route::post('rak-buku/edit', 'update')->name('rak-buku.update');
         Route::post('rak-buku/destroy', 'destroy')->name('rak-buku.destroy');
         Route::post('rak-buku/destroy/selected', 'destroySelected')->name('rak-buku.destroySelected');
+    });
+
+
+    Route::controller(PeminjamanController::class)->group(function () {
+        Route::get('/peminjaman', 'index')->name('peminjaman');
+        Route::get('/tambah-peminjaman', 'create')->name('peminjaman.create');
+        Route::post('/simpan-peminjaman',  'store')->name('peminjaman.store');
+        Route::get('/cetak-bukti-peminjaman/{id}',  'cetakBuktiPeminjaman')->name('cetak-bukti-peminjaman');
+        Route::get('/hapus-peminjaman/{id}',  'destroy')->name('peminjaman.destroy');
+        Route::get('/detail-peminjaman/{id}',  'detail')->name('detail-peminjaman');
     });
 });
 

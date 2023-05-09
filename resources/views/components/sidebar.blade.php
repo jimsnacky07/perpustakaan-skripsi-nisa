@@ -75,6 +75,15 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('peminjaman') }}"
+                        class="nav-link {{ Route::is('peminjaman*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Data Peminjaman
+                        </p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">
