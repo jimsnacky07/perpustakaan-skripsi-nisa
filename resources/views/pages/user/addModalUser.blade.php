@@ -32,6 +32,7 @@
                             <div class="form-group">
                                 <label for="addModalUserLabel">Role</label>
                                 <select name="role" class="custom-select">
+                                    <option value="" selected disabled>--Pilih Role--</option>
                                     <option value="0">Anggota</option>
                                     <option value="1">Admin</option>
                                     <option value="2">Pimpinan</option>

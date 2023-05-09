@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -28,6 +29,7 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('buku', BookController::class);
+    Route::resource('anggota', AnggotaController::class);
 
     Route::controller(JenisBukuController::class)->group(function () {
         Route::get('jenis-buku', 'index')->name('jenis-buku');
