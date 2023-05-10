@@ -68,8 +68,15 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
         Route::get('/tambah-peminjaman', 'create')->name('peminjaman.create');
         Route::post('/simpan-peminjaman',  'store')->name('peminjaman.store');
         Route::get('/cetak-bukti-peminjaman/{id}',  'cetakBuktiPeminjaman')->name('cetak-bukti-peminjaman');
-        Route::get('/hapus-peminjaman/{id}',  'destroy')->name('peminjaman.destroy');
+        Route::delete('/hapus-peminjaman/{id}',  'destroy')->name('peminjaman.destroy');
         Route::get('/detail-peminjaman/{id}',  'detail')->name('detail-peminjaman');
+
+        //Temporary
+
+        Route::post('/simpan-temp', [PeminjamanController::class, 'storeTemp'])->name('simpan-temp');
+        Route::get('/panggil-temp', [PeminjamanController::class, 'showTemp'])->name('panggil-temp');
+        Route::post('/hapus-temp-all', [PeminjamanController::class, 'deleteAllTemp'])->name('hapus-temp-all');
+        Route::get('/delete-temp-item/{id}', [PeminjamanController::class, 'deleteItemTemp'])->name('hapus-temp-item');
     });
 });
 

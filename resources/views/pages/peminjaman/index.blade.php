@@ -38,20 +38,20 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->kode_peminjaman }}</td>
                                             <td>{{ $item->nama }}</td>
-                                            <td>{{ date('d F Y', strtotime($data->tgl_pinjam)) }}</td>
-                                            <td>{{ date('d F Y', strtotime($data->tgl_kembali)) }}</td>
+                                            <td>{{ date('d F Y', strtotime($item->tgl_pinjam)) }}</td>
+                                            <td>{{ date('d F Y', strtotime($item->tgl_kembali)) }}</td>
 
                                             <td>
 
-                                                <a href="{{ route('cetak-bukti-peminjaman') }}"
+                                                <a href="{{ route('cetak-bukti-peminjaman', $item->id) }}"
                                                     class="btn btn-primary btn-sm"><i class="fas fa-print">
                                                     </i></a>
 
-                                                <a href="{{ route('detail-peminjaman') }}" class="btn btn-dark btn-sm"><i
-                                                        class="fas fa-eye">
+                                                <a href="{{ route('detail-peminjaman', $item->id) }}"
+                                                    class="btn btn-dark btn-sm"><i class="fas fa-eye">
                                                     </i></a>
 
-                                                <form action="{{ route('peminjaman.destroy') }}" method="POST"
+                                                <form action="{{ route('peminjaman.destroy', $item->id) }}" method="POST"
                                                     style="display: inline">
                                                     @csrf
                                                     @method('DELETE')

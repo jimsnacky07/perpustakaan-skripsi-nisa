@@ -62,7 +62,8 @@
                             <div class="form-group col-md-3">
                                 <label for="">Nomor Isbn Buku</label>
                                 <input type="hidden" id="id" class="form-control" name="id" required>
-                                <input type="text" id="isbn" class="form-control" name="isbn" placeholder="Ex : ISBN ***">
+                                <input type="text" id="isbn" class="form-control" name="isbn"
+                                    placeholder="Ex : ISBN ***">
                             </div>
 
                             <div class="form-group col-md-1">
@@ -101,6 +102,9 @@
                                     <a href="#" class="btn btn-danger btn-sm" id="hapusAll"><i
                                             class="fas fa-trash"></i>
                                         Item</a>
+                                    {{-- <button class="btn btn-danger btn-sm" id="hapusAll">
+                                        <i class="fas fa-trash"> Item</i>
+                                    </button> --}}
                                 </div>
                             </div>
 
@@ -121,6 +125,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th>No</th>
                                         <th>Isbn</th>
                                         <th>Judul</th>
                                         <th>Jumlah</th>
@@ -136,7 +141,7 @@
         </div>
     </div>
 
-    <div class="modal fade bd-example-modal-sm" id="confirmasiItem" tabindex="-1" role="dialog"
+    {{-- <div class="modal fade bd-example-modal-sm" id="confirmasiItem" tabindex="-1" role="dialog"
         aria-labelledby="mySmallModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -155,7 +160,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="modal fade bd-example-modal-sm" id="confirmasiAll" tabindex="-1" role="dialog"
         aria-labelledby="mySmallModalLabel" aria-hidden="true">
@@ -227,7 +232,9 @@
 @push('after-script')
     <script>
         $(document).ready(function() {
+            load()
             $('#table').DataTable();
+            $('#table-temp').DataTable();
             $('.select2').select2();
         });
     </script>
@@ -245,5 +252,124 @@
                 $('#modalBuku').modal('hide');
             })
         });
+    </script>
+
+
+    {{-- <script>
+        $(document).ready(function() {
+            $(document).on('click', '#hapusItem', function() {
+                $('#confirmasiItem').modal('hide');
+            });
+
+            $('#hapusItem').click(function() {
+                $.ajax({
+                    url: 'hapus-temp-item' + id,
+                    method: 'GET',
+                    dataType: 'JSON',
+
+                    beforeSend: function() {
+                        $('#hapusItem').text('Deleting...');
+                    },
+
+                    success: function(response) {
+                        if (response.success == 200) {
+                            $('#confirmasiItem').modal('hide');
+                            load()
+                        } else {
+                            alert('Oppzz... Periksa Kembali Inputan');
+                        }
+                    }
+                });
+            });
+        });
+    </script> --}}
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '#hapusAll', function() {
+                $('#confirmasiAll').modal('show');
+            });
+
+            $('#hapusAllOk').click(function() {
+                $.ajax({
+                    url: '{{ route('hapus-temp-all') }}',
+                    method: 'POST',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                    },
+                    dataType: 'JSON',
+                    success: function(response) {
+                        if (response.success == 200) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: 'Semua Data Temporary Berhasil Dihapus',
+                                showConfirmButton: false,
+                                timer: 2500
+                            })
+                            $('#confirmasiAll').modal('hide');
+                            load()
+                        } else {
+                            alert('Oppzz... Periksa Kembali Inputan');
+                        }
+                    }
+                });
+            });
+
+        })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#simpan-temp').click(simpanTemp);
+        })
+
+        function load() {
+            $('#table1').load('panggil-temp');
+        }
+
+        function kosong() {
+            $('#isbn').val('');
+            $('#judul').val('');
+            $('#jumlah').val('');
+        }
+
+        function simpanTemp() {
+
+            var isbn = $('#isbn').val();
+            var judul = $('#judul').val();
+            var jumlah = $('#jumlah').val();
+
+            if (isbn == '') {
+                alert('Isbn Buku harus diisi');
+            } else if (judul == '') {
+                alert('Judul Buku harus diisi');
+            } else if (jumlah == '') {
+                alert('Jumlah Buku harus diisi');
+            } else {
+                $.ajax({
+                    method: 'POST',
+                    url: '{{ route('simpan-temp') }}',
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        'isbn': isbn,
+                        'judul': judul,
+                        'jumlah': jumlah,
+                    },
+                    dataType: 'json',
+                    cache: false,
+                    success: function(response) {
+                        console.log(response);
+                        if (response.success == 200) {
+                            kosong()
+                            load()
+                        } else {
+                            alert('Oppzz... Periksa Kembali Inputan');
+                        }
+                    }
+
+                });
+            }
+        };
     </script>
 @endpush
