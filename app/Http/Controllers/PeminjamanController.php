@@ -22,9 +22,10 @@ class PeminjamanController extends Controller
     {
         $data['detail'] = DB::table('detail_peminjaman')
             ->join('peminjaman', 'detail_peminjaman.id_peminjaman', '=', 'peminjaman.id')
+            ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
             ->join('books', 'detail_peminjaman.isbn_buku', '=', 'books.no_isbn')
             ->where('peminjaman.id', $id)
-            ->select('detail_peminjaman.*',  'peminjaman.*', 'books.*')
+            ->select('detail_peminjaman.*', 'detail_peminjaman.jumlah_buku as jumlah_buku_pinjam', 'peminjaman.*', 'books.*', 'anggotas.nama as nama_anggota')
             ->get();
 
         return view('pages.peminjaman.detail', $data);
@@ -122,8 +123,6 @@ class PeminjamanController extends Controller
 
     public function destroy($id)
     {
-
-
         $temp = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->first();
         $ambilJumlahStockBuku = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->sum('jumlah_buku');
         $stockBuku = DB::table('books')->where('no_isbn', $temp->isbn_buku)->update([
@@ -133,8 +132,8 @@ class PeminjamanController extends Controller
         $hapus = DB::table('peminjaman')->where('id', $id)->delete();
         $hapusDetailPeminjaman = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->delete();
 
-        if ($hapus) {
-            return redirect()->back()->with(['success', 'Dat Berhasil Di Hapus']);
+        if ($hapus && $hapusDetailPeminjaman == true) {
+            return redirect()->back()->with(['success', 'Data Berhasil Di Hapus']);
         } else {
             return redirect()->back()->with(['error', 'Gagal']);
         }
