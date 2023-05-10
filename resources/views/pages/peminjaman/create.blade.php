@@ -91,7 +91,7 @@
 
 
                             <div class="form-group col-md-2">
-                                <label for="">Jumlah</label>
+                                <label for="">Jumlah Buku</label>
                                 <input type="number" class="form-control" name="jumlah" id="jumlah">
                             </div>
 
@@ -121,7 +121,8 @@
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="" style="visibility: hidden;">Kode</label>
-                                    <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-save"></i>
+                                    <button type="submit" class="btn btn-success btn-sm" id="proses"><i
+                                            class="fas fa-save"></i>
                                         Proses</button>
                                 </div>
                             </div>
@@ -245,6 +246,7 @@
             load()
             $('#table').DataTable();
             $('#table-temp').DataTable();
+            $('#proses').hide();
             $('.select2').select2();
         });
     </script>
@@ -345,11 +347,11 @@
         }
 
         function simpanTemp() {
-            let jumlah_buku = $(this).data('jumlah-buku');
+            var jumlah_buku = $(this).data('jumlah-buku');
 
-            let isbn = $('#isbn').val();
-            let judul = $('#judul').val();
-            let jumlah = $('#jumlah').val();
+            var isbn = $('#isbn').val();
+            var judul = $('#judul').val();
+            var jumlah = $('#jumlah').val();
 
 
             if (jumlah >= jumlah_buku) {
@@ -379,6 +381,7 @@
                         if (response.success == 200) {
                             kosong()
                             load()
+                            $('#proses').show();
                         } else {
                             alert('Oppzz... Periksa Kembali Inputan');
                         }
