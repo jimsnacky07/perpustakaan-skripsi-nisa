@@ -138,4 +138,17 @@ class PeminjamanController extends Controller
             return redirect()->back()->with(['error', 'Gagal']);
         }
     }
+
+
+    public function cetakBuktiPeminjaman($id)
+    {
+        $data['peminjaman'] = DB::table('peminjaman')
+            ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+            ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            ->select('peminjaman.*', 'detail_peminjaman.*', 'anggotas.nama', 'anggotas.nisn')
+            ->where('peminjaman.id', $id)
+            ->get();
+        // dd($data);
+        return view('pages.peminjaman.bukti_peminjaman', $data);
+    }
 }

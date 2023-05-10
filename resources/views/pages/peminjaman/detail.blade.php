@@ -28,7 +28,7 @@
 
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-striped" id="table">
+                                    <table class="table table-striped table-bordered" id="table">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
@@ -64,18 +64,6 @@
     </div>
 @endsection
 @push('after-script')
-
-    @if (session('success') == true)
-        <script>
-            Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: '{{ session('success') }}',
-                showConfirmButton: false,
-                timer: 2500
-            })
-        </script>
-    @endif
     <script>
         $(document).ready(function() {
             $('#table').DataTable();
