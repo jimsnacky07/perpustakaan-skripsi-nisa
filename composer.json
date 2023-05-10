@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
+        "php-flasher/flasher-laravel": "^1.13",
         "yajra/laravel-datatables": "^9.0"
     },
     "require-dev": {

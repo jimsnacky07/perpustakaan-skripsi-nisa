@@ -89,11 +89,19 @@ class PeminjamanController extends Controller
             'id_anggota_peminjaman' => $request->id_anggota_peminjaman,
         ]);
 
+
         $id = DB::getPdo()->lastInsertId();
 
         if ($simpan == true) {
             $temp = DB::table('peminjaman_temp')->get();
             foreach ($temp as $t) {
+                // $buku = DB::table('books')->get()->where('no_isbn', $t->isbn)->first());
+                $buku = DB::table('books')->where('no_isbn', $t->isbn)->first();
+                if ($t->jumlah > $buku->jumlah_buku) {
+                    flash()->addError('Stock Buku tidak mencukupi.');
+                    return redirect()->route('peminjaman.create');
+                }
+
                 $simpan = DB::table('detail_peminjaman')->insert([
                     'id_peminjaman' => $id,
                     'isbn_buku' => $t->isbn,
@@ -126,9 +134,9 @@ class PeminjamanController extends Controller
         $hapusDetailPeminjaman = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->delete();
 
         if ($hapus) {
-            return redirect()->back()->with('success', 'Dat Berhasil Di Hapus');
+            return redirect()->back()->with(['success', 'Dat Berhasil Di Hapus']);
         } else {
-            return redirect()->back()->with('error', 'Gagal');
+            return redirect()->back()->with(['error', 'Gagal']);
         }
     }
 }

@@ -7,6 +7,15 @@
         <div class="col-md-12">
 
             {{-- Alert Here --}}
+            {{-- @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif --}}
 
             <div class="card card-primary">
                 <div class="card-header">
@@ -35,8 +44,8 @@
 
                             <div class="form-group col-md-4">
                                 <label for="tgl_pinjam">Tanggal Peminjaman</label>
-                                <input type="date" name="tgl_pinjam" value="{{ old('tgl_pinjam') }}"
-                                    class="form-control">
+                                <input type="date" name="tgl_pinjam" value="{{ old('tgl_pinjam') }}" class="form-control"
+                                    required>
 
                                 @error('tgl_pinjam')
                                     <div class="invalid-feedback">
@@ -48,7 +57,7 @@
                             <div class="form-group col-md-4">
                                 <label for="tgl_kembali">Tanggal Kembali</label>
                                 <input type="date" name="tgl_kembali" value="{{ old('tgl_kembali') }}"
-                                    class="form-control">
+                                    class="form-control" required>
 
                                 @error('tgl_kembali')
                                     <div class="invalid-feedback">
@@ -215,7 +224,8 @@
                                     <td>
                                         <button class="btn btn-sm btn-primary" id="pilih"
                                             data-id="{{ $data->id }}" data-isbn="{{ $data->no_isbn }}"
-                                            data-judul="{{ $data->judul_buku }}">
+                                            data-judul="{{ $data->judul_buku }}"
+                                            data-jumlah-buku="{{ $data->jumlah_buku }}">
                                             <i class="fas fa-mouse-pointer"></i>
                                         </button>
                                     </td>
@@ -335,10 +345,16 @@
         }
 
         function simpanTemp() {
+            let jumlah_buku = $(this).data('jumlah-buku');
 
-            var isbn = $('#isbn').val();
-            var judul = $('#judul').val();
-            var jumlah = $('#jumlah').val();
+            let isbn = $('#isbn').val();
+            let judul = $('#judul').val();
+            let jumlah = $('#jumlah').val();
+
+
+            if (jumlah >= jumlah_buku) {
+                alert('Stock Buku Tidak Mencukupi');
+            }
 
             if (isbn == '') {
                 alert('Isbn Buku harus diisi');
