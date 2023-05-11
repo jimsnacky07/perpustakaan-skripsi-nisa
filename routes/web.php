@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBukuController;
 use App\Http\Controllers\PeminjamanController;
+use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\RakBukuController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -77,6 +78,14 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
         Route::get('/panggil-temp', [PeminjamanController::class, 'showTemp'])->name('panggil-temp');
         Route::post('/hapus-temp-all', [PeminjamanController::class, 'deleteAllTemp'])->name('hapus-temp-all');
         Route::get('/delete-temp-item/{id}', [PeminjamanController::class, 'deleteItemTemp'])->name('hapus-temp-item');
+    });
+
+    //pengembalian 
+    Route::controller(PengembalianController::class)->group(function () {
+        Route::get('/pengembalian', 'index')->name('pengembalian');
+        Route::get('/tambah-pengembalian', 'tambah')->name('pengembalian.create');
+        Route::post('/simpan-pengembalian', 'store')->name('pengembalian.store');
+        Route::post('/getkampung', 'getkampung')->name('getkampungzonasi');
     });
 });
 

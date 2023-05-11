@@ -86,6 +86,16 @@
                 </li>
 
                 <li class="nav-item">
+                    <a href="{{ route('pengembalian') }}"
+                        class="nav-link {{ Route::is('pengembalian*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Data Pengembalian Buku
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">
                         <i class="nav-icon fas fa-video"></i>
                         <p>

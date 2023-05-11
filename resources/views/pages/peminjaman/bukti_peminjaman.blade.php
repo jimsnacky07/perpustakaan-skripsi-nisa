@@ -13,24 +13,53 @@
 <body>
     <div class="row">
         <center>
-            <img src="{{ asset('gambar/perpus.png') }}" class="img-circle" width="8%" alt="">
+            {{-- <img src="{{ asset('gambar/perpus.png') }}" class="img-circle" width="8%" alt=""> --}}
         </center>
 
     </div>
-    <h2 class="text-center mt-2">Perpustakaan Mulia Bersama</h2>
-    <h5 class="text-center mt-2">Jalan Anggrek No. 25 B Flamboyan Baru, Kota Padang</h5>
+    <h2 class="text-center mt-2">Perpustakaan SMP ...</h2>
+    <h5 class="text-center mt-2">Jalan </h5>
     <hr style="border:1px solid black;">
     <center>
         <p>KARTU PEMINJAMAN DAN PENGEMBALIAN BUKU</p>
     </center>
+
     <div class="container">
-        <table class="table table-bordered mb-4 table-striped">
+        <table>
+            <tr>
+                <td>NISN Anggota</td>
+                <td>&nbsp;&nbsp; : </td>
+                <td>
+                    &nbsp;&nbsp; {{ $peminjaman->first()->nisn }}
+                </td>
+            </tr>
+            <tr>
+                <td>Nama Anggota</td>
+                <td>&nbsp;&nbsp; : </td>
+                <td>
+                    &nbsp;&nbsp; {{ $peminjaman->first()->nama }}
+
+                </td>
+            </tr>
+            <tr>
+                <td>Kode Peminjaman</td>
+                <td>&nbsp;&nbsp; : </td>
+                <td>
+                    &nbsp;&nbsp; {{ $peminjaman->first()->kode_peminjaman }}
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="container">
+
+        <table class="table table-bordered mb-4 table-striped mt-3">
             <thead>
                 <tr>
                     <th style="text-align: center;">No Isbn</th>
                     <th style="text-align: center;">Judul Buku</th>
                     <th style="text-align: center;">Tanggal Pinjam</th>
-                    <th style="text-align: center;">Tanggal Kembali</th>
+                    <th style="text-align: center;">Tanggal Buku Wajib Kembali</th>
                     <th style="text-align: center;">Keterangan</th>
                 </tr>
             </thead>
@@ -47,29 +76,7 @@
             </tbody>
         </table>
 
-        <tr>
-            <td>Nisn Anggota</td>
-            <td>:</td>
-            <td>
-                {{ $item->nisn }}
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <td>Nama Anggota</td>
-            <td>:</td>
-            <td>
-                {{ $item->nama }}
-            </td>
-        </tr>
-        <br>
-        <tr>
-            <td>Kode Peminjaman</td>
-            <td>:</td>
-            <td>
-                {{ $item->kode_peminjaman }}
-            </td>
-        </tr>
+
     </div>
 
     <br>
@@ -79,7 +86,7 @@
             <tr>
                 <td>
                     <span>Keterangan : </span><br>
-                    <span><i>Lembaran ini wajib dibawa meminjam/mengembalikan buku</i></span>
+                    <span><i>Kartu ini wajib dibawa saat Meminjam / Mengembalikan buku</i></span>
                 </td>
             </tr>
         </table>
@@ -89,7 +96,7 @@
 
         <div class="float-end text-center" style="padding: 1cm;padding-top:0%">
             <!-- <h6 class="text-center" style="margin-bottom: 2cm;">{{ date('d F Y') }}</h6> -->
-            <span>Petugas Pustaka</span><br><br><br><br>
+            <span>Petugas Pustaka</span><br><br><br><br><br>
             <span>( ..................................... )</span><br>
 
         </div>

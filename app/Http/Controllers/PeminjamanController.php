@@ -108,6 +108,7 @@ class PeminjamanController extends Controller
                     'isbn_buku' => $t->isbn,
                     'judul_buku' => $t->judul,
                     'jumlah_buku' => $t->jumlah,
+                    // 'status' => 0,
                 ]);
 
                 $stockBuku = DB::table('books')->where('no_isbn', $t->isbn)->update([
