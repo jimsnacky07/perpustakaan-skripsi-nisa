@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('detail_peminjaman', function (Blueprint $table) {
             $table->string('status')->nullable()->after('jumlah_buku');
+            $table->string('id_buku_pinjam')->nullable()->after('id_peminjaman');
         });
     }
 
@@ -27,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('detail_peminjaman', function (Blueprint $table) {
             $table->dropColumn('status');
+            $table->dropColumn('id_buku_pinjam');
         });
     }
 };

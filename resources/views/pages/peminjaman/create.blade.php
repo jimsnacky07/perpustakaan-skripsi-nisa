@@ -347,8 +347,8 @@
         }
 
         function simpanTemp() {
+            // var id = $(this).data('id');
             var jumlah_buku = $(this).data('jumlah-buku');
-
             var isbn = $('#isbn').val();
             var judul = $('#judul').val();
             var jumlah = $('#jumlah').val();
