@@ -24,7 +24,7 @@
                                 <select name="id_anggota" id="" class="form-control select2">
                                     <option value="" selected disabled>--Pilih Anggota--</option>
                                     @foreach ($anggota as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                        <option value="{{ $item->id_anggota_peminjaman }}">{{ $item->nama }}</option>
                                     @endforeach
                                 </select>
                                 @error('id_anggota')
@@ -142,7 +142,7 @@
                                     <td>{{ $data->jumlah_buku }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-primary" id="pilih"
-                                            data-id="{{ $data->id }}" data-isbn="{{ $data->no_isbn }}"
+                                            data-id="{{ $data->id_buku_pinjam }}" data-isbn="{{ $data->no_isbn }}"
                                             data-judul="{{ $data->judul_buku }}"
                                             data-jumlah-buku="{{ $data->jumlah_buku }}">
                                             <i class="fas fa-mouse-pointer"></i>
@@ -173,9 +173,11 @@
                 var item_id = $(this).data('id');
                 var item_isbn = $(this).data('isbn');
                 var item_judul = $(this).data('judul');
+                var item_jumlah_buku = $(this).data('jumlah-buku');
                 $('#id').val(item_id);
                 $('#isbn').val(item_isbn);
                 $('#judul').val(item_judul);
+                $('#jumlah').val(item_jumlah_buku);
                 $('#modalBuku').modal('hide');
             })
         });

@@ -28,13 +28,23 @@ class PengembalianController extends Controller
 
     public function tambah()
     {
-        $anggota = Anggota::all();
-        // $buku = DB::table('books')
-        //     ->join('detail_peminjaman', 'books.no_isbn', '=', 'detail_peminjaman.isbn_buku')
-        //     ->where('detail_peminjaman.status', 0)
-        //     ->get();
+        //ambil data anggota yang berelasi ke table peminjaman lalu tampilkan data anggota
 
-        $buku = DB::table('books')->get();
+        //mengambil data anggota yang berelasi ke table detail peminjaman lalu tampilkan berdasarkan status
+
+        // $anggota = Anggota::all();
+        $anggota = DB::table('anggotas')
+            ->join('peminjaman', 'anggotas.id', '=', 'peminjaman.id_anggota_peminjaman')
+            // ->where('peminjaman.tgl_kembali_buku', '!=', null)
+            ->get();
+
+        //selanjutnya menampilkan data buku yang dipinjam oleh anggota yang dipilih
+        $buku = DB::table('books')
+            ->join('detail_peminjaman', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+            ->where('detail_peminjaman.status', 0)
+            ->get();
+
+        // $buku = DB::table('books')->get();
 
         return view('pages.pengembalian.create', compact('anggota', 'buku'));
     }
@@ -59,12 +69,12 @@ class PengembalianController extends Controller
             'qty' => $r->jumlah,
             'denda' => $r->denda,
             // 'tanggal_pengembalian' => date('Y-m-d H:i:s'),
-            'tanggal_pengembalian' => now(),
+            // 'tanggal_pengembalian' => now(),
         ]);
 
-        // $updateStatus = DB::table('detail_peminjaman')->where('isbn_buku', $r->isbn)->where('id', $r->id)->update([
-        //     'status' => 1,
-        // ]);
+        $updateStatus = DB::table('detail_peminjaman')->where('id_buku_pinjam', $r->id)->update([
+            'status' => 1,
+        ]);
 
         $stok = DB::table('books')->where('id', $r->id)->update([
             "jumlah_buku" => DB::raw('jumlah_buku + ' . $r->jumlah),
