@@ -28,7 +28,7 @@
                                         <th>Kode Peminjaman</th>
                                         <th>Nama Peminjam</th>
                                         <th>Tgl Pinjam</th>
-                                        <th>Tgl Kembali</th>
+                                        <th>Tgl Wajib Kembali</th>
                                         <th width="15%">Action</th>
                                     </tr>
                                 </thead>

@@ -27,12 +27,13 @@
                     @csrf
                     <div class="card-body">
                         <div class="row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label for="title">Nama Anggota Yang Akan Meminjam Buku</label>
                                 <select name="id_anggota_peminjaman" id="" class="form-control select2">
                                     <option value="" selected disabled>--Pilih Anggota--</option>
                                     @foreach ($anggota as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                        <option value="{{ $item->id }}">{{ $item->nama }} | {{ $item->nisn }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('id_anggota_peminjaman')
@@ -42,7 +43,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group col-md-4">
+                            {{-- <div class="form-group col-md-4">
                                 <label for="tgl_pinjam">Tanggal Peminjaman</label>
                                 <input type="date" name="tgl_pinjam" value="{{ old('tgl_pinjam') }}" class="form-control"
                                     required>
@@ -64,7 +65,7 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
-                            </div>
+                            </div> --}}
                         </div>
 
                         <div class="row">

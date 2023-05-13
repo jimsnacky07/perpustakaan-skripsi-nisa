@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -83,10 +84,11 @@ class PeminjamanController extends Controller
 
     public function store(Request $request)
     {
+
         $simpan = DB::table('peminjaman')->insertGetId([
             'kode_peminjaman' => date('YmdHis') . rand(0, 999),
-            'tgl_pinjam' => $request->tgl_pinjam,
-            'tgl_kembali' => $request->tgl_kembali,
+            'tgl_pinjam' => Carbon::now()->toDateString(),
+            'tgl_kembali' => Carbon::now()->addMonth(3)->toDateString(),
             'id_anggota_peminjaman' => $request->id_anggota_peminjaman,
         ]);
 
@@ -125,11 +127,20 @@ class PeminjamanController extends Controller
 
     public function destroy($id)
     {
-        $temp = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->first();
-        $ambilJumlahStockBuku = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->sum('jumlah_buku');
-        $stockBuku = DB::table('books')->where('no_isbn', $temp->isbn_buku)->update([
-            "jumlah_buku" => DB::raw('jumlah_buku + ' . $ambilJumlahStockBuku),
-        ]);
+        $temp = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->get();
+
+        foreach ($temp as $t) {
+            $UpdateStockBuku = DB::table('books')->where('id', $t->id_buku_pinjam)->update([
+                "jumlah_buku" => DB::raw('jumlah_buku + ' . $t->jumlah_buku),
+            ]);
+        }
+        // $temp = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->first();
+        //mengambil jumlah buku yang dipinjam untuk di update ke stock buku
+        // $ambilJumlahStockBuku = DB::table('detail_peminjaman')->where('id_buku_pinjam', $temp->id_buku_pinjam)->sum('jumlah_buku');
+        // $stockBuku = DB::table('books')->where('id', $temp->id_buku_pinjam)->update([
+        //     // "jumlah_buku" => DB::raw('jumlah_buku + ' . $temp->jumlah_buku),
+        //     "jumlah_buku" => DB::raw('jumlah_buku + ' . $ambilJumlahStockBuku),
+        // ]);
 
         $hapus = DB::table('peminjaman')->where('id', $id)->delete();
         $hapusDetailPeminjaman = DB::table('detail_peminjaman')->where('id_peminjaman', $id)->delete();
