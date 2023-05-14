@@ -15,7 +15,7 @@
                         <div class="col-md-12 mb-3">
                             <a href="{{ route('pengembalian.create') }}" class="btn btn-warning"><i
                                     class="fas fa-plus-square">
-                                    Create Pengembalian</i>
+                                    Tambah Data Pengembalian Buku</i>
                             </a>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Nama Peminjamn</th>
+                                        <th>Nama Peminjam</th>
                                         <th>Isbn</th>
                                         <th>Judul Buku</th>
                                         <th>Jumlah Di Kembalikan</th>

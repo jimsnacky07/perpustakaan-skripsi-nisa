@@ -31,17 +31,21 @@ class PengembalianController extends Controller
         //ambil data anggota yang berelasi ke table peminjaman lalu tampilkan data anggota
 
         //mengambil data anggota yang berelasi ke table detail peminjaman lalu tampilkan berdasarkan status
+        //get data detail peminjaman
+        $detaiLPeminjaman = DB::table('detail_peminjaman')->get();
+        $peminjaman = DB::table('peminjaman')->get();
 
         // $anggota = Anggota::all();
         $anggota = DB::table('anggotas')
             ->join('peminjaman', 'anggotas.id', '=', 'peminjaman.id_anggota_peminjaman')
-            // ->where('peminjaman.tgl_kembali_buku', '!=', null)
+            // ->where('peminjaman.id', $detaiLPeminjaman->id_peminjaman)
             ->get();
 
         //selanjutnya menampilkan data buku yang dipinjam oleh anggota yang dipilih
         $buku = DB::table('books')
             ->join('detail_peminjaman', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
             ->where('detail_peminjaman.status', 0)
+            // ->where('detail_peminjaman.id_peminjaman', $peminjaman->first()->id)
             ->get();
 
         // $buku = DB::table('books')->get();

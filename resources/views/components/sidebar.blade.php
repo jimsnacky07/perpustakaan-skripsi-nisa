@@ -94,6 +94,51 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.kategori-buku') }}"
+                        class="nav-link {{ Route::is('laporan.kategori-buku') ? 'active' : '' }}" target="_blank">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Laporan Kategori Buku
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.rak-buku') }}"
+                        class="nav-link {{ Route::is('laporan.rak-buku') ? 'active' : '' }}" target="_blank">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Laporan Rak Buku
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.anggota') }}"
+                        class="nav-link {{ Route::is('laporan.anggota') ? 'active' : '' }}" target="_blank">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Laporan Data Anggota
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.buku') }}"
+                        class="nav-link {{ Route::is('laporan.buku') ? 'active' : '' }}" target="_blank">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Laporan Data Buku
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('laporan.riwayat-peminjaman') }}"
+                        class="nav-link {{ Route::is('laporan.riwayat-peminjaman') ? 'active' : '' }}" target="_blank">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            Laporan Riwayat Peminjaman Buku
+                        </p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">

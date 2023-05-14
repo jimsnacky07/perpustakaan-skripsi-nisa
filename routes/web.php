@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBukuController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\RakBukuController;
@@ -33,6 +34,7 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
     Route::resource('buku', BookController::class);
     Route::resource('anggota', AnggotaController::class);
 
+    //Jenis Buku
     Route::controller(JenisBukuController::class)->group(function () {
         Route::get('jenis-buku', 'index')->name('jenis-buku');
         Route::post('jenis-buku', 'store')->name('jenis-buku.store');
@@ -43,6 +45,7 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
         Route::post('jenis-buku/destroy/selected', 'destroySelected')->name('jenis-buku.destroySelected');
     });
 
+    //User
     Route::controller(UserController::class)->group(function () {
         Route::get('user', 'index')->name('user');
         Route::post('user', 'store')->name('user.store');
@@ -53,6 +56,7 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
         Route::post('user/destroy/selected', 'destroySelected')->name('user.destroySelected');
     });
 
+    //Rak Buku
     Route::controller(RakBukuController::class)->group(function () {
         Route::get('rak-buku', 'index')->name('rak-buku');
         Route::post('rak-buku', 'store')->name('rak-buku.store');
@@ -63,7 +67,7 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
         Route::post('rak-buku/destroy/selected', 'destroySelected')->name('rak-buku.destroySelected');
     });
 
-
+    //Peminjmaan
     Route::controller(PeminjamanController::class)->group(function () {
         Route::get('/peminjaman', 'index')->name('peminjaman');
         Route::get('/tambah-peminjaman', 'create')->name('peminjaman.create');
@@ -86,6 +90,14 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
         Route::get('/tambah-pengembalian', 'tambah')->name('pengembalian.create');
         Route::post('/simpan-pengembalian', 'store')->name('pengembalian.store');
         Route::post('/getkampung', 'getkampung')->name('getkampungzonasi');
+    });
+
+    Route::controller(LaporanController::class)->name('laporan.')->group(function () {
+        Route::get('/laporan-kategori-buku', 'kategoriBuku')->name('kategori-buku');
+        Route::get('/laporan-anggota', 'anggota')->name('anggota');
+        Route::get('/laporan-buku', 'buku')->name('buku');
+        Route::get('/laporan-rak', 'rakBuku')->name('rak-buku');
+        Route::get('/laporan-riwayat-peminjaman', 'riwayatPeminjaman')->name('riwayat-peminjaman');
     });
 });
 

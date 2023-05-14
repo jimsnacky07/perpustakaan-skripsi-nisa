@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-12 mb-3">
                             <a href="{{ route('buku.create') }}" class="btn btn-warning"><i class="fas fa-plus-square">
-                                    Create Buku</i>
+                                    Tambah Data Buku</i>
                             </a>
                         </div>
                     </div>
