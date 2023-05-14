@@ -30,6 +30,7 @@
                                         <th>Isbn</th>
                                         <th>Judul Buku</th>
                                         <th>Jumlah Di Kembalikan</th>
+                                        <th>Terlambat (Hari)</th>
                                         <th>Denda</th>
                                     </tr>
                                 </thead>
@@ -41,6 +42,13 @@
                                             <td>{{ $data->no_isbn }}</td>
                                             <td>{{ $data->judul_buku }}</td>
                                             <td>{{ $data->qty }}</td>
+                                            <td>
+                                                @if ($tanggalPengembalian <= $tanggalWajibKembali)
+                                                    {{ $jumlahHariTerlambat = 0 }}
+                                                @else
+                                                    {{ $jumlahHariTerlambat }}
+                                                @endif
+                                            </td>
                                             <td>Rp. {{ number_format($data->denda) }}</td>
 
                                         </tr>

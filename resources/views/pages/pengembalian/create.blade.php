@@ -69,14 +69,14 @@
                                     <input type="number" class="form-control" name="jumlah" id="jumlah">
                                 </div>
                             </div>
-
+                            {{-- 
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="">Denda (Rp.)</label>
                                     <input type="number" class="form-control" value="0" name="denda" id="denda">
 
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-1">
                                 <div class="form-group">
