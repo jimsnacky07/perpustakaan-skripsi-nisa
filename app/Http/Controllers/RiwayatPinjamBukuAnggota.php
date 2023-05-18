@@ -17,32 +17,38 @@ class RiwayatPinjamBukuAnggota extends Controller
         $userIdLogin = auth()->user()->id;
         $anggota = DB::table('anggotas')->where('user_id', '=', $userIdLogin)->first();
 
-        $data = DB::table('detail_peminjaman')
-            ->join('peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
-            ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
-            ->select('peminjaman.*', 'detail_peminjaman.*', 'books.*')
-            ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
-            ->where('detail_peminjaman.status', '=', '0')
-            ->get();
-
-
-
-        $data = DB::table('detail_peminjaman')
-            ->join('peminjaman', 'detail_peminjaman.id_peminjaman', '=', 'peminjaman.id')
-            ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
-            ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
-            ->select('detail_peminjaman.*', 'peminjaman.*', 'books.*')
-            ->get();
-
-        //ambil data detail peminjaman dan cocokkan dengan id_peminjaman dengan id di peminjaman 
-
-        // $data = DB::table('peminjaman')
-        //     ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
-        //     ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
-        //     ->select('peminjaman.*', 'detail_peminjaman.*', 'anggotas.*')
+        // $data = DB::table('detail_peminjaman')
+        //     ->join('peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+        //     ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+        //     ->select('peminjaman.*', 'detail_peminjaman.*', 'books.*')
         //     ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
+        //     ->where('detail_peminjaman.status', '=', '0')
         //     ->get();
 
+
+
+        // $data = DB::table('detail_peminjaman')
+        //     ->join('peminjaman', 'detail_peminjaman.id_peminjaman', '=', 'peminjaman.id')
+        //     ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+        //     ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
+        //     ->select('detail_peminjaman.*', 'peminjaman.*', 'books.*')
+        //     ->get();
+
+        // ambil data detail peminjaman dan cocokkan dengan id_peminjaman dengan id di peminjaman 
+
+        $peminjaman = DB::table('peminjaman')
+            ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
+            ->get();
+        // dd($peminjaman);
+
+        $detailPeminjaman = DB::table('detail_peminjaman')
+            ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+            ->select('detail_peminjaman.*', 'books.*')
+            ->where('detail_peminjaman.status', '=', '0')
+            ->get();
+        // dd($detailPeminjaman);
+
+        return view('pages.riwayatPinjamBuku.index', compact('peminjaman', 'detailPeminjaman', 'anggota'));
 
         //koding riwayat pengembalian Buku
         // $data = DB::table('detail_peminjaman')
@@ -54,9 +60,6 @@ class RiwayatPinjamBukuAnggota extends Controller
         //     ->where('pengembalians.id_anggota', '=', $anggota->id)
         //     ->get();
 
-
-
-        return view('pages.riwayatPinjamBuku.index', compact('data'));
     }
 
     /**
@@ -64,64 +67,38 @@ class RiwayatPinjamBukuAnggota extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function riwayatPengembalianBuku()
     {
-        //
-    }
+        $userIdLogin = auth()->user()->id;
+        $anggota = DB::table('anggotas')->where('user_id', '=', $userIdLogin)->first();
+        // ambil data detail peminjaman dan cocokkan dengan id_peminjaman dengan id di peminjaman 
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $pengembalian = DB::table('pengembalians')
+            ->where('pengembalians.id_anggota', '=', $anggota->id)
+            ->get();
+        // dd($pengembalian);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $detailPeminjaman = DB::table('detail_peminjaman')
+            ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+            ->join('peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            ->select('detail_peminjaman.*', 'books.*', 'peminjaman.*')
+            ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
+            ->where('detail_peminjaman.status', '=', '1')
+            ->get();
+        // dd($detailPeminjaman);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        // koding riwayat pengembalian Buku
+        // $data = DB::table('detail_peminjaman')
+        //     ->join('peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+        //     ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+        //     ->join('pengembalians', 'pengembalians.id_buku', '=', 'detail_peminjaman.id_buku_pinjam')
+        //     ->select('peminjaman.*', 'detail_peminjaman.*', 'books.*', 'pengembalians.*')
+        //     ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
+        //     ->where('pengembalians.id_anggota', '=', $anggota->id)
+        //     ->where('detail_peminjaman.status', '=', '1')
+        //     ->get();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('pages.riwayatPinjamBuku.pengembalian_buku', compact('pengembalian', 'detailPeminjaman', 'anggota'));
     }
 }

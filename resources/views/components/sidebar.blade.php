@@ -350,6 +350,15 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="{{ route('riwayat-pinjam-buku.riwayat-pengembalian-buku') }}"
+                            class="nav-link {{ Route::is('riwayat-pinjam-buku.riwayat-pengembalian-buku') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>
+                                Riwayat Pengembalian Buku
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('logout') }}" class="nav-link">
                             <i class="nav-icon fas fa-arrow-left"></i>
                             <p>

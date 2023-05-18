@@ -1,13 +1,13 @@
 @extends('layouts.main')
 
-@section('title', 'Data Peminjaman')
+@section('title', 'Data Pengembalian Buku')
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Peminjaman</h3>
+                    <h3 class="card-title">Pengembalian Buku</h3>
                 </div>
 
                 <div class="card-body">
@@ -24,6 +24,7 @@
                                             <th scope="col">Tahun Terbit</th>
                                             <th scope="col">Tanggal Pinjam</th>
                                             <th scope="col">Tanggal Wajib Pengembalian</th>
+                                            <th scope="col">Tanggal Pengembalian</th>
                                             <th scope="col">Status</th>
 
                                         </tr>
@@ -32,21 +33,23 @@
                                         @php
                                             $no = 1;
                                         @endphp
-                                        @foreach ($peminjaman as $item)
+                                        @foreach ($pengembalian as $item)
                                             @foreach ($detailPeminjaman as $data)
-                                                @if ($item->id_anggota_peminjaman == $anggota->id && $data->id_peminjaman == $item->id)
-                                                        <tr>
-                                                            <th>{{ $no++ }}</th>
-                                                            <td>{{ $data->no_isbn }}</td>
-                                                            <td>{{ $data->judul_buku }}</td>
-                                                            <td>{{ $data->tahun_terbit }}</td>
-                                                            <td>{{ date('d F Y', strtotime($item->tgl_pinjam)) }}</td>
-                                                            <td>{{ date('d F Y', strtotime($item->tgl_kembali)) }}</td>
-                                                            <td>{{ $data->status == 0 ? 'DiPinjam' : 'DiKembalikan' }}</td>
-                                                        </tr>
-                                                    @endif
-                                                @endforeach
+                                                @if ($item->id_anggota == $anggota->id && $data->id_buku_pinjam == $item->id_buku)
+                                                    <tr>
+                                                        <th>{{ $no++ }}</th>
+                                                        <td>{{ $data->no_isbn }}</td>
+                                                        <td>{{ $data->judul_buku }}</td>
+                                                        <td>{{ $data->tahun_terbit }}</td>
+                                                        <td>{{ date('d F Y', strtotime($data->tgl_pinjam)) }}</td>
+                                                        <td>{{ date('d F Y', strtotime($data->tgl_kembali)) }}</td>
+                                                        <td>{{ date('d F Y', strtotime($item->tanggal_pengembalian)) }}
+                                                        </td>
+                                                        <td>{{ $data->status == 0 ? 'DiPinjam' : 'DiKembalikan' }}</td>
+                                                    </tr>
+                                                @endif
                                             @endforeach
+                                        @endforeach
 
 
                                     </tbody>

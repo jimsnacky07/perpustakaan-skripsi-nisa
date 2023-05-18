@@ -108,7 +108,11 @@ Auth::routes();
 
 Route::prefix('anggota')->middleware(['auth', 'user-role:anggota'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'dashboardAnggota'])->name('dashboard-anggota');
-    Route::resource('riwayat-pinjam-buku', RiwayatPinjamBukuAnggota::class);
+
+    Route::controller(RiwayatPinjamBukuAnggota::class)->name('riwayat-pinjam-buku.')->group(function () {
+        Route::get('riwayat-pinjam-buku', 'index')->name('index');
+        Route::get('riwayat-pengembalian-buku', 'riwayatPengembalianBuku')->name('riwayat-pengembalian-buku');
+    });
 });
 
 Route::prefix('pimpinan')->middleware(['auth', 'user-role:pimpinan'])->group(function () {

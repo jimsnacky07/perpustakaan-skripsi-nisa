@@ -21,10 +21,11 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="title">Nama Anggota Yang Akan Mengembalikan Buku</label>
-                                <select name="id_anggota" id="" class="form-control select2">
+                                <select name="id_anggota" id="" class="form-control select2" required>
                                     <option value="" selected disabled>--Pilih Anggota--</option>
                                     @foreach ($anggota as $item)
-                                        <option value="{{ $item->id_anggota_peminjaman }}">{{ $item->nama }}</option>
+                                        <option value="{{ $item->id_anggota_peminjaman }}">{{ $item->nama }} |
+                                            {{ $item->id }}</option>
                                     @endforeach
                                 </select>
                                 @error('id_anggota')
@@ -176,6 +177,7 @@
                             <th>Judul</th>
                             <th>Tahun Terbit</th>
                             <th>Jumlah</th>
+                            <th>Id Peminjaman</th>
                             <th>#</th>
                         </thead>
                         <tbody>
@@ -186,6 +188,7 @@
                                     <td>{{ $data->judul_buku }}</td>
                                     <td>{{ $data->tahun_terbit }}</td>
                                     <td>{{ $data->jumlah_buku }}</td>
+                                    <td>{{ $data->id_peminjaman }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-primary" id="pilih"
                                             data-id="{{ $data->id_buku_pinjam }}" data-isbn="{{ $data->no_isbn }}"

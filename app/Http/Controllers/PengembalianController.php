@@ -48,6 +48,7 @@ class PengembalianController extends Controller
         // $anggota = Anggota::all();
         $anggota = DB::table('anggotas')
             ->join('peminjaman', 'anggotas.id', '=', 'peminjaman.id_anggota_peminjaman')
+
             // ->where('peminjaman.id', $detaiLPeminjaman->id_peminjaman)
             ->get();
 
@@ -55,12 +56,13 @@ class PengembalianController extends Controller
         $buku = DB::table('books')
             ->join('detail_peminjaman', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
             ->where('detail_peminjaman.status', 0)
+            ->select('books.*', 'detail_peminjaman.*')
             // ->where('detail_peminjaman.id_peminjaman', $peminjaman->first()->id)
             ->get();
 
         // $buku = DB::table('books')->get();
 
-        return view('pages.pengembalian.create', compact('anggota', 'buku'));
+        return view('pages.pengembalian.create', compact('anggota', 'buku', 'detaiLPeminjaman', 'peminjaman'));
     }
 
     public function store(Request $r)
@@ -107,7 +109,8 @@ class PengembalianController extends Controller
         ]);
 
 
-        $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $peminjaman->id)->where('id_buku_pinjam', $r->id)->update([
+        $updateStatus = DB::table('detail_peminjaman')->where('id_buku_pinjam', $r->id)->update([
+            // $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $peminjaman->id)->update([
             // $updateStatus = DB::table('detail_peminjaman')->where('id_buku_pinjam', $r->id)->update([
             'status' => 1,
             // 'tanggal_pengembalian' => Carbon::now()->toDateString(),
