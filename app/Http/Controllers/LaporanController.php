@@ -50,6 +50,15 @@ class LaporanController extends Controller
 
         $title = 'Laporan Riwayat Peminjaman Buku Perpustakaan';
 
+        // $riwayatPeminjamanBuku = DB::table('pengembalians')
+        //     ->join('anggotas', 'pengembalians.id_anggota', '=', 'anggotas.id')
+        //     ->join('books', 'pengembalians.id_buku', '=', 'books.id')
+        //     ->join('detail_peminjaman', 'id_buku_pinjam', '=', 'pengembalians.id_buku')
+        //     ->select('pengembalians.*', 'books.*',  'anggotas.*', 'detail_peminjaman')
+        //     ->get();
+
+        // $title = 'Laporan Riwayat Peminjaman dan Pengembalian Buku Perpustakaan';
+
         return view('pages.laporan.riwayatPeminjaman', compact('riwayatPeminjamanBuku', 'title'));
     }
 }

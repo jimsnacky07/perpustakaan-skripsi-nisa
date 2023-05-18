@@ -60,6 +60,7 @@
                     <th style="text-align: center;">Judul Buku</th>
                     <th style="text-align: center;">Tanggal Pinjam</th>
                     <th style="text-align: center;">Tanggal Buku Wajib Kembali</th>
+                    <th style="text-align: center;">Status</th>
                     <th style="text-align: center;">Keterangan</th>
                 </tr>
             </thead>
@@ -70,6 +71,11 @@
                         <td>{{ $item->judul_buku }}</td>
                         <td style="text-align: center;">{{ date('d F Y', strtotime($item->tgl_pinjam)) }}</td>
                         <td style="text-align: center;">{{ date('d F Y', strtotime($item->tgl_kembali)) }}</td>
+                        <td>{{ $item->status == 0 ? 'Dipinjam' : 'Dikembalikan' }}</td>
+
+                        {{-- <td style="text-align: center;">{{ date('d F Y', strtotime($item->tanggal_pengembalian)) }}</td> --}}
+                        {{-- <td>{{ $item->denda }}</td> --}}
+
                         <td></td>
                     </tr>
                 @endforeach

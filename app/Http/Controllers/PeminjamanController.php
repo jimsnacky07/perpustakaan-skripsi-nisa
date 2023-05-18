@@ -158,7 +158,9 @@ class PeminjamanController extends Controller
         $data['peminjaman'] = DB::table('peminjaman')
             ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
             ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            // ->join('pengembalians', 'peminjaman.id_anggota_peminjaman', '=', 'pengembalians.id_anggota')
             ->select('peminjaman.*', 'detail_peminjaman.*', 'anggotas.nama', 'anggotas.nisn')
+            // ->where('pengembalians.id_anggota', '=', 'anggotas.id')
             ->where('peminjaman.id', $id)
             ->get();
         // dd($data);

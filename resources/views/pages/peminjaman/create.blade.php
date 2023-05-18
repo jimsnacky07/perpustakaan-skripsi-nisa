@@ -23,13 +23,13 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form enctype="multipart/form-data" method="POST" action="{{ route('peminjaman.store') }}">
+                <form enctype="multipart/form-data" method="POST" action="{{ route('peminjaman.store') }}" id="forms">
                     @csrf
                     <div class="card-body">
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="title">Nama Anggota Yang Akan Meminjam Buku</label>
-                                <select name="id_anggota_peminjaman" id="" class="form-control select2">
+                                <select name="id_anggota_peminjaman" id="" class="form-control select2" required>
                                     <option value="" selected disabled>--Pilih Anggota--</option>
                                     @foreach ($anggota as $item)
                                         <option value="{{ $item->id }}">{{ $item->nama }} | {{ $item->nisn }}
@@ -67,8 +67,59 @@
                                 @enderror
                             </div> --}}
                         </div>
+                        <div class="card">
+                            <div class="card-header bg-danger">
+                                Peminjaman Buku
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="">Nomor Isbn Buku</label>
+                                        <div class="input-group mb-3">
+                                            <input type="hidden" id="id" class="form-control" name="id"
+                                                required>
+                                            <input type="text" id="isbn" class="form-control" name="isbn"
+                                                placeholder="Ex : ISBN ***">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-primary" type="button" data-toggle="modal"
+                                                    data-target="#modalBuku">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="">Judul Buku</label>
+                                        <input type="text" readonly id="judul" class="form-control" name="judul">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="">Jumlah Buku</label>
+                                        <input type="number" class="form-control" name="jumlah" id="jumlah">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="">#</label>
+                                        <div class="input-group">
+                                            <a href="#" id="simpan-temp" class="btn btn-primary btn-sm mr-2"
+                                                title="Simpan Item">
+                                                <i class="fa fa-save"></i>
+                                            </a>
 
-                        <div class="row">
+                                            <a href="#" class="btn btn-danger btn-sm mr-2" id="hapusAll"><i
+                                                    class="fas fa-trash" title="Hapus Semua Item"></i>
+                                                Item</a>
+
+                                            <button type="submit" class="btn btn-success btn-sm" id="proses"><i
+                                                    class="fas fa-save"></i>
+                                                Simpan</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {{-- <div class="row">
                             <div class="form-group col-md-3">
                                 <label for="">Nomor Isbn Buku</label>
                                 <input type="hidden" id="id" class="form-control" name="id" required>
@@ -91,7 +142,7 @@
                             </div>
 
 
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-1">
                                 <label for="">Jumlah Buku</label>
                                 <input type="number" class="form-control" name="jumlah" id="jumlah">
                             </div>
@@ -112,9 +163,9 @@
                                     <a href="#" class="btn btn-danger btn-sm" id="hapusAll"><i
                                             class="fas fa-trash"></i>
                                         Item</a>
-                                    {{-- <button class="btn btn-danger btn-sm" id="hapusAll">
+                                    <button class="btn btn-danger btn-sm" id="hapusAll">
                                         <i class="fas fa-trash"> Item</i>
-                                    </button> --}}
+                                    </button>
                                 </div>
                             </div>
 
@@ -127,13 +178,13 @@
                                         Proses</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </form>
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <table class="table">
+                            <table class="table" id="table-detail">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -188,8 +239,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-danger btn-sm" name="hapusAllOk"
-                        id="hapusAllOk">Hapus</button>
+                    <button type="button" class="btn btn-danger btn-sm" name="hapusAllOk" id="hapusAllOk">Hapus</button>
                 </div>
             </div>
         </div>
@@ -206,7 +256,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <table class="table table-striped" id="table">
+                    <table class="table table-striped table-bordered" id="table">
                         <thead>
                             <th width="1%">No</th>
                             <th>Isbn</th>

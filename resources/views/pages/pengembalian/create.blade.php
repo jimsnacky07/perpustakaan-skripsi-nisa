@@ -35,8 +35,53 @@
                             </div>
                         </div>
 
+                        <div class="card">
+                            <div class="card-header bg-success">
+                                <b>
+                                    Pengembalian Buku
 
-                        <div class="row">
+                                </b>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="">Nomor Isbn Buku</label>
+                                        <div class="input-group mb-3">
+                                            <input type="hidden" id="id" class="form-control" name="id"
+                                                required>
+                                            <input type="text" id="isbn" class="form-control" name="isbn"
+                                                placeholder="Ex : ISBN ***">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-primary" type="button" data-toggle="modal"
+                                                    data-target="#modalBuku">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="">Judul Buku</label>
+                                        <input type="text" readonly id="judul" class="form-control" name="judul">
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label for="">Jumlah Buku</label>
+                                        <input type="number" class="form-control" name="jumlah" id="jumlah" readonly>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="">#</label>
+                                        <div class="input-group">
+
+                                            <button type="submit" class="btn btn-primary" id="proses"><i
+                                                    class="fas fa-save"></i>
+                                                Simpan</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- <div class="row">
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="">Isbn Buku</label>
@@ -69,14 +114,15 @@
                                     <input type="number" class="form-control" name="jumlah" id="jumlah">
                                 </div>
                             </div>
-                            {{-- 
+
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="">Denda (Rp.)</label>
-                                    <input type="number" class="form-control" value="0" name="denda" id="denda">
+                                    <input type="number" class="form-control" value="0" name="denda"
+                                        id="denda">
 
                                 </div>
-                            </div> --}}
+                            </div>
 
                             <div class="col-md-1">
                                 <div class="form-group">
@@ -84,7 +130,7 @@
                                         Proses</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </form>
             </div>
