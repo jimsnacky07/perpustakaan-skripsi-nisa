@@ -54,7 +54,7 @@ class LoginController extends Controller
             } elseif (auth()->user()->role == 'pimpinan') {
                 return redirect()->route('pimpinan');
             } else {
-                return redirect()->route('home');
+                return redirect()->route('dashboard-anggota');
             }
         } else {
             return redirect()->route('login')->with("error", 'Incorrect email or password');

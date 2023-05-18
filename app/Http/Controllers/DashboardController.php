@@ -15,4 +15,9 @@ class DashboardController extends Controller
         $countPeminjamanBuku = DB::table('peminjaman')->count();
         return view('pages.dashboard', compact('countBuku', 'countJenisBuku', 'countAnggota', 'countPeminjamanBuku'));
     }
+
+    public function dashboardAnggota()
+    {
+        return view('pages.dashboard-anggota');
+    }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\RakBukuController;
+use App\Http\Controllers\RiwayatPinjamBukuAnggota;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -106,7 +107,8 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
 Auth::routes();
 
 Route::prefix('anggota')->middleware(['auth', 'user-role:anggota'])->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('dashboard', [DashboardController::class, 'dashboardAnggota'])->name('dashboard-anggota');
+    Route::resource('riwayat-pinjam-buku', RiwayatPinjamBukuAnggota::class);
 });
 
 Route::prefix('pimpinan')->middleware(['auth', 'user-role:pimpinan'])->group(function () {
