@@ -50,6 +50,8 @@ class RiwayatPinjamBukuAnggota extends Controller
             ->get();
         // dd($detailPeminjaman);
 
+
+
         return view('pages.riwayatPinjamBuku.index', compact('peminjaman', 'detailPeminjaman', 'anggota'));
 
         //koding riwayat pengembalian Buku
@@ -82,6 +84,12 @@ class RiwayatPinjamBukuAnggota extends Controller
             ->get();
         // dd($pengembalian);
 
+        $totalDenda = DB::table('pengembalians')
+            ->join('books', 'books.id', '=', 'pengembalians.id_buku')
+            ->where('pengembalians.id_anggota', '=', $anggota->id)
+            ->sum('pengembalians.denda');
+
+        // dd($totalDenda);
 
         // $pengembalian = DB::table('pengembalians')
         //     ->where('pengembalians.id_anggota', '=', $anggota->id)
@@ -97,7 +105,7 @@ class RiwayatPinjamBukuAnggota extends Controller
         // dd($detailPengembalian);
 
         // return view('pages.riwayatPinjamBuku.pengembalian_buku', compact('pengembalian', 'detailPengembalian', 'anggota'));
-        return view('pages.riwayatPinjamBuku.pengembalian_buku', compact('pengembalian', 'anggota'));
+        return view('pages.riwayatPinjamBuku.pengembalian_buku', compact('pengembalian', 'anggota', 'totalDenda'));
 
 
         // koding riwayat pengembalian Buku

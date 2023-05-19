@@ -99,6 +99,24 @@ class PengembalianController extends Controller
             } else {
                 $denda = 0;
             }
+
+            $getDataIdPeminjaman = $r->id_peminjaman;
+            $getDataIdInTablePeminjaman = $p->id;
+
+            // $simpan = DB::table('pengembalians')->insert([
+            if ($getDataIdPeminjaman == $getDataIdInTablePeminjaman) {
+                $simpan = DB::table('pengembalians')->insert([
+                    // $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->insert([
+                    'id_anggota' => $r->id_anggota,
+                    'id_buku' => $r->id,
+                    'qty' => $r->jumlah,
+                    'denda' => $denda,
+                    'tanggal_pengembalian' => $tanggalPengembalian,
+                ]);
+            }
+
+
+
             // Store the fine for each member in the database
             // $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->where('id_buku', $r->id_buku_pinjam)->insert([
             //     'id_anggota' => $selectedMemberId,
@@ -107,13 +125,7 @@ class PengembalianController extends Controller
             //     'denda' => $denda,
             //     'tanggal_pengembalian' => $tanggalPengembalian,
             // ]);
-            $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->where('id_buku', $r->id)->insert([
-                'id_anggota' => $selectedMemberId,
-                'id_buku' => $r->id,
-                'qty' => $r->jumlah,
-                'denda' => $denda,
-                'tanggal_pengembalian' => $tanggalPengembalian,
-            ]);
+
         }
 
 

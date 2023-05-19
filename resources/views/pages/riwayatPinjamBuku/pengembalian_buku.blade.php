@@ -25,7 +25,6 @@
                                             <th scope="col">Tahun Terbit</th>
                                             <th scope="col">Tanggal Pengembalian</th>
                                             <th scope="col">Denda</th>
-
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -45,7 +44,10 @@
                                                 <td>Rp . {{ number_format($data->denda) }}</td>
                                             </tr>
                                         @endforeach
-
+                                        <tr>
+                                            <th colspan="6" class="text-center">Total Denda</th>
+                                            <th>Rp . {{ number_format($totalDenda) }}</th>
+                                        </tr>
 
                                         {{-- ini Yang lama --}}
                                         {{-- @foreach ($detailPengembalian as $data)
