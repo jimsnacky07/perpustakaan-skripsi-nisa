@@ -35,20 +35,18 @@
                                         @foreach ($peminjaman as $item)
                                             @foreach ($detailPeminjaman as $data)
                                                 @if ($item->id_anggota_peminjaman == $anggota->id && $data->id_peminjaman == $item->id)
-                                                        <tr>
-                                                            <th>{{ $no++ }}</th>
-                                                            <td>{{ $data->no_isbn }}</td>
-                                                            <td>{{ $data->judul_buku }}</td>
-                                                            <td>{{ $data->tahun_terbit }}</td>
-                                                            <td>{{ date('d F Y', strtotime($item->tgl_pinjam)) }}</td>
-                                                            <td>{{ date('d F Y', strtotime($item->tgl_kembali)) }}</td>
-                                                            <td>{{ $data->status == 0 ? 'DiPinjam' : 'DiKembalikan' }}</td>
-                                                        </tr>
-                                                    @endif
-                                                @endforeach
+                                                    <tr>
+                                                        <th>{{ $no++ }}</th>
+                                                        <td>{{ $data->no_isbn }}</td>
+                                                        <td>{{ $data->judul_buku }}</td>
+                                                        <td>{{ $data->tahun_terbit }}</td>
+                                                        <td>{{ date('d F Y', strtotime($item->tgl_pinjam)) }}</td>
+                                                        <td>{{ date('d F Y', strtotime($item->tgl_kembali)) }}</td>
+                                                        <td>{{ $data->status == 0 ? 'DiPinjam' : 'DiKembalikan' }}</td>
+                                                    </tr>
+                                                @endif
                                             @endforeach
-
-
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>

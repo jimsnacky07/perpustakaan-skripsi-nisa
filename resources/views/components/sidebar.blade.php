@@ -331,7 +331,7 @@
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
                     <li class="nav-item">
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('dashboard-anggota') }}"
                             class="nav-link {{ Route::is('dashboard-anggota') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>

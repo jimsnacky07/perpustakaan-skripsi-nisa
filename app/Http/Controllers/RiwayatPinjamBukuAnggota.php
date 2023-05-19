@@ -39,6 +39,8 @@ class RiwayatPinjamBukuAnggota extends Controller
         $peminjaman = DB::table('peminjaman')
             ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
             ->get();
+
+        // dd($peminjaman);
         // dd($peminjaman);
 
         $detailPeminjaman = DB::table('detail_peminjaman')
@@ -73,32 +75,32 @@ class RiwayatPinjamBukuAnggota extends Controller
         $anggota = DB::table('anggotas')->where('user_id', '=', $userIdLogin)->first();
         // ambil data detail peminjaman dan cocokkan dengan id_peminjaman dengan id di peminjaman 
 
+        // Kodingan Pengembalian Buku yang Sudah Fix
         $pengembalian = DB::table('pengembalians')
+            ->join('books', 'books.id', '=', 'pengembalians.id_buku')
             ->where('pengembalians.id_anggota', '=', $anggota->id)
             ->get();
         // dd($pengembalian);
 
-        $detailPeminjaman = DB::table('detail_peminjaman')
-            ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
-            ->join('peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
-            ->select('detail_peminjaman.*', 'books.*', 'peminjaman.*')
-            ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
-            ->where('detail_peminjaman.status', '=', '1')
-            ->get();
-        // dd($detailPeminjaman);
 
-
-        // koding riwayat pengembalian Buku
-        // $data = DB::table('detail_peminjaman')
-        //     ->join('peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
-        //     ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
-        //     ->join('pengembalians', 'pengembalians.id_buku', '=', 'detail_peminjaman.id_buku_pinjam')
-        //     ->select('peminjaman.*', 'detail_peminjaman.*', 'books.*', 'pengembalians.*')
-        //     ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
+        // $pengembalian = DB::table('pengembalians')
         //     ->where('pengembalians.id_anggota', '=', $anggota->id)
+        //     ->get();
+        // // dd($pengembalian);
+
+        // $detailPengembalian = DB::table('detail_peminjaman')
+        //     ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+        //     ->select('detail_peminjaman.*', 'books.*')
         //     ->where('detail_peminjaman.status', '=', '1')
         //     ->get();
 
-        return view('pages.riwayatPinjamBuku.pengembalian_buku', compact('pengembalian', 'detailPeminjaman', 'anggota'));
+        // dd($detailPengembalian);
+
+        // return view('pages.riwayatPinjamBuku.pengembalian_buku', compact('pengembalian', 'detailPengembalian', 'anggota'));
+        return view('pages.riwayatPinjamBuku.pengembalian_buku', compact('pengembalian', 'anggota'));
+
+
+        // koding riwayat pengembalian Buku
+
     }
 }

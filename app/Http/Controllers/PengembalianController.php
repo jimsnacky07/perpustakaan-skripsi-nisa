@@ -109,7 +109,7 @@ class PengembalianController extends Controller
         ]);
 
 
-        $updateStatus = DB::table('detail_peminjaman')->where('id_buku_pinjam', $r->id)->update([
+        $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $r->id_peminjaman)->where('id_buku_pinjam', $r->id)->update([
             // $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $peminjaman->id)->update([
             // $updateStatus = DB::table('detail_peminjaman')->where('id_buku_pinjam', $r->id)->update([
             'status' => 1,

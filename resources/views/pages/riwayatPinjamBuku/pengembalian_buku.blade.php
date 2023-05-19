@@ -21,11 +21,10 @@
                                             <th scope="col">No.</th>
                                             <th scope="col">ISBN Buku</th>
                                             <th scope="col">Judul Buku</th>
+                                            <th scope="col">Pengarang</th>
                                             <th scope="col">Tahun Terbit</th>
-                                            <th scope="col">Tanggal Pinjam</th>
-                                            <th scope="col">Tanggal Wajib Pengembalian</th>
                                             <th scope="col">Tanggal Pengembalian</th>
-                                            <th scope="col">Status</th>
+                                            <th scope="col">Denda</th>
 
                                         </tr>
                                     </thead>
@@ -33,25 +32,36 @@
                                         @php
                                             $no = 1;
                                         @endphp
-                                        @foreach ($pengembalian as $item)
-                                            @foreach ($detailPeminjaman as $data)
-                                                @if ($item->id_anggota == $anggota->id && $data->id_buku_pinjam == $item->id_buku)
-                                                    <tr>
-                                                        <th>{{ $no++ }}</th>
-                                                        <td>{{ $data->no_isbn }}</td>
-                                                        <td>{{ $data->judul_buku }}</td>
-                                                        <td>{{ $data->tahun_terbit }}</td>
-                                                        <td>{{ date('d F Y', strtotime($data->tgl_pinjam)) }}</td>
-                                                        <td>{{ date('d F Y', strtotime($data->tgl_kembali)) }}</td>
-                                                        <td>{{ date('d F Y', strtotime($item->tanggal_pengembalian)) }}
-                                                        </td>
-                                                        <td>{{ $data->status == 0 ? 'DiPinjam' : 'DiKembalikan' }}</td>
-                                                    </tr>
-                                                @endif
-                                            @endforeach
+                                        {{-- Kodingan Yang sudah jalan --}}
+
+                                        @foreach ($pengembalian as $data)
+                                            <tr>
+                                                <th>{{ $no++ }}</th>
+                                                <td>{{ $data->no_isbn }}</td>
+                                                <td>{{ $data->judul_buku }}</td>
+                                                <td>{{ $data->pengarang_buku }}</td>
+                                                <td>{{ $data->tahun_terbit }}</td>
+                                                <td>{{ date('d F Y', strtotime($data->tanggal_pengembalian)) }} </td>
+                                                <td>Rp . {{ number_format($data->denda) }}</td>
+                                            </tr>
                                         @endforeach
 
 
+                                        {{-- ini Yang lama --}}
+                                        {{-- @foreach ($detailPengembalian as $data)
+                                            @foreach ($pengembalian as $item)
+                                            <tr>
+                                                <th>{{ $no++ }}</th>
+                                                <td>{{ $data->no_isbn }}</td>
+                                                <td>{{ $data->judul_buku }}</td>
+                                                <td>{{ $data->tahun_terbit }}</td>
+                                                <td>{{ date('d F Y', strtotime($item->tanggal_pengembalian)) }}
+                                                </td>
+
+                                                <td>{{ $data->status == 0 ? 'DiPinjam' : 'DiKembalikan' }}</td>
+                                            </tr>
+                                            @endforeach
+                                        @endforeach --}}
                                     </tbody>
                                 </table>
                             </div>

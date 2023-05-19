@@ -60,13 +60,19 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-3">
+                                    <div class="form-group col-md-2">
                                         <label for="">Judul Buku</label>
                                         <input type="text" readonly id="judul" class="form-control" name="judul">
                                     </div>
                                     <div class="form-group col-md-2">
                                         <label for="">Jumlah Buku</label>
                                         <input type="number" class="form-control" name="jumlah" id="jumlah" readonly>
+                                    </div>
+
+                                    <div class="form-group col-md-1">
+                                        <label for="" style="visibility: hidden">Id Peminjaman</label>
+                                        <input type="hidden" class="form-control" name="id_peminjaman" id="id_peminjaman"
+                                            readonly>
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label for="">#</label>
@@ -193,7 +199,8 @@
                                         <button class="btn btn-sm btn-primary" id="pilih"
                                             data-id="{{ $data->id_buku_pinjam }}" data-isbn="{{ $data->no_isbn }}"
                                             data-judul="{{ $data->judul_buku }}"
-                                            data-jumlah-buku="{{ $data->jumlah_buku }}">
+                                            data-jumlah-buku="{{ $data->jumlah_buku }}"
+                                            data-id-peminjaman="{{ $data->id_peminjaman }}">
                                             <i class="fas fa-mouse-pointer"></i>
                                         </button>
                                     </td>
@@ -223,10 +230,12 @@
                 var item_isbn = $(this).data('isbn');
                 var item_judul = $(this).data('judul');
                 var item_jumlah_buku = $(this).data('jumlah-buku');
+                var item_id_peminjaman = $(this).data('id-peminjaman');
                 $('#id').val(item_id);
                 $('#isbn').val(item_isbn);
                 $('#judul').val(item_judul);
                 $('#jumlah').val(item_jumlah_buku);
+                $('#id_peminjaman').val(item_id_peminjaman);
                 $('#modalBuku').modal('hide');
             })
         });
