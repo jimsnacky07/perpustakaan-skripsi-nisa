@@ -17,7 +17,7 @@ class PengembalianController extends Controller
         //     ->join('detail_peminjaman', 'pengembalians.id_buku', '=', 'detail_peminjaman.id')
         //     ->select('pengembalians.*', 'anggotas.*', 'detail_peminjaman.*')
         //     ->get();
-        $peminjaman = DB::table('peminjaman')->get();
+        // $peminjaman = DB::table('peminjaman')->get();
 
         $pengembalian = DB::table('pengembalians')
             ->join('anggotas', 'pengembalians.id_anggota', '=', 'anggotas.id')
@@ -29,11 +29,11 @@ class PengembalianController extends Controller
 
 
         // dd($peminjaman);
-        $tanggalWajibKembali = $peminjaman->first()->tgl_kembali;
-        $tanggalPengembalian = Carbon::now()->toDateString();
-        $jumlahHariTerlambat = Carbon::parse($tanggalWajibKembali)->diffInDays($tanggalPengembalian);
+        // $tanggalWajibKembali = $peminjaman->first()->tgl_kembali;
+        // $tanggalPengembalian = Carbon::now()->toDateString();
+        // $jumlahHariTerlambat = Carbon::parse($tanggalWajibKembali)->diffInDays($tanggalPengembalian);
 
-        return view('pages.pengembalian.index', compact('jumlahHariTerlambat', 'pengembalian', 'tanggalPengembalian', 'tanggalWajibKembali'));
+        return view('pages.pengembalian.index', compact('pengembalian'));
     }
 
     public function tambah()
@@ -79,48 +79,87 @@ class PengembalianController extends Controller
                 ->withInput();
         }
 
-        //mencari denda berdasarkan keterlamabatan pengambalian buku
+        //mencari denda berdasarkan keterlamabatan pengambalian buku masing masing anggota
+        $selectedMemberId = $r->id_anggota;
 
-        $peminjaman = DB::table('peminjaman')->where('id_anggota_peminjaman', $r->id_anggota)->first();
-        // dd($peminjaman);
-        $tanggalWajibKembali = $peminjaman->tgl_kembali;
-        $tanggalPengembalian = Carbon::now()->toDateString();
-        $jumlahHariTerlambat = Carbon::parse($tanggalWajibKembali)->diffInDays($tanggalPengembalian);
-        // $jumlahBukuPinjam = $r->jumlah;
-        // dd($jumlahHariTerlambat);
+        $peminjaman = DB::table('peminjaman')
+            ->where('id_anggota_peminjaman', $selectedMemberId)
+            ->get();
 
-        //denda 1000 * jumlah buku * jumlah hari terlambat
+        foreach ($peminjaman as $p) {
+            $idPeminjaman = $p->id;
+            $tanggalWajibKembali = $p->tgl_kembali;
+            $tanggalPengembalian = Carbon::now()->toDateString();
+            $jumlahHariTerlambat = Carbon::parse($tanggalWajibKembali)->diffInDays($tanggalPengembalian);
 
-        if ($tanggalPengembalian <= $tanggalWajibKembali) {
             $denda = 0;
-        } elseif ($tanggalPengembalian >= $tanggalWajibKembali) {
-            $denda = $r->jumlah * $jumlahHariTerlambat * 1000;
-        } else {
-            $denda = 0;
+
+            if ($tanggalPengembalian >= $tanggalWajibKembali) {
+                $denda = $r->jumlah * $jumlahHariTerlambat * 1000;
+            } else {
+                $denda = 0;
+            }
+            // Store the fine for each member in the database
+            // $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->where('id_buku', $r->id_buku_pinjam)->insert([
+            //     'id_anggota' => $selectedMemberId,
+            //     'id_buku' => $r->id_buku_pinjam,
+            //     'qty' => $r->jumlah,
+            //     'denda' => $denda,
+            //     'tanggal_pengembalian' => $tanggalPengembalian,
+            // ]);
+            $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->where('id_buku', $r->id)->insert([
+                'id_anggota' => $selectedMemberId,
+                'id_buku' => $r->id,
+                'qty' => $r->jumlah,
+                'denda' => $denda,
+                'tanggal_pengembalian' => $tanggalPengembalian,
+            ]);
         }
 
-        $simpan = DB::table('pengembalians')->insert([
-            'id_anggota' => $r->id_anggota,
-            'id_buku' => $r->id,
-            'qty' => $r->jumlah,
-            'denda' => $denda,
-            'tanggal_pengembalian' => $tanggalPengembalian,
-            // 'tanggal_pengembalian' => now(),
-        ]);
 
 
-        $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $r->id_peminjaman)->where('id_buku_pinjam', $r->id)->update([
-            // $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $peminjaman->id)->update([
-            // $updateStatus = DB::table('detail_peminjaman')->where('id_buku_pinjam', $r->id)->update([
-            'status' => 1,
-            // 'tanggal_pengembalian' => Carbon::now()->toDateString(),
-        ]);
 
-        $stok = DB::table('books')->where('id', $r->id)->update([
-            "jumlah_buku" => DB::raw('jumlah_buku + ' . $r->jumlah),
-        ]);
+
+        // $peminjaman = DB::table('peminjaman')->where('id_anggota_peminjaman', $r->id_anggota)->get();
+        // // dd($peminjaman);
+
+        // foreach ($peminjaman as $p) {
+        //     $idPeminjaman = $p->id;
+        //     $tanggalWajibKembali = $p->tgl_kembali;
+        //     $tanggalPengembalian = Carbon::now()->toDateString();
+        //     $jumlahHariTerlambat = Carbon::parse($tanggalWajibKembali)->diffInDays($tanggalPengembalian);
+
+        //     if ($tanggalPengembalian <= $tanggalWajibKembali) {
+        //         $denda = 0;
+        //     } elseif ($tanggalPengembalian >= $tanggalWajibKembali) {
+        //         $denda = $r->jumlah * $jumlahHariTerlambat * 1000;
+        //     } else {
+        //         $denda = 0;
+        //     }
+        // }
+        // // $jumlahBukuPinjam = $r->jumlah;
+        // //denda 1000 * jumlah buku * jumlah hari terlambat
+        // $simpan = DB::table('pengembalians')->insert([
+        //     'id_anggota' => $r->id_anggota,
+        //     'id_buku' => $r->id,
+        //     'qty' => $r->jumlah,
+        //     'denda' => $denda,
+        //     'tanggal_pengembalian' => $tanggalPengembalian,
+        //     // 'tanggal_pengembalian' => now(),
+        // ]);
 
         if ($simpan == true) {
+            $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $r->id_peminjaman)->where('id_buku_pinjam', $r->id)->update([
+                // $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $peminjaman->id)->update([
+                // $updateStatus = DB::table('detail_peminjaman')->where('id_buku_pinjam', $r->id)->update([
+                'status' => 1,
+                // 'tanggal_pengembalian' => Carbon::now()->toDateString(),
+            ]);
+
+            $stok = DB::table('books')->where('id', $r->id)->update([
+                "jumlah_buku" => DB::raw('jumlah_buku + ' . $r->jumlah),
+            ]);
+
             return redirect(route('pengembalian'))->with('success', 'Succsess');
         } else {
             return redirect(route('pengembalian'))->with('error', 'Gagal');
