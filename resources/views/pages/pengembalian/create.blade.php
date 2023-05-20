@@ -70,7 +70,7 @@
                                     </div>
 
                                     <div class="form-group col-md-1">
-                                        <label for="" style="visibility: hidden">Id Peminjaman</label>
+                                        <label for="" style="visibility: hidden">Kode Peminjaman</label>
                                         <input type="hidden" class="form-control" name="id_peminjaman" id="id_peminjaman"
                                             readonly>
                                     </div>

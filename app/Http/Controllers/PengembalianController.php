@@ -45,12 +45,31 @@ class PengembalianController extends Controller
         $detaiLPeminjaman = DB::table('detail_peminjaman')->get();
         $peminjaman = DB::table('peminjaman')->get();
 
-        // $anggota = Anggota::all();
-        $anggota = DB::table('anggotas')
-            ->join('peminjaman', 'anggotas.id', '=', 'peminjaman.id_anggota_peminjaman')
+        //menampilkan data anggota yang meminjam buku dan jika statusnya 0 maka tampilkan data anggota tersebut
 
-            // ->where('peminjaman.id', $detaiLPeminjaman->id_peminjaman)
+        // $anggota = DB::table('peminjaman')
+        //     ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+        //     ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+        //     ->selectRaw('peminjaman.*', 'anggotas.nama', 'detail_peminjaman.id_peminjaman', 'detail_peminjaman.status')
+        //     ->groupBy('anggotas.nama')
+        //     ->where('detail_peminjaman.status', 0)
+        //     ->get();
+
+        $anggota = DB::table('peminjaman')
+            ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+            ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            ->select('peminjaman.id', 'peminjaman.id_anggota_peminjaman', 'anggotas.nama', 'detail_peminjaman.status')
+            ->where('detail_peminjaman.status', 0)
+            ->groupBy('anggotas.nama', 'peminjaman.id', 'peminjaman.id_anggota_peminjaman', 'detail_peminjaman.status')
             ->get();
+
+
+        // dd($anggota);
+
+        // $anggota = DB::table('anggotas')
+        //     ->join('peminjaman', 'anggotas.id', '=', 'peminjaman.id_anggota_peminjaman')
+        //     // ->where('peminjaman.id', $detaiLPeminjaman->id_peminjaman)
+        //     ->get();
 
         //selanjutnya menampilkan data buku yang dipinjam oleh anggota yang dipilih
         $buku = DB::table('books')
@@ -98,6 +117,7 @@ class PengembalianController extends Controller
                 $denda = $r->jumlah * $jumlahHariTerlambat * 1000;
             } else {
                 $denda = 0;
+                $jumlahHariTerlambat = 0;
             }
 
             $getDataIdPeminjaman = $r->id_peminjaman;
@@ -111,11 +131,10 @@ class PengembalianController extends Controller
                     'id_buku' => $r->id,
                     'qty' => $r->jumlah,
                     'denda' => $denda,
+                    'jumlah_hari_terlambat' => $jumlahHariTerlambat,
                     'tanggal_pengembalian' => $tanggalPengembalian,
                 ]);
             }
-
-
 
             // Store the fine for each member in the database
             // $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->where('id_buku', $r->id_buku_pinjam)->insert([
