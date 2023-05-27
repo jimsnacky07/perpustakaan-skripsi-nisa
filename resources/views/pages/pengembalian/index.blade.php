@@ -12,15 +12,21 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <a href="{{ route('pengembalian.create') }}" class="btn btn-warning"><i
-                                    class="fas fa-plus-square">
-                                    Tambah Data Pengembalian Buku</i>
-                            </a>
+                        <div class="row justify-content-between">
+                            <div class="col-md-auto">
+                                <a href="{{ route('pengembalian.create') }}" class="btn btn-warning"><i
+                                        class="fas fa-plus-square">
+                                        Tambah Data Pengembalian Buku</i>
+                                </a>
+                            </div>
+                            <div class="col-md-auto">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#filterModal">Laporan Pengembalian Buku</button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-md-12">
                             <table class="table table-striped" id="table">
                                 <thead>
@@ -30,6 +36,7 @@
                                         <th>Isbn</th>
                                         <th>Judul Buku</th>
                                         <th>Jumlah Di Kembalikan</th>
+                                        <th>Tgl Pengembalian</th>
                                         <th>Terlambat (Hari)</th>
                                         <th>Denda</th>
                                     </tr>
@@ -42,6 +49,8 @@
                                             <td>{{ $data->no_isbn }}</td>
                                             <td>{{ $data->judul_buku }}</td>
                                             <td>{{ $data->qty }}</td>
+                                            <td>{{ date('d F Y', strtotime($data->tanggal_pengembalian)) }}</td>
+
                                             <td>{{ $data->jumlah_hari_terlambat }} Hari</td>
                                             <td>Rp. {{ number_format($data->denda) }}</td>
 
@@ -55,6 +64,7 @@
             </div>
         </div>
     </div>
+    @include('pages.laporan.modal_laporan_pengembalian_buku')
 @endsection
 @push('after-script')
 

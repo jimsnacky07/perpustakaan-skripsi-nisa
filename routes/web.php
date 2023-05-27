@@ -100,6 +100,7 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function 
         Route::get('/laporan-rak', 'rakBuku')->name('rak-buku');
         Route::get('/laporan-riwayat-peminjaman', 'riwayatPeminjaman')->name('riwayat-peminjaman');
         Route::post('laporan-peminjaman-buku', 'laporanPeminjamanBuku')->name('peminjaman-buku');
+        Route::post('laporan-pengembalian-buku', 'laporanPengembalianBuku')->name('pengembalian-buku');
     });
 });
 

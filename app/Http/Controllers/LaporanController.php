@@ -106,4 +106,25 @@ class LaporanController extends Controller
 
         return view('pages.laporan.peminjaman-buku', compact('laporanPeminjaman', 'tglAwal', 'tglAkhir', 'title'));
     }
+
+    public function laporanPengembalianBuku(Request $request)
+    {
+        $tglAwal = $request->input('tglAwal');
+        $tglAkhir = $request->input('tglAkhir');
+        $title = 'Laporan Pengembalian Buku Perpustakaan';
+
+        $laporanPengembalian = DB::table('pengembalians')
+            ->join('anggotas', 'pengembalians.id_anggota', '=', 'anggotas.id')
+            ->join('books', 'pengembalians.id_buku', '=', 'books.id')
+            ->select(
+                'pengembalians.*',
+                'anggotas.nama',
+                'books.judul_buku',
+                'books.no_isbn',
+            )
+            ->whereBetween('tanggal_pengembalian', [$tglAwal, $tglAkhir])
+            ->get();
+
+        return view('pages.laporan.pengembalian-buku', compact('laporanPengembalian', 'tglAwal', 'tglAkhir', 'title'));
+    }
 }
