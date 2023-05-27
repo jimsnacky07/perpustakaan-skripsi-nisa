@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Peminjaman;
 use Carbon\Carbon;
+use Illuminate\Console\View\Components\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -84,6 +86,19 @@ class PeminjamanController extends Controller
 
     public function store(Request $request)
     {
+        $count = DB::table('peminjaman')
+            ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            ->where('id_anggota_peminjaman', $request->id_anggota_peminjaman)
+            ->where('detail_peminjaman.status', 0)
+            ->count();
+        // dd($count);
+
+        if ($count >= 10) {
+            flash()->addError('User telah mencapai limit untuk meminjam buku');
+            // Alert::warning('Gagal', 'User telah mencapai limit untuk meminjam buku');
+            $hapus = DB::table('peminjaman_temp')->delete();
+            return redirect(route('peminjaman.create'));
+        }
 
         $simpan = DB::table('peminjaman')->insertGetId([
             'kode_peminjaman' => date('YmdHis') . rand(0, 999),

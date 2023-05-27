@@ -22,14 +22,17 @@
                         <div class="row">
                             <div class="form-group col-md-4">
                                 <label for="title">User</label>
-                                <select name="user_id" id="" class="form-control" disabled>
+                                <input type="text" class="form-control @error('user_id') is-invalid @enderror"
+                                    id="user_id" name="user_id" placeholder="Ex : 12121"
+                                    value="{{ old('user_id', $anggota->user->name) }}" readonly>
+                                {{-- <select name="user_id" id="" class="form-control" disabled>
                                     <option value="" selected disabled>--Pilih User--</option>
                                     @foreach ($user as $item)
                                         <option value="{{ $item->id }}"
                                             @if ($item->id == $anggota->user_id) selected @endif>
                                             {{ $item->name }}</option>
                                     @endforeach
-                                </select>
+                                </select> --}}
                                 @error('user_id')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -41,7 +44,7 @@
                                 <label for="nisn">NISN</label>
                                 <input type="text" class="form-control @error('nisn') is-invalid @enderror"
                                     id="nisn" name="nisn" placeholder="Ex : 12121"
-                                    value="{{ old('nisn', $anggota->nisn) }}">
+                                    value="{{ old('nisn', $anggota->nisn) }}" readonly>
 
                                 @error('nisn')
                                     <div class="invalid-feedback">

@@ -17,7 +17,11 @@ class AnggotaController extends Controller
 
     public function create()
     {
-        $user = User::where('role', 0)->get();
+
+        $userIdsTerdaftar = Anggota::pluck('user_id')->toArray();
+        $user = User::whereNotIn('id', $userIdsTerdaftar)->where('role', 0)->get();
+        // $user = User::where('role', 0)->get();
+        // $user = Anggota::whereDoesntHave('user')->get();
         return view('pages.anggota.create', compact('user'));
     }
 

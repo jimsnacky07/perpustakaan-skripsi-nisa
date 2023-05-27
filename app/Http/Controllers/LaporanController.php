@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -60,5 +61,49 @@ class LaporanController extends Controller
         // $title = 'Laporan Riwayat Peminjaman dan Pengembalian Buku Perpustakaan';
 
         return view('pages.laporan.riwayatPeminjaman', compact('riwayatPeminjamanBuku', 'title'));
+    }
+
+    public function laporanPeminjamanBuku(Request $request)
+    {
+        $tglAwal = $request->input('tglAwal');
+        $tglAkhir = $request->input('tglAkhir');
+        $title = 'Laporan Peminjaman Buku Perpustakaan';
+
+        // $laporanPeminjaman = DB::table('peminjaman')
+        //     ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+        //     ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+        //     ->select('peminjaman.*', 'detail_peminjaman.*',  'anggotas.*')
+
+        //     ->where('detail_peminjaman.status', '=', 0)
+        //     ->whereBetween('tgl_pinjam', [$tglAwal, $tglAkhir])
+        //     ->get();
+
+        // $laporanPeminjaman = DB::table('peminjaman')
+        //     ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+        //     ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+        //     ->select('peminjaman.id', 'peminjaman.tgl_pinjam', 'peminjaman.tgl_kembali', 'detail_peminjaman.judul_buku', 'detail_peminjaman.isbn_buku', 'anggotas.nama')
+        //     ->where('detail_peminjaman.status', '=', 0)
+        //     ->whereBetween('tgl_pinjam', [$tglAwal, $tglAkhir])
+        //     ->groupBy('anggotas.nama', 'peminjaman.id')
+        //     ->get();
+
+        $laporanPeminjaman = DB::table('peminjaman')
+            ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+            ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            ->select(
+                'peminjaman.id',
+                'peminjaman.tgl_pinjam',
+                'peminjaman.tgl_kembali',
+                'detail_peminjaman.judul_buku',
+                'detail_peminjaman.isbn_buku',
+                'detail_peminjaman.jumlah_buku',
+                'anggotas.nama'
+            )
+            ->where('detail_peminjaman.status', '=', 0)
+            ->whereBetween('tgl_pinjam', [$tglAwal, $tglAkhir])
+            ->groupBy('anggotas.nama', 'peminjaman.id', 'peminjaman.tgl_pinjam', 'peminjaman.tgl_kembali', 'detail_peminjaman.judul_buku', 'detail_peminjaman.isbn_buku', 'detail_peminjaman.jumlah_buku')
+            ->get();
+
+        return view('pages.laporan.peminjaman-buku', compact('laporanPeminjaman', 'tglAwal', 'tglAkhir', 'title'));
     }
 }

@@ -13,5 +13,5 @@ class JenisBuku extends Model
      *
      * @var array
      */
-    protected $fillable = ['nama', 'slug'];
+    protected $fillable = ['name', 'slug'];
 }

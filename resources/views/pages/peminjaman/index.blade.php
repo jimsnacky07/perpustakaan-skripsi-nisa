@@ -12,16 +12,24 @@
 
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12 mb-3">
-                            <a href="{{ route('peminjaman.create') }}" class="btn btn-warning"><i class="fas fa-plus-square">
-                                    Tambah Data Peminjaman Buku</i>
-                            </a>
+                        <div class="row justify-content-between">
+                            <div class="col-md-auto">
+                                <a href="{{ route('peminjaman.create') }}" class="btn btn-warning"><i
+                                        class="fas fa-plus-square">
+                                        Tambah Data Peminjaman Buku</i>
+                                </a>
+                            </div>
+                            <div class="col-md-auto">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#filterModal">Laporan Peminjaman Buku</button>
+                            </div>
                         </div>
+
                     </div>
 
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-md-12">
-                            <table id="table" class="table table-bordered table-hover">
+                            <table id="table" class="table table-bordered table-hover ">
                                 <thead>
                                     <tr>
                                         <th width="1%">No</th>
@@ -71,6 +79,7 @@
             </div>
         </div>
     </div>
+    @include('pages.laporan.modal_laporan')
 @endsection
 @push('after-script')
 
