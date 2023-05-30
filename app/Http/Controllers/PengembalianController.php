@@ -23,6 +23,7 @@ class PengembalianController extends Controller
             ->join('anggotas', 'pengembalians.id_anggota', '=', 'anggotas.id')
             ->join('books', 'pengembalians.id_buku', '=', 'books.id')
             ->select('pengembalians.*', 'anggotas.*', 'books.*')
+            ->orderBy('tanggal_pengembalian', 'asc')
             // ->where('pengembalians.id_anggota', $peminjaman->first()->id_anggota_peminjaman)
             ->get();
 

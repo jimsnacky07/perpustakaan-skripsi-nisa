@@ -18,6 +18,9 @@ class DashboardController extends Controller
 
     public function dashboardAnggota()
     {
-        return view('pages.dashboard-anggota');
+        $countBuku = DB::table('books')->count();
+        $countJenisBuku = DB::table('jenis_bukus')->count();
+
+        return view('pages.dashboard-anggota', compact('countBuku', 'countJenisBuku'));
     }
 }

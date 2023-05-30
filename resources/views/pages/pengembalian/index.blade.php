@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Data Peminjaman')
+@section('title', 'Data Pengembalian Buku')
 
 @section('content')
     <div class="row">
@@ -33,7 +33,7 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Peminjam</th>
-                                        <th>Isbn</th>
+                                        <th>No Isbn</th>
                                         <th>Judul Buku</th>
                                         <th>Jumlah Di Kembalikan</th>
                                         <th>Tgl Pengembalian</th>
