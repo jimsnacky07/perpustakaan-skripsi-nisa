@@ -67,7 +67,8 @@
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Riwayat Pengembalian Buku {{ $anggota->nama }} <i>({{ $anggota->nisn }})</i></h3>
+                    <h3 class="card-title">Riwayat Pengembalian Buku {{ $anggota?->nama }} <i>({{ $anggota?->nisn }})</i>
+                    </h3>
                 </div>
                 <div class="card-body">
                     <div class="col-lg-auto">

@@ -46,7 +46,8 @@
                             <div class="form-group col-md-4">
                                 <label for="nisn">NISN</label>
                                 <input type="text" class="form-control @error('nisn') is-invalid @enderror"
-                                    id="nisn" name="nisn" placeholder="Ex : 12121" value="{{ old('nisn') }}">
+                                    id="nisn" name="nisn" placeholder="Ex : 12121" value="{{ old('nisn') }}"
+                                    onkeypress="return onlyNumber(event)">
 
                                 @error('nisn')
                                     <div class="invalid-feedback">
@@ -124,3 +125,13 @@
         </div>
     </div>
 @endsection
+@push('after-script')
+    <script>
+        function onlyNumber(event) {
+            var angka = (event.which) ? event.which : event.keyCode
+            if (angka != 46 && angka > 31 && (angka < 48 || angka > 57))
+                return false;
+            return true;
+        }
+    </script>
+@endpush

@@ -37,7 +37,7 @@ class RiwayatPinjamBukuAnggota extends Controller
         // ambil data detail peminjaman dan cocokkan dengan id_peminjaman dengan id di peminjaman 
 
         $peminjaman = DB::table('peminjaman')
-            ->where('peminjaman.id_anggota_peminjaman', '=', $anggota->id)
+            ->where('peminjaman.id_anggota_peminjaman', '=', $anggota?->id)
             ->get();
 
         // dd($peminjaman);
@@ -80,18 +80,18 @@ class RiwayatPinjamBukuAnggota extends Controller
         // Kodingan Pengembalian Buku yang Sudah Fix
         $pengembalian = DB::table('pengembalians')
             ->join('books', 'books.id', '=', 'pengembalians.id_buku')
-            ->where('pengembalians.id_anggota', '=', $anggota->id)
+            ->where('pengembalians.id_anggota', '=', $anggota?->id)
             ->get();
         // dd($pengembalian);
 
         $totalDenda = DB::table('pengembalians')
             ->join('books', 'books.id', '=', 'pengembalians.id_buku')
-            ->where('pengembalians.id_anggota', '=', $anggota->id)
+            ->where('pengembalians.id_anggota', '=', $anggota?->id)
             ->sum('pengembalians.denda');
 
         $totalHariTerlambat = DB::table('pengembalians')
             ->join('books', 'books.id', '=', 'pengembalians.id_buku')
-            ->where('pengembalians.id_anggota', '=', $anggota->id)
+            ->where('pengembalians.id_anggota', '=', $anggota?->id)
             ->sum('pengembalians.jumlah_hari_terlambat');
         // dd($totalDenda);
 

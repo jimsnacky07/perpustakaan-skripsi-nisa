@@ -21,6 +21,17 @@ class DashboardController extends Controller
         $countBuku = DB::table('books')->count();
         $countJenisBuku = DB::table('jenis_bukus')->count();
 
-        return view('pages.dashboard-anggota', compact('countBuku', 'countJenisBuku'));
+        $userIdLogin = auth()->user()->id;
+        $anggota = DB::table('anggotas')->where('user_id', '=', $userIdLogin)->first();
+
+        $jumlahBukuDipinjam = DB::table('detail_peminjaman')
+            ->join('peminjaman', 'detail_peminjaman.id_peminjaman', '=', 'peminjaman.id')
+            ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+            ->where('peminjaman.id_anggota_peminjaman', '=', $anggota?->id)
+            ->where('detail_peminjaman.status', '=', 0)
+            ->count();
+        // dd($jumlahBukuDipinjam);
+
+        return view('pages.dashboard-anggota', compact('countBuku', 'countJenisBuku', 'jumlahBukuDipinjam'));
     }
 }
