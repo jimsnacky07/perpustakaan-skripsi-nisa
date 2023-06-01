@@ -49,10 +49,8 @@ class LoginController extends Controller
 
         if (auth()->attempt(['email' => $input['email'], 'password' => $input['password']])) {
 
-            if (auth()->user()->role == 'admin') {
+            if (auth()->user()->role == 'admin' || auth()->user()->role == 'pimpinan') {
                 return redirect()->route('dashboard');
-            } elseif (auth()->user()->role == 'pimpinan') {
-                return redirect()->route('pimpinan');
             } else {
                 return redirect()->route('dashboard-anggota');
             }

@@ -319,6 +319,150 @@
         </div>
     @endif
 
+    @if (Auth()->user()->role == 'pimpinan')
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="{{ asset('adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
+                        alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="#" class="d-block">{{ Auth()->user()->name }} |
+                        {{ Str::upper(Auth()->user()->role) }}
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard') }}"
+                            class="nav-link {{ Route::is('dashboard') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Dashboard
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#"
+                            class="nav-link  {{ Route::is('peminjaman*') || Route::is('pengembalian*') ? 'active open' : '' }}">
+                            <i class="nav-icon fas fa-copy"></i>
+                            <p>
+                                Transaksi Buku
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('peminjaman') }}"
+                                    class="nav-link {{ Route::is('peminjaman*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Data Peminjaman
+                                    </p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="{{ route('pengembalian') }}"
+                                    class="nav-link {{ Route::is('pengembalian*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Data Pengembalian Buku
+                                    </p>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#"
+                            class="nav-link  {{ Route::is('laporan.kategori-buku') || Route::is('laporan.rak-buku') ? 'active open' : '' }}">
+                            <i class="nav-icon fas fa-copy"></i>
+                            <p>
+                                Laporan
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('laporan.kategori-buku') }}"
+                                    class="nav-link {{ Route::is('laporan.kategori-buku') ? 'active' : '' }}"
+                                    target="_blank">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Laporan Kategori Buku
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('laporan.rak-buku') }}"
+                                    class="nav-link {{ Route::is('laporan.rak-buku') ? 'active' : '' }}"
+                                    target="_blank">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Laporan Rak Buku
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('laporan.anggota') }}"
+                                    class="nav-link {{ Route::is('laporan.anggota') ? 'active' : '' }}"
+                                    target="_blank">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Laporan Data Anggota
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('laporan.buku') }}"
+                                    class="nav-link {{ Route::is('laporan.buku') ? 'active' : '' }}" target="_blank">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Laporan Data Buku
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('laporan.riwayat-peminjaman') }}"
+                                    class="nav-link {{ Route::is('laporan.riwayat-peminjaman') ? 'active' : '' }}"
+                                    target="_blank">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        Laporan Riwayat Peminjaman Buku
+                                    </p>
+                                </a>
+                            </li>
+
+
+                        </ul>
+                    </li>
+
+
+
+
+                    <li class="nav-item">
+                        <a href="{{ route('logout') }}" class="nav-link">
+                            <i class="nav-icon fas fa-arrow-left"></i>
+                            <p>
+                                Keluar
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+    @endif
+
     @if (Auth()->user()->role == 'anggota')
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->

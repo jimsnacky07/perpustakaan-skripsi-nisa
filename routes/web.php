@@ -29,7 +29,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('admin')->middleware(['auth', 'user-role:admin'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'user-role:admin,pimpinan'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('buku', BookController::class);
@@ -117,9 +117,9 @@ Route::prefix('anggota')->middleware(['auth', 'user-role:anggota'])->group(funct
     });
 });
 
-Route::prefix('pimpinan')->middleware(['auth', 'user-role:pimpinan'])->group(function () {
-    Route::get('/home', [HomeController::class, 'pimpinan'])->name('pimpinan');
-});
+// Route::prefix('pimpinan')->middleware(['auth', 'user-role:pimpinan'])->group(function () {
+//     Route::get('dashboard', [DashboardController::class, 'dashboardPimpinan'])->name('dashboard-pimpinan');
+// });
 
 Route::get('logout', function () {
     Auth::logout();
