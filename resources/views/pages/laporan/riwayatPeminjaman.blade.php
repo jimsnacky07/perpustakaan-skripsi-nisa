@@ -11,10 +11,8 @@
 </head>
 
 <body>
-    <h2 class="text-center mt-2">Perpustakaan</h2>
-    <h5 class="text-center mt-2">{{ $title }}</h5>
-    <hr style="border:1px solid black;">
-    <br>
+    @include('pages.laporan.header_laporan')
+
     <div class="container">
         <table>
             <tr>
@@ -48,8 +46,8 @@
                     <td>{{ $data->nama }}</td>
                     <td style="text-align: center;">{{ $data->judul_buku }}</td>
                     <td style="text-align: center;">{{ $data->jumlah_buku }}</td>
-                    <td style="text-align: center;">{{ $data->tgl_pinjam }}</td>
-                    <td style="text-align: center;">{{ $data->tgl_kembali }}</td>
+                    <td style="text-align: center;">{{ date('d F Y', strtotime($data->tgl_pinjam)) }}</td>
+                    <td style="text-align: center;">{{ date('d F Y', strtotime($data->tgl_kembali)) }}</td>
                     <td style="text-align: center;">{{ $data->status == 0 ? 'DIPINJAM' : 'DIKEMBALIKAN' }}</td>
 
 

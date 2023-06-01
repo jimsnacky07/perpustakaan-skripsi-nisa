@@ -11,10 +11,8 @@
 </head>
 
 <body>
-    <h2 class="text-center mt-2">Perpustakaan</h2>
-    <h5 class="text-center mt-2">Laporan Data Rak Buku</h5>
-    <hr style="border:1px solid black;">
-    <br>
+    @include('pages.laporan.header_laporan')
+
     <div class="container">
         <table>
             <tr>

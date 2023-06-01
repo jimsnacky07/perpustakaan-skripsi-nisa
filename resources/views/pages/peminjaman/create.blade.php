@@ -93,7 +93,7 @@
                                         <input type="text" readonly id="judul" class="form-control" name="judul">
                                     </div>
                                     <div class="form-group col-md-2">
-                                        <label for="">Jumlah Buku</label>
+                                        <label for="">Jumlah Pinjam</label>
                                         <input type="number" class="form-control" name="jumlah" id="jumlah">
                                     </div>
                                     <div class="form-group col-md-3">

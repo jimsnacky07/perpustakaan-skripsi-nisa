@@ -17,7 +17,7 @@
                         alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">{{ Auth()->user()->name }} |
+                    <a href="{{ route('dashboard') }}" class="d-block">{{ Auth()->user()->name }} |
                         {{ Str::upper(Auth()->user()->role) }}
                     </a>
                 </div>
@@ -60,7 +60,7 @@
                                     class="nav-link {{ Route::is('jenis-buku') ? 'active' : '' }}">
                                     <i class="nav-icon fas fa-shopping-cart"></i>
                                     <p>
-                                        Jenis Buku
+                                        Kategori Buku
                                     </p>
                                 </a>
                             </li>
@@ -328,7 +328,7 @@
                         alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">{{ Auth()->user()->name }} |
+                    <a href="{{ route('dashboard') }}" class="d-block">{{ Auth()->user()->name }} |
                         {{ Str::upper(Auth()->user()->role) }}
                     </a>
                 </div>

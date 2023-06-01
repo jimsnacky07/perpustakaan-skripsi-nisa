@@ -24,7 +24,7 @@
             <div class="small-box bg-success">
                 <div class="inner">
                     <h3>{{ $countJenisBuku }}<sup style="font-size: 20px"></sup></h3>
-                    <p>Jenis Buku</p>
+                    <p>Kategori Buku</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>

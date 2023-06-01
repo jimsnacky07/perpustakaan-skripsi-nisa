@@ -61,7 +61,7 @@
             <ol class=text-light>
                 <li class=text-light>Waktu peminjaman maksimal 3 Bulan.</li>
                 <li class=text-light>Setiap anggota hanya dapat meminjam maksimal 10 X Peminjaman / 10 Buku.</li>
-                <li class=text-light>Setiap anggota Tidak Boleh Meminjam Judul Buku Yang Sama.</li>
+                {{-- <li class=text-light>Setiap anggota Tidak Boleh Meminjam Judul Buku Yang Sama.</li> --}}
                 <li class=text-light>Jika Pengembalian Buku Lebih Dari Waktu Yang Telah Ditentukan, Maka Akan Diberikan
                     Denda Setiap Buku Rp.1.000/Hari.</li>
                 <li class=text-light>Jika Telah Meminjam Buku, Silahkan Pergi Ke Tempat Petugas Untuk Melakukan Konfirmasi
