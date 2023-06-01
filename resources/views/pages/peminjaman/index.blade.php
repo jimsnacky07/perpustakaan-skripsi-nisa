@@ -13,12 +13,15 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="row justify-content-between">
-                            <div class="col-md-auto">
-                                <a href="{{ route('peminjaman.create') }}" class="btn btn-warning"><i
-                                        class="fas fa-plus-square">
-                                        Tambah Data Peminjaman Buku</i>
-                                </a>
-                            </div>
+                            @if (auth()->user()->role == 'admin')
+                                <div class="col-md-auto">
+                                    <a href="{{ route('peminjaman.create') }}" class="btn btn-warning"><i
+                                            class="fas fa-plus-square">
+                                            Tambah Data Peminjaman Buku</i>
+                                    </a>
+                                </div>
+                            @endif
+
                             <div class="col-md-auto">
                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                     data-target="#filterModal">Laporan Peminjaman Buku</button>
@@ -50,23 +53,27 @@
 
                                             <td>
 
-                                                <a href="{{ route('cetak-bukti-peminjaman', $item->id) }}"
-                                                    class="btn btn-primary btn-sm"><i class="fas fa-print">
-                                                    </i></a>
 
                                                 <a href="{{ route('detail-peminjaman', $item->id) }}"
                                                     class="btn btn-dark btn-sm"><i class="fas fa-eye">
                                                     </i></a>
 
-                                                <form action="{{ route('peminjaman.destroy', $item->id) }}" method="POST"
-                                                    style="display: inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm hapus"><i
-                                                            class="fas fa-trash"
-                                                            onclick="return confirm('Apakah Yakin Ingin Menghapus Data Ini?')">
-                                                        </i></button>
-                                                </form>
+                                                @if (auth()->user()->role == 'admin')
+                                                    <a href="{{ route('cetak-bukti-peminjaman', $item->id) }}"
+                                                        class="btn btn-primary btn-sm"><i class="fas fa-print">
+                                                        </i></a>
+
+                                                    <form action="{{ route('peminjaman.destroy', $item->id) }}"
+                                                        method="POST" style="display: inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger btn-sm hapus"><i
+                                                                class="fas fa-trash"
+                                                                onclick="return confirm('Apakah Yakin Ingin Menghapus Data Ini?')">
+                                                            </i></button>
+                                                    </form>
+                                                @endif
+
                                             </td>
                                         </tr>
                                     @endforeach

@@ -12,7 +12,10 @@ class DashboardController extends Controller
         $countBuku = DB::table('books')->count();
         $countJenisBuku = DB::table('jenis_bukus')->count();
         $countAnggota = DB::table('anggotas')->count();
-        $countPeminjamanBuku = DB::table('peminjaman')->count();
+        // $countPeminjamanBuku = DB::table('peminjaman')->count();
+        $countPeminjamanBuku = DB::table('peminjaman')
+            ->distinct('id_anggota_peminjaman')
+            ->count('id_anggota_peminjaman');
         return view('pages.dashboard', compact('countBuku', 'countJenisBuku', 'countAnggota', 'countPeminjamanBuku'));
     }
 

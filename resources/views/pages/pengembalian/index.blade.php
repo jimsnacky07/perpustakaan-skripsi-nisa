@@ -13,14 +13,17 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="row justify-content-between">
+                            @if (auth()->user()->role == 'admin')
+                                <div class="col-md-auto">
+                                    <a href="{{ route('pengembalian.create') }}" class="btn btn-warning"><i
+                                            class="fas fa-plus-square">
+                                            Tambah Data Pengembalian Buku</i>
+                                    </a>
+                                </div>
+                            @endif
+
                             <div class="col-md-auto">
-                                <a href="{{ route('pengembalian.create') }}" class="btn btn-warning"><i
-                                        class="fas fa-plus-square">
-                                        Tambah Data Pengembalian Buku</i>
-                                </a>
-                            </div>
-                            <div class="col-md-auto">
-                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                <button type="button" class="btn btn-outline-primary" data-toggle="modal"
                                     data-target="#filterModal">Laporan Pengembalian Buku</button>
                             </div>
                         </div>
