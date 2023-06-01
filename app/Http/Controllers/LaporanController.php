@@ -123,6 +123,7 @@ class LaporanController extends Controller
                 'books.no_isbn',
             )
             ->whereBetween('tanggal_pengembalian', [$tglAwal, $tglAkhir])
+            ->orderBy('anggotas.nama', 'asc')
             ->get();
 
         return view('pages.laporan.pengembalian-buku', compact('laporanPengembalian', 'tglAwal', 'tglAkhir', 'title'));
