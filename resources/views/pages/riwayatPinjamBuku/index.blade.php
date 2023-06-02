@@ -7,7 +7,7 @@
         <div class="col-md-12">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title">Peminjaman</h3>
+                    <h3 class="card-title">Riwayat Peminjaman Buku {{ $anggota?->nama }} <i>({{ $anggota?->nisn }})</i>
                 </div>
 
                 <div class="card-body">

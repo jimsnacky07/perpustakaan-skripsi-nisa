@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 
-@section('title', 'Form Jenis Buku')
+@section('title', 'Form Kategori Buku')
 
 
 @section('content')
@@ -34,7 +34,7 @@
                                             <label for=""></label>
                                         </th>
                                         <th>No.</th>
-                                        <th>Jenis Buku</th>
+                                        <th>Kategori Buku</th>
                                         <th>Slug</th>
                                         <th width="20%">Action</th>
                                     </tr>
@@ -46,10 +46,10 @@
             </div>
         </div>
     </div>
-    {{-- Add Modal Jenis Buku --}}
+    {{-- Add Modal Kategori Buku --}}
     @include('pages.jenisBuku.addModalJenisBuku')
 
-    {{-- Edit Modal Jenis Buku --}}
+    {{-- Edit Modal Kategori Buku --}}
     @include('pages.jenisBuku.editModalJenisBuku')
 @endsection
 

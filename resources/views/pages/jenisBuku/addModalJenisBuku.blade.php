@@ -5,7 +5,7 @@
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addModalKategoriLabel">Tambah Data Jenis Buku</h5>
+                    <h5 class="modal-title" id="addModalKategoriLabel">Tambah Data Kategori Buku</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -14,7 +14,7 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12">
                             <div class="form-group">
-                                <label for="addModalUserLabel">Jenis Buku</label>
+                                <label for="addModalUserLabel">Kategori Buku</label>
                                 <input type="text" class="form-control" name="name">
                                 <span class="text-danger error-text name_error"></span>
                             </div>
