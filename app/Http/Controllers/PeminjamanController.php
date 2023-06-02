@@ -179,6 +179,8 @@ class PeminjamanController extends Controller
             ->where('peminjaman.id', $id)
             ->get();
         // dd($data);
+
+        $data['title'] = 'Kartu / Bukti Peminjaman Buku';
         return view('pages.peminjaman.bukti_peminjaman', $data);
     }
 }

@@ -11,20 +11,9 @@
 </head>
 
 <body>
-    <div class="row">
-        <center>
-            {{-- <img src="{{ asset('gambar/perpus.png') }}" class="img-circle" width="8%" alt=""> --}}
-        </center>
+    @include('pages.laporan.header_laporan')
 
-    </div>
-    <h2 class="text-center mt-2">Perpustakaan SMP ...</h2>
-    <h5 class="text-center mt-2">Jalan </h5>
-    <hr style="border:1px solid black;">
-    <center>
-        <p>KARTU PEMINJAMAN DAN PENGEMBALIAN BUKU</p>
-    </center>
-
-    <div class="container">
+    <div class="container mt-3">
         <table>
             <tr>
                 <td>NISN Anggota</td>
