@@ -35,15 +35,21 @@ class DashboardController extends Controller
             ->count();
         // dd($jumlahBukuDipinjam);
 
-        return view('pages.dashboard-anggota', compact('countBuku', 'countJenisBuku', 'jumlahBukuDipinjam'));
+        $jumlahBukuDiKembalikan = DB::table('pengembalians')
+            ->join('books', 'books.id', '=', 'pengembalians.id_buku')
+            ->where('pengembalians.id_anggota', '=', $anggota?->id)
+            ->count();
+
+        // dd($pengembalian);
+        return view('pages.dashboard-anggota', compact('countBuku', 'countJenisBuku', 'jumlahBukuDipinjam', 'jumlahBukuDiKembalikan'));
     }
 
-    public function dashboardPimpinan()
-    {
-        $countBuku = DB::table('books')->count();
-        $countJenisBuku = DB::table('jenis_bukus')->count();
-        $countAnggota = DB::table('anggotas')->count();
-        $countPeminjamanBuku = DB::table('peminjaman')->count();
-        return view('pages.dashboard', compact('countBuku', 'countJenisBuku', 'countAnggota', 'countPeminjamanBuku'));
-    }
+    // public function dashboardPimpinan()
+    // {
+    //     $countBuku = DB::table('books')->count();
+    //     $countJenisBuku = DB::table('jenis_bukus')->count();
+    //     $countAnggota = DB::table('anggotas')->count();
+    //     $countPeminjamanBuku = DB::table('peminjaman')->count();
+    //     return view('pages.dashboard', compact('countBuku', 'countJenisBuku', 'countAnggota', 'countPeminjamanBuku'));
+    // }
 }

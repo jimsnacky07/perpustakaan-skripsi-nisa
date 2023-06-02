@@ -46,7 +46,8 @@ class RiwayatPinjamBukuAnggota extends Controller
         $detailPeminjaman = DB::table('detail_peminjaman')
             ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
             ->select('detail_peminjaman.*', 'books.*')
-            ->where('detail_peminjaman.status', '=', '0')
+            // ->where('detail_peminjaman.status', '=', '0')
+            ->orderBy('detail_peminjaman.status', 'asc')
             ->get();
         // dd($detailPeminjaman);
 

@@ -51,6 +51,23 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card h-100 bg-gradients-red">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-sm text-light font-weight-bold text-uppercase mb-1">Jumlah Buku Yang Telah Di
+                                Kembalikan</div>
+                            <div class="text-sm text-light h5 mb-0 font-weight-bold">{{ $jumlahBukuDiKembalikan }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fa fa-book text-light fa-3x" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="card bg-gradients-secondary">
@@ -112,6 +129,10 @@
 
         .bg-gradients-warning {
             background: linear-gradient(to right, #f5d144, #f6c419);
+        }
+
+        .bg-gradients-red {
+            background: linear-gradient(to right, #df2a2a, #930707ec);
         }
 
         .bg-gradients-secondary {
