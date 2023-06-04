@@ -84,6 +84,72 @@ class PengembalianController extends Controller
         return view('pages.pengembalian.create', compact('anggota', 'buku', 'detaiLPeminjaman', 'peminjaman'));
     }
 
+    // public function store(Request $r)
+    // {
+    //     $validator = Validator::make($r->all(), [
+    //         'id_anggota' => 'required',
+    //         'id' => 'required',
+    //         'jumlah' => 'required',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return redirect('tambah-pengembalian')
+    //             ->withErrors($validator)
+    //             ->withInput();
+    //     }
+
+    //     //mencari denda berdasarkan keterlamabatan pengambalian buku masing masing anggota
+    //     $selectedMemberId = $r->id_anggota;
+
+    //     $peminjaman = DB::table('peminjaman')
+    //         ->where('id_anggota_peminjaman', $selectedMemberId)
+    //         ->get();
+
+    //     foreach ($peminjaman as $p) {
+    //         $idPeminjaman = $p->id;
+    //         $tanggalWajibKembali = $p->tgl_kembali;
+    //         $tanggalPengembalian = Carbon::now()->toDateString();
+    //         $jumlahHariTerlambat = Carbon::parse($tanggalWajibKembali)->diffInDays($tanggalPengembalian);
+
+    //         $denda = 0;
+
+    //         if ($tanggalPengembalian >= $tanggalWajibKembali) {
+    //             $denda = $r->jumlah * $jumlahHariTerlambat * 1000;
+    //         } else {
+    //             $denda = 0;
+    //             $jumlahHariTerlambat = 0;
+    //         }
+
+    //         $getDataIdPeminjaman = $r->id_peminjaman;
+    //         $getDataIdInTablePeminjaman = $p->id;
+
+    //         if ($getDataIdPeminjaman == $getDataIdInTablePeminjaman) {
+    //             $simpan = DB::table('pengembalians')->insert([
+    //                 // $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->insert([
+    //                 'id_anggota' => $r->id_anggota,
+    //                 'id_buku' => $r->id,
+    //                 'qty' => $r->jumlah,
+    //                 'denda' => $denda,
+    //                 'jumlah_hari_terlambat' => $jumlahHariTerlambat,
+    //                 'tanggal_pengembalian' => $tanggalPengembalian,
+    //             ]);
+    //         }
+    //     }
+
+    //     if ($simpan == true) {
+    //         $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $r->id_peminjaman)->where('id_buku_pinjam', $r->id)->update([
+    //             'status' => 1,
+    //         ]);
+
+    //         $stok = DB::table('books')->where('id', $r->id)->update([
+    //             "jumlah_buku" => DB::raw('jumlah_buku + ' . $r->jumlah),
+    //         ]);
+    //         return redirect(route('pengembalian'))->with('success', 'Succsess');
+    //     } else {
+    //         return redirect(route('pengembalian'))->with('error', 'Gagal');
+    //     }
+    // }
+
     public function store(Request $r)
     {
         $validator = Validator::make($r->all(), [
@@ -97,6 +163,9 @@ class PengembalianController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+
+        // Inisialisasi variabel $simpan di luar lingkup loop foreach
+        $simpan = false;
 
         //mencari denda berdasarkan keterlamabatan pengambalian buku masing masing anggota
         $selectedMemberId = $r->id_anggota;
@@ -123,10 +192,10 @@ class PengembalianController extends Controller
             $getDataIdPeminjaman = $r->id_peminjaman;
             $getDataIdInTablePeminjaman = $p->id;
 
-            // $simpan = DB::table('pengembalians')->insert([
             if ($getDataIdPeminjaman == $getDataIdInTablePeminjaman) {
+                $simpan = true; // Ubah nilai $simpan menjadi true jika data berhasil disimpan
+
                 $simpan = DB::table('pengembalians')->insert([
-                    // $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->insert([
                     'id_anggota' => $r->id_anggota,
                     'id_buku' => $r->id,
                     'qty' => $r->jumlah,
@@ -135,65 +204,19 @@ class PengembalianController extends Controller
                     'tanggal_pengembalian' => $tanggalPengembalian,
                 ]);
             }
-
-            // Store the fine for each member in the database
-            // $simpan = DB::table('pengembalians')->where('id_anggota', $p->id_anggota_peminjaman)->where('id_buku', $r->id_buku_pinjam)->insert([
-            //     'id_anggota' => $selectedMemberId,
-            //     'id_buku' => $r->id_buku_pinjam,
-            //     'qty' => $r->jumlah,
-            //     'denda' => $denda,
-            //     'tanggal_pengembalian' => $tanggalPengembalian,
-            // ]);
-
         }
-
-
-
-
-
-        // $peminjaman = DB::table('peminjaman')->where('id_anggota_peminjaman', $r->id_anggota)->get();
-        // // dd($peminjaman);
-
-        // foreach ($peminjaman as $p) {
-        //     $idPeminjaman = $p->id;
-        //     $tanggalWajibKembali = $p->tgl_kembali;
-        //     $tanggalPengembalian = Carbon::now()->toDateString();
-        //     $jumlahHariTerlambat = Carbon::parse($tanggalWajibKembali)->diffInDays($tanggalPengembalian);
-
-        //     if ($tanggalPengembalian <= $tanggalWajibKembali) {
-        //         $denda = 0;
-        //     } elseif ($tanggalPengembalian >= $tanggalWajibKembali) {
-        //         $denda = $r->jumlah * $jumlahHariTerlambat * 1000;
-        //     } else {
-        //         $denda = 0;
-        //     }
-        // }
-        // // $jumlahBukuPinjam = $r->jumlah;
-        // //denda 1000 * jumlah buku * jumlah hari terlambat
-        // $simpan = DB::table('pengembalians')->insert([
-        //     'id_anggota' => $r->id_anggota,
-        //     'id_buku' => $r->id,
-        //     'qty' => $r->jumlah,
-        //     'denda' => $denda,
-        //     'tanggal_pengembalian' => $tanggalPengembalian,
-        //     // 'tanggal_pengembalian' => now(),
-        // ]);
 
         if ($simpan == true) {
             $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $r->id_peminjaman)->where('id_buku_pinjam', $r->id)->update([
-                // $updateStatus = DB::table('detail_peminjaman')->where('id_peminjaman', $peminjaman->id)->update([
-                // $updateStatus = DB::table('detail_peminjaman')->where('id_buku_pinjam', $r->id)->update([
                 'status' => 1,
-                // 'tanggal_pengembalian' => Carbon::now()->toDateString(),
             ]);
 
             $stok = DB::table('books')->where('id', $r->id)->update([
                 "jumlah_buku" => DB::raw('jumlah_buku + ' . $r->jumlah),
             ]);
-
-            return redirect(route('pengembalian'))->with('success', 'Succsess');
+            return redirect(route('pengembalian'))->with('success', 'Success');
         } else {
-            return redirect(route('pengembalian'))->with('error', 'Gagal');
+            return redirect(route('pengembalian.create'))->with('error', 'Anggota Tidak meminjam buku ini');
         }
     }
 }

@@ -21,7 +21,7 @@
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="title">Nama Anggota Yang Akan Mengembalikan Buku</label>
-                                <select name="id_anggota" id="" class="form-control select2" required>
+                                <select name="id_anggota" id="id_anggota" class="form-control select2" required>
                                     <option value="" selected disabled>--Pilih Anggota--</option>
                                     @foreach ($anggota as $item)
                                         <option value="{{ $item->id_anggota_peminjaman }}">{{ $item->nama }} |
@@ -51,7 +51,7 @@
                                             <input type="hidden" id="id" class="form-control" name="id"
                                                 required>
                                             <input type="text" id="isbn" class="form-control" name="isbn"
-                                                placeholder="Ex : ISBN ***">
+                                                placeholder="Ex : ISBN ***" required>
                                             <div class="input-group-append">
                                                 <button class="btn btn-outline-primary" type="button" data-toggle="modal"
                                                     data-target="#modalBuku">
@@ -60,7 +60,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group col-md-2">
+                                    <div class="form-group col-md-3">
                                         <label for="">Judul Buku</label>
                                         <input type="text" readonly id="judul" class="form-control" name="judul">
                                     </div>
