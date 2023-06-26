@@ -102,7 +102,7 @@
                             </span>
                         @enderror
                     </div>
-                    
+
                     <div class="input-group mb-3">
                         <input type="password" name="password" id="password"
                             class="form-control @error('password') is-invalid @enderror" placeholder="Password">
@@ -129,14 +129,14 @@
                         </div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <button type="submit" class="btn btn-primary btn-block">Masuk</button>
                         </div>
 
                         <!-- /.col -->
                     </div>
                 </form>
                 <div class="text-center mt-3">
-                    <p>Don't have an account? <a href="{{ route('register') }}">Register here</a></p>
+                    <p>Sudah Punya Akun ? <a href="{{ route('register') }}">Register Disini</a></p>
                 </div>
             </div>
             <!-- /.card-body -->
