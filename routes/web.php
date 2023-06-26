@@ -3,7 +3,6 @@
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JenisBukuController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PeminjamanController;

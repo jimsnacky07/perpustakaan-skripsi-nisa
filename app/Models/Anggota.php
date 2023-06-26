@@ -14,7 +14,7 @@ class Anggota extends Model
      *
      * @var array
      */
-    protected $fillable = ['nisn', 'nama', 'jk', 'no_hp', 'alamat', 'user_id'];
+    protected $fillable = ['nisn', 'nama', 'jk', 'no_hp', 'alamat', 'user_id', 'kelas', 'foto'];
 
     public function user()
     {

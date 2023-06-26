@@ -57,7 +57,7 @@
                                 <label for="nama">Nama Lengkap</label>
                                 <input type="text" class="form-control @error('nama') is-invalid @enderror"
                                     id="nama" name="nama" placeholder="Ex : Masukkan Nama Lengkap"
-                                    value="{{ old('nama', $anggota->nama) }}">
+                                    value="{{ old('nama', $anggota->nama) }}" autofocus>
 
                                 @error('nama')
                                     <div class="invalid-feedback">
@@ -103,6 +103,32 @@
                                     value="{{ old('alamat', $anggota->alamat) }}">
 
                                 @error('alamat')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="short-about">Kelas</label>
+                                <input type="text" class="form-control @error('kelas') is-invalid @enderror"
+                                    id="kelas" name="kelas" placeholder="Ex : VII A / 7A"
+                                    value="{{ old('kelas', $anggota->kelas) }}">
+                                @error('no_hp')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group col-md-4">
+                                <label for="foto">foto</label>
+                                <input type="file" class="form-control @error('foto') is-invalid @enderror"
+                                    id="foto" name="foto" accept="image/*">
+
+                                @error('foto')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>

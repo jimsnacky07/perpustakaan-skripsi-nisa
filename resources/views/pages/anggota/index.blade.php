@@ -27,8 +27,9 @@
                                         <th width="1%">No</th>
                                         <th>NISN</th>
                                         <th>Nama</th>
-                                        <th>Kelamin</th>
-                                        <th>HP</th>
+                                        <th>JK</th>
+                                        <th>Kelas</th>
+                                        {{-- <th>HP</th> --}}
                                         <th>Alamat</th>
                                         <th>Email</th>
                                         <th width="10%">Action</th>
@@ -40,15 +41,11 @@
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $item->nisn }}</td>
                                             <td>{{ $item->nama }}</td>
-
                                             <td>
-                                                @if ($item->jk == 'L')
-                                                    Laki - Laki
-                                                @else
-                                                    Perempuan
-                                                @endif
+                                                {{ $item->jk == 'L' ? 'Laki - Laki' : 'Perempuan' }}
                                             </td>
-                                            <td>{{ $item->no_hp }}</td>
+                                            <td>{{ $item->kelas ?? '-' }}</td>
+                                            {{-- <td>{{ $item->no_hp }}</td> --}}
                                             <td>{{ $item->alamat }}</td>
                                             <td>{{ $item->user->email }}</td>
                                             <td>
