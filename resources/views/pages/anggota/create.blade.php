@@ -125,7 +125,7 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group col-md-4">
+                            {{-- <div class="form-group col-md-4">
                                 <label for="foto">foto</label>
                                 <input type="file" class="form-control @error('foto') is-invalid @enderror"
                                     id="foto" name="foto" accept="image/*">
@@ -135,7 +135,7 @@
                                         {{ $message }}
                                     </div>
                                 @enderror
-                            </div>
+                            </div> --}}
 
 
 

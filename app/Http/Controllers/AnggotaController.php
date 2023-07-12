@@ -37,7 +37,7 @@ class AnggotaController extends Controller
             'alamat' => 'required',
             'user_id' => 'required|unique:anggotas',
             'kelas' => 'required',
-            'foto' => 'required',
+            // 'foto' => 'required',
         ], [
             'user_id.unique' => 'User sudah terdaftar sebagai anggota'
         ]);

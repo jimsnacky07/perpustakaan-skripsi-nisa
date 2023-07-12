@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Anggota;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -51,8 +52,15 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'confirmed'],
+            'nisn' => ['required', 'string', 'unique:anggotas', 'max:255'],
+            'nama' => ['required', 'string', 'max:255'],
+            'jk' => ['required', 'string', 'max:255'],
+            'no_hp' => ['required', 'string', 'max:255'],
+            'alamat' => ['required', 'string', 'max:255'],
+            'kelas' => ['required', 'string', 'max:255'],
+
         ]);
     }
 
@@ -64,10 +72,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        Anggota::create([
+            'nisn' => $data['nisn'],
+            'nama' => $data['nama'],
+            'jk' => $data['jk'],
+            'no_hp' => $data['no_hp'],
+            'alamat' => $data['alamat'],
+            'kelas' => $data['kelas'],
+            'user_id' => $user->id,
+        ]);
+        return $user;
     }
 }
