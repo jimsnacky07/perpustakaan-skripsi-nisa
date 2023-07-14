@@ -1,5 +1,7 @@
 @extends('layouts.main')
 
+@section('title', 'Data Buku')
+
 @section('content')
     <form class="navbar-search mb-3" action="{{ route('daftarbuku.index') }}" method="GET">
         <div class="input-group">

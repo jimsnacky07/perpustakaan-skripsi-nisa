@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anggota;
 use App\Models\Book;
+use App\Models\Peminjaman;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -48,45 +49,115 @@ class DaftarBukuController extends Controller
         $userId = Auth::id();
         $anggota = Anggota::where('user_id', $userId)->first();
 
-        // dd($anggota);
+        $idBukuDipinjam = $request->input('id_buku_pinjam');
+
+        $isMeminjam = DB::table('peminjaman')
+            ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            ->where('id_anggota_peminjaman', $anggota->id)
+            ->where(function ($query) {
+                $query->where('detail_peminjaman.status', 0)
+                    ->orWhere('detail_peminjaman.status', 2);
+            })
+            ->whereIn('detail_peminjaman.id_buku_pinjam', $idBukuDipinjam)
+            ->exists();
+
+        if ($isMeminjam) {
+            flash()->addError('Anda telah meminjam buku yang belum dikembalikan. Silakan kembalikan buku sebelum meminjam lagi.');
+            return redirect(route('daftarbuku.index'));
+        }
 
         $count = DB::table('peminjaman')
             ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
             ->where('id_anggota_peminjaman', $anggota->id)
             ->where('detail_peminjaman.status', 0)
             ->count();
-        // dd($count);
 
         if ($count >= 10) {
             flash()->addError('Kamu Telah Mencapai Limit Untuk Meminjam Buku');
-            // Alert::warning('Gagal', 'User telah mencapai limit untuk meminjam buku');
             return redirect(route('daftarbuku.index'));
         }
 
-        $simpanPeminjaman = DB::table('peminjaman')->insertGetId([
-            'kode_peminjaman' => date('YmdHis') . rand(0, 999),
-            'tgl_pinjam' => Carbon::now()->toDateString(),
-            'tgl_kembali' => Carbon::now()->addMonth(3)->toDateString(),
-            'id_anggota_peminjaman' => $anggota->id,
-        ]);
+        $today = Carbon::now()->toDateString();
 
-        $id = DB::getPdo()->lastInsertId();
+        $peminjamanHariIni = Peminjaman::where('id_anggota_peminjaman', $anggota->id)
+            ->whereDate('tgl_pinjam', $today)
+            ->first();
 
-        foreach ($request->input('id_buku_pinjam') as $key => $id_buku) {
-            $simpanDetailPeminjaman = DB::table('detail_peminjaman')->insert([
-                'id_peminjaman' => $id,
-                'isbn_buku' => $request->input('isbn_buku')[$key],
-                'judul_buku' => $request->input('judul_buku')[$key],
-                'jumlah_buku' => 1,
-                'status' => 2,
-                'id_buku_pinjam' => $id_buku,
+        //jika peminjaman tidak sama dengan hari ini maka simpan data ini
+        if (!$peminjamanHariIni) {
+            $simpanPeminjaman = DB::table('peminjaman')->insertGetId([
+                'kode_peminjaman' => date('YmdHis') . rand(0, 999),
+                'tgl_pinjam' => Carbon::now()->toDateString(),
+                'tgl_kembali' => Carbon::now()->addMonth(3)->toDateString(),
+                'id_anggota_peminjaman' => $anggota->id,
             ]);
-        }
-        $stockBuku = DB::table('books')
-            ->where('no_isbn', $request->input('isbn_buku')[$key])
-            ->decrement('jumlah_buku', 1);
 
-        return redirect(route('daftarbuku.index'))->with('success', "Buku berhasil dipinjam");
+            $id = DB::getPdo()->lastInsertId();
+
+            foreach ($request->input('id_buku_pinjam') as $key => $id_buku) {
+                $simpanDetailPeminjaman = DB::table('detail_peminjaman')->insert([
+                    'id_peminjaman' => $id,
+                    'isbn_buku' => $request->input('isbn_buku')[$key],
+                    'judul_buku' => $request->input('judul_buku')[$key],
+                    'jumlah_buku' => 1,
+                    'status' => 2,
+                    'id_buku_pinjam' => $id_buku,
+                ]);
+            }
+
+            $stockBuku = DB::table('books')
+                ->whereIn('no_isbn', $request->input('isbn_buku'))
+                ->decrement('jumlah_buku', 1);
+
+            return redirect(route('daftarbuku.index'))->with('success', "Buku berhasil dipinjam");
+        } else {
+            //jika peminjammnya sama dengan hari ini, maka simpan saja detail peminjamannya dengan mengambil id peminjaman yang sebelumnya
+            $idPeminjaman = $peminjamanHariIni->id;
+            foreach ($request->input('id_buku_pinjam') as $key => $id_buku) {
+                $simpanDetailPeminjaman = DB::table('detail_peminjaman')->insert([
+                    'id_peminjaman' => $idPeminjaman,
+                    'isbn_buku' => $request->input('isbn_buku')[$key],
+                    'judul_buku' => $request->input('judul_buku')[$key],
+                    'jumlah_buku' => 1,
+                    'status' => 2,
+                    'id_buku_pinjam' => $id_buku,
+                ]);
+            }
+
+            $stockBuku = DB::table('books')
+                ->whereIn('no_isbn', $request->input('isbn_buku'))
+                ->decrement('jumlah_buku', 1);
+
+            return redirect(route('daftarbuku.index'))->with('success', "Buku berhasil dipinjam");
+        }
+
+
+
+        // $simpanPeminjaman = DB::table('peminjaman')->insertGetId([
+        //     'kode_peminjaman' => date('YmdHis') . rand(0, 999),
+        //     'tgl_pinjam' => Carbon::now()->toDateString(),
+        //     'tgl_kembali' => Carbon::now()->addMonth(3)->toDateString(),
+        //     'id_anggota_peminjaman' => $anggota->id,
+        // ]);
+
+        // $id = DB::getPdo()->lastInsertId();
+
+        // foreach ($request->input('id_buku_pinjam') as $key => $id_buku) {
+        //     $simpanDetailPeminjaman = DB::table('detail_peminjaman')->insert([
+        //         'id_peminjaman' => $id,
+        //         'isbn_buku' => $request->input('isbn_buku')[$key],
+        //         'judul_buku' => $request->input('judul_buku')[$key],
+        //         'jumlah_buku' => 1,
+        //         'status' => 2,
+        //         'id_buku_pinjam' => $id_buku,
+        //     ]);
+        // }
+
+        // $stockBuku = DB::table('books')
+        //     ->where('no_isbn', $request->input('isbn_buku')[$key])
+        //     ->decrement('jumlah_buku', 1);
+
+        // return redirect(route('daftarbuku.index'))->with('success', "Buku berhasil dipinjam");
     }
 
     /**
