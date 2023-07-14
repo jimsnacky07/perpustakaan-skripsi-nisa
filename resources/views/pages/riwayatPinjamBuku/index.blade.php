@@ -42,7 +42,16 @@
                                                         <td>{{ $data->tahun_terbit }}</td>
                                                         <td>{{ date('d F Y', strtotime($item->tgl_pinjam)) }}</td>
                                                         <td>{{ date('d F Y', strtotime($item->tgl_kembali)) }}</td>
-                                                        <td>{{ $data->status == 0 ? 'DiPinjam' : 'DiKembalikan' }}</td>
+                                                        <td>
+                                                            @if ($data->status == 0)
+                                                                <span class="badge badge-success">DiPinjam</span>
+                                                            @elseif($data->status == 1)
+                                                                <span class="badge badge-primary">DiKembalikan</span>
+                                                            @elseif($data->status == 2)
+                                                                <span class="badge badge-warning">Menunggu Persetujuan
+                                                                    Admin</span>
+                                                            @endif
+                                                        </td>
                                                     </tr>
                                                 @endif
                                             @endforeach

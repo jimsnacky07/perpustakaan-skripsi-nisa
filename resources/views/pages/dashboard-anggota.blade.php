@@ -85,8 +85,7 @@
                     dan Pencetakan Bukti Peminjaman.</li>
                 <li class=text-light>Jika Terlambat Mengembalikan Buku dan Mendapat denda, Maka Wajib Langsung Membayar Pada
                     Petugas Saat Mengembalikan Buku.</li>
-                <li class=text-light>Pada Saat Mau Mengembalikan Buku Jangan Lupa Membawa Bukti Peminjaman / Kartu
-                    Perpustakaan.
+                <li class=text-light>Pada Saat Mau Mengembalikan Buku Jangan Lupa Membawa Bukti Peminjaman
                 </li>
             </ol>
         </div>

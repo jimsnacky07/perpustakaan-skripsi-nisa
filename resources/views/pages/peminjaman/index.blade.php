@@ -20,6 +20,12 @@
                                             Tambah Data Peminjaman Buku</i>
                                     </a>
                                 </div>
+                                <div class="col-md-auto">
+                                    <a href="{{ route('permintaan-peminjaman') }}" class="btn btn-primary"><i
+                                            class="fas fa-file-alt">
+                                            Permintaan Peminjaman Buku</i>
+                                    </a>
+                                </div>
                             @endif
 
                             <div class="col-md-auto">

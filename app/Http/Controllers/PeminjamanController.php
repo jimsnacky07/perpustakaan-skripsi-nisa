@@ -12,13 +12,26 @@ class PeminjamanController extends Controller
 {
     public function index()
     {
+        // $data['peminjaman'] = DB::table('peminjaman')
+        //     ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+        //     ->join('detail_peminjaman', 'detail_peminjaman.id_peminjaman', '=', 'peminjaman_id')
+        //     ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+        //     ->where('detail_peminjaman.status', <> 2)
+        //     ->select('peminjaman.*', 'anggotas.nama')
+        //     ->get();
+
         $data['peminjaman'] = DB::table('peminjaman')
             ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+            ->join('detail_peminjaman', 'detail_peminjaman.id_peminjaman', '=', 'peminjaman.id')
+            ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+            ->where('detail_peminjaman.status', '<>', 2)
             ->select('peminjaman.*', 'anggotas.nama')
             ->get();
 
+
         return view('pages.peminjaman.index', $data);
     }
+
 
 
     public function detail($id)
@@ -182,5 +195,33 @@ class PeminjamanController extends Controller
 
         $data['title'] = 'Kartu / Bukti Peminjaman Buku';
         return view('pages.peminjaman.bukti_peminjaman', $data);
+    }
+
+    public function permintaanPeminjaman()
+    {
+        $data['peminjaman'] = DB::table('peminjaman')
+            ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
+            ->join('detail_peminjaman', 'detail_peminjaman.id_peminjaman', '=', 'peminjaman.id')
+            ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
+            ->where('detail_peminjaman.status', 2)
+            ->select('peminjaman.*', 'anggotas.nama', 'anggotas.kelas', 'books.*', 'detail_peminjaman.id_peminjaman')
+            ->get();
+        // dd($data);
+
+        return view('pages.permintaanPeminjaman.index', $data);
+    }
+
+    public function terimaPermintaanPeminjaman(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        if (is_array($ids)) {
+            DB::table('detail_peminjaman')
+                ->whereIn('id_peminjaman', $ids)
+                ->update(['status' => 0]);
+
+            flash('Peminjaman Berhasil Di Accept');
+        }
+        return response()->json(['success' => true]);
     }
 }

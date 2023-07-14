@@ -495,6 +495,15 @@
                     </li>
 
                     <li class="nav-item">
+                        <a href="{{ route('daftarbuku.index') }}"
+                            class="nav-link {{ Route::is('daftarbuku.index') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>
+                                Daftar Buku
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="{{ route('riwayat-pinjam-buku.index') }}"
                             class="nav-link {{ Route::is('riwayat-pinjam-buku.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-shopping-cart"></i>

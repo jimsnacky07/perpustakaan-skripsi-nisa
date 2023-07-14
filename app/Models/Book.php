@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Book extends Model
 {
@@ -26,4 +27,14 @@ class Book extends Model
         'jumlah_buku',
         'gambar',
     ];
+
+    /**
+     * Get the user that owns the Book
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function kategoriBuku(): BelongsTo
+    {
+        return $this->belongsTo(JenisBuku::class, 'jenis_buku_id', 'id');
+    }
 }

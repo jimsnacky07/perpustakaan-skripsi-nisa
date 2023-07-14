@@ -10,6 +10,7 @@ use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\RakBukuController;
 use App\Http\Controllers\RiwayatPinjamBukuAnggota;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DaftarBukuController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -75,6 +76,8 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin,pimpinan'])->group(
         Route::get('/cetak-bukti-peminjaman/{id}',  'cetakBuktiPeminjaman')->name('cetak-bukti-peminjaman');
         Route::delete('/hapus-peminjaman/{id}',  'destroy')->name('peminjaman.destroy');
         Route::get('/detail-peminjaman/{id}',  'detail')->name('detail-peminjaman');
+        Route::get('/permintaan-peminjaman', 'permintaanPeminjaman')->name('permintaan-peminjaman');
+        Route::post('/accept-peminjaman', 'terimaPermintaanPeminjaman')->name('terima-permintaan-peminjaman');
 
         //Temporary
 
@@ -109,7 +112,7 @@ Auth::routes();
 
 Route::prefix('anggota')->middleware(['auth', 'user-role:anggota'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'dashboardAnggota'])->name('dashboard-anggota');
-
+    Route::resource('daftarbuku', DaftarBukuController::class);
     Route::controller(RiwayatPinjamBukuAnggota::class)->name('riwayat-pinjam-buku.')->group(function () {
         Route::get('riwayat-pinjam-buku', 'index')->name('index');
         Route::get('riwayat-pengembalian-buku', 'riwayatPengembalianBuku')->name('riwayat-pengembalian-buku');

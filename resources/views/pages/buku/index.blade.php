@@ -41,8 +41,8 @@
                                             <td>{{ $item->judul_buku }}</td>
                                             <td>{{ $item->tahun_terbit }}</td>
                                             <td>{{ $item->jumlah_buku }}</td>
-                                            <td><img src="{{ Storage::url('public/buku/' . $item->gambar) }} "
-                                                    alt="" width="50" class="img-thumbnail"></td>
+                                            <td><img src="{{ Storage::url('public/buku/' . $item->gambar) }}" alt=""
+                                                    width="50" class="img-thumbnail"></td>
                                             <td>
 
                                                 <a href="{{ route('buku.edit', $item->id) }}"
