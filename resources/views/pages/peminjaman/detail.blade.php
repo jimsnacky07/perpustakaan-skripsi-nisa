@@ -38,6 +38,7 @@
                                                 <th>Penerbit</th>
                                                 <th>Tahun Terbit</th>
                                                 <th>Jumlah Buku Di Pinjam</th>
+                                                <th>Status Peminjaman</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -49,7 +50,8 @@
                                                     <td>{{ $data->pengarang_buku }}</td>
                                                     <td>{{ $data->penerbit_buku }}</td>
                                                     <td>{{ $data->tahun_terbit }}</td>
-                                                    <td>{{ $data->jumlah_buku_pinjam }}</td>
+                                                    <td>{{ $data->jumlah_buku }}</td>
+                                                    <td>{{ $data->status }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

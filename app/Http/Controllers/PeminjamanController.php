@@ -26,6 +26,7 @@ class PeminjamanController extends Controller
             ->join('books', 'books.id', '=', 'detail_peminjaman.id_buku_pinjam')
             ->where('detail_peminjaman.status', '<>', 2)
             ->select('peminjaman.*', 'anggotas.nama')
+            ->distinct()
             ->get();
 
 
@@ -36,12 +37,12 @@ class PeminjamanController extends Controller
 
     public function detail($id)
     {
-        $data['detail'] = DB::table('detail_peminjaman')
-            ->join('peminjaman', 'detail_peminjaman.id_peminjaman', '=', 'peminjaman.id')
+        $data['detail'] = DB::table('peminjaman')
+            ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            ->join('books', 'detail_peminjaman.id_buku_pinjam', '=', 'books.id')
             ->join('anggotas', 'peminjaman.id_anggota_peminjaman', '=', 'anggotas.id')
-            ->join('books', 'detail_peminjaman.isbn_buku', '=', 'books.no_isbn')
             ->where('peminjaman.id', $id)
-            ->select('detail_peminjaman.*', 'detail_peminjaman.jumlah_buku as jumlah_buku_pinjam', 'peminjaman.*', 'books.*', 'anggotas.nama as nama_anggota')
+            ->select('peminjaman.*', 'anggotas.nama as nama_anggota', 'books.*', 'detail_peminjaman.*')
             ->get();
 
         return view('pages.peminjaman.detail', $data);
