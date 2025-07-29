@@ -61,7 +61,8 @@ class BookController extends Controller
 
         //upload image
         $image = $request->file('gambar');
-        $image->storeAs('public/buku', $image->hashName());
+        $namabuku = $image->hashName();
+        $image->move(public_path('storage/buku'), $namabuku);
 
         $buku = Book::create([
             'jenis_buku_id' => $request->jenis_buku_id,
@@ -72,7 +73,7 @@ class BookController extends Controller
             'pengarang_buku' => $request->pengarang_buku,
             'rak_buku_id' => $request->rak_buku_id,
             'jumlah_buku' => $request->jumlah_buku,
-            'gambar'     => $image->hashName(),
+            'gambar'     => $namabuku,
         ]);
 
 
@@ -93,12 +94,9 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $data['buku'] = DB::table('books')
-            ->join('jenis_bukus', 'books.jenis_buku_id', '=', 'jenis_bukus.id')
-            ->join('rak_bukus', 'books.rak_buku_id', '=', 'rak_bukus.id')
-            ->select('books.*', 'jenis_bukus.name', 'rak_bukus.no_rak', 'rak_bukus.nama_rak')
-            ->where('books.id', $id)
-            ->get();
+        $data['buku'] = Book::with(['bukuHilangs', 'bukuRusaks', 'kategoriBuku'])
+            ->where('id', $id)
+            ->first();
 
         return view('pages.buku.detail', $data);
     }

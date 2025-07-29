@@ -11,6 +11,9 @@ use App\Http\Controllers\RakBukuController;
 use App\Http\Controllers\RiwayatPinjamBukuAnggota;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DaftarBukuController;
+use App\Http\Controllers\GrafikController;
+use App\Http\Controllers\BukuHilangController; // Tambahkan controller baru
+use App\Http\Controllers\BukuRusakController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +37,8 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin,pimpinan'])->group(
 
     Route::resource('buku', BookController::class);
     Route::resource('anggota', AnggotaController::class);
+    Route::resource('bukuhilang', BukuHilangController::class);
+    Route::resource('bukurusak', BukuRusakController::class);
 
     //Jenis Buku
     Route::controller(JenisBukuController::class)->group(function () {
@@ -95,6 +100,18 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin,pimpinan'])->group(
         Route::post('/getkampung', 'getkampung')->name('getkampungzonasi');
     });
 
+    //Buku Hilang
+    Route::controller(BukuHilangController::class)->group(function () {
+        Route::get('buku-hilang', 'index')->name('buku-hilang');
+        Route::post('buku-hilang', 'store')->name('buku-hilang.store');
+        Route::get('fetchBukuHilang', 'fetchBukuHilang')->name('buku-hilang.fetch');
+        Route::get('buku-hilang/edit', 'edit')->name('buku-hilang.edit');
+        Route::post('buku-hilang/edit', 'update')->name('buku-hilang.update');
+        Route::post('buku-hilang/destroy', 'destroy')->name('buku-hilang.destroy');
+        Route::post('buku-hilang/destroy/selected', 'destroySelected')->name('buku-hilang.destroySelected');
+    });
+
+    //Laporan
     Route::controller(LaporanController::class)->name('laporan.')->group(function () {
         Route::get('/laporan-kategori-buku', 'kategoriBuku')->name('kategori-buku');
         Route::get('/laporan-anggota', 'anggota')->name('anggota');
@@ -103,9 +120,21 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin,pimpinan'])->group(
         Route::get('/laporan-riwayat-peminjaman', 'riwayatPeminjaman')->name('riwayat-peminjaman');
         Route::post('laporan-peminjaman-buku', 'laporanPeminjamanBuku')->name('peminjaman-buku');
         Route::post('laporan-pengembalian-buku', 'laporanPengembalianBuku')->name('pengembalian-buku');
+        Route::get('laporan-buku-hilang', 'laporanbukuhilang')->name('buku-hilang');
+    });
+
+    //grafik
+    Route::controller(GrafikController::class)->group(function () {
+        Route::get('/grafik', 'index')->name('grafik');
+        Route::post('/pinjam-grafik/viewgrafikpinjam', 'viewGrafikPinjam')->name('view-grafik-pinjam');
     });
 });
 
+Route::prefix('laporan')->group(function () {
+    Route::get('buku-masuk', [App\Http\Controllers\LaporanController::class, 'bukuMasuk'])->name('laporan.buku_masuk');
+    Route::get('buku-rusak', [App\Http\Controllers\LaporanController::class, 'bukuRusak'])->name('laporan.buku_rusak');
+    Route::get('buku-hilang', [App\Http\Controllers\LaporanController::class, 'bukuHilang'])->name('laporan.buku_hilang');
+});
 
 
 Auth::routes();

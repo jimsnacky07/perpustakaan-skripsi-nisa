@@ -68,7 +68,7 @@
                             </div> --}}
                         </div>
                         <div class="card">
-                            <div class="card-header bg-danger">
+                            <div class="card-header bg-primary">
                                 Peminjaman Buku
                             </div>
                             <div class="card-body">

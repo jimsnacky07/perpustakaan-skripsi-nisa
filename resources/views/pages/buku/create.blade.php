@@ -64,7 +64,7 @@
                             <div class="form-group col-md-4">
                                 <label for="penerbit_buku">Penerbit Buku</label>
                                 <input type="text" class="form-control @error('penerbit_buku') is-invalid @enderror"
-                                    id="penerbit_buku" name="penerbit_buku" placeholder="Ex : UDIN"
+                                    id="penerbit_buku" name="penerbit_buku" placeholder="Ex : ARIL"
                                     value="{{ old('penerbit_buku') }}">
 
                                 @error('penerbit_buku')
@@ -94,7 +94,7 @@
                             <div class="form-group col-md-4">
                                 <label for="short-about">Pengarang Buku</label>
                                 <input type="text" class="form-control @error('pengarang_buku') is-invalid @enderror"
-                                    id="pengarang_buku" name="pengarang_buku" placeholder="Jackie Chan"
+                                    id="pengarang_buku" name="pengarang_buku" placeholder="Adinul"
                                     value="{{ old('pengarang_buku') }}">
                                 @error('pengarang_buku')
                                     <div class="invalid-feedback">
@@ -136,7 +136,7 @@
 
                             <div class="form-group col-md-4">
                                 <label for="small-thumbnail">Gambar / Sampul Buku</label>
-                                <input type="file" class="form-control" name="gambar">
+                                <input type="file" class="form-control" name="gambar" id="gambar">
                             </div>
 
 

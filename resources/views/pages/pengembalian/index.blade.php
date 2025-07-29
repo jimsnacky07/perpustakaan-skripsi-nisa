@@ -41,7 +41,7 @@
                                         <th>Jumlah Di Kembalikan</th>
                                         <th>Tgl Pengembalian</th>
                                         <th>Terlambat (Hari)</th>
-                                        <th>Denda</th>
+                                        <th>Denda</th> 
                                         <th>Detail</th>
                                     </tr>
                                 </thead>
@@ -59,7 +59,7 @@
                                                 <td>{{ $data->qty }}</td>
                                                 <td>{{ date('d F Y', strtotime($data->tanggal_pengembalian)) }}</td>
                                                 <td>{{ $data->jumlah_hari_terlambat }} Hari</td>
-                                                <td>Rp. {{ number_format($data->denda) }}</td>
+                                                <td>Rp. {{ number_format($data->denda) }}</td> 
                                                 <td>
                                                     <button class="btn btn-primary btn-sm" data-toggle="modal"
                                                         data-target="#detailModal-{{ $data->id_anggota }}">Detail</button>

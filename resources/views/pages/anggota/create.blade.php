@@ -88,7 +88,7 @@
                             <div class="form-group col-md-4">
                                 <label for="short-about">No Handphone</label>
                                 <input type="text" class="form-control @error('no_hp') is-invalid @enderror"
-                                    id="no_hp" name="no_hp" placeholder="081471417" value="{{ old('no_hp') }}">
+                                    id="no_hp" name="no_hp" placeholder="08312444" value="{{ old('no_hp') }}">
                                 @error('no_hp')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -116,7 +116,7 @@
                             <div class="form-group col-md-4">
                                 <label for="short-about">Kelas</label>
                                 <input type="text" class="form-control @error('kelas') is-invalid @enderror"
-                                    id="kelas" name="kelas" placeholder="Ex : VII A / 7A"
+                                    id="kelas" name="kelas" placeholder="Ex : 10-12A"
                                     value="{{ old('kelas') }}">
                                 @error('no_hp')
                                     <div class="invalid-feedback">

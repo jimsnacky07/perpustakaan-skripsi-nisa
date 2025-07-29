@@ -5,19 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return view('pages.user.index');
     }
-
 
     public function fetchUser(Request $request)
     {
@@ -49,22 +45,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validation = Validator::make($request->all(), [
@@ -91,52 +71,26 @@ class UserController extends Controller
             $dataUser->name = $request->name;
             $dataUser->email = $request->email;
             $dataUser->role = $request->role;
-            $dataUser->password = bcrypt($request->password);
+            $dataUser->password = Hash::make($request->password);
             $dataUser->save();
 
             return response()->json([
                 'status' => 200,
-                'success' => "Data User Berhasil Di Simpan"
+                'success' => "Data User Berhasil Di Simpan",
+                'redirect' => url('/login')
             ]);
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Request $request)
     {
         $user = User::findOrFail($request->idUser);
-        // dd($user);
-        // $user = User::findOrFail($request->get('idUser'));
-
         return response()->json([
             'status' => 200,
             'user' => $user
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request)
     {
         $validation = Validator::make($request->all(), [
@@ -169,12 +123,10 @@ class UserController extends Controller
                 $dataUser->role = 2;
             }
 
-
-            if ($dataUser->password && $request->password == "") {
-                unset($request->password);
-            } else {
-                $dataUser->password = bcrypt($request->password);
+            if ($request->password) {
+                $dataUser->password = Hash::make($request->password);
             }
+
             $dataUser->update();
 
             return response()->json([
@@ -184,12 +136,6 @@ class UserController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Request $request)
     {
         $dataUser = User::findOrFail($request->idUser);

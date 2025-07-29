@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('kode_peminjaman');
             $table->date('tgl_pinjam');
             $table->date('tgl_kembali');
-            $table->string('id_anggota_peminjaman');
+            $table->unsignedBigInteger('id_anggota_peminjaman');
             $table->timestamps();
+            $table->foreign('id_anggota_peminjaman')->references('id')->on('anggotas')->onDelete('cascade');
         });
     }
 

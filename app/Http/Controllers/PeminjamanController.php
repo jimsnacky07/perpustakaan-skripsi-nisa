@@ -127,6 +127,7 @@ class PeminjamanController extends Controller
             $temp = DB::table('peminjaman_temp')->get();
             foreach ($temp as $t) {
                 $buku = DB::table('books')->where('no_isbn', $t->isbn)->first();
+                
                 if ($t->jumlah > $buku->jumlah_buku) {
                     flash()->addError('Stock Buku tidak mencukupi.');
                     $hapus = DB::table('peminjaman_temp')->delete();

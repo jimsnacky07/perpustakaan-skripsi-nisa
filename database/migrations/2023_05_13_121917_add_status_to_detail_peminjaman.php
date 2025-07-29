@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::table('detail_peminjaman', function (Blueprint $table) {
             $table->string('status')->nullable()->after('jumlah_buku');
-            $table->string('id_buku_pinjam')->nullable()->after('id_peminjaman');
+            $table->unsignedBigInteger('id_buku_pinjam')->nullable()->after('id_peminjaman');
+            $table->foreign('id_buku_pinjam')->references('id')->on('books')->onDelete('set null');
         });
     }
 
@@ -28,6 +29,7 @@ return new class extends Migration
     {
         Schema::table('detail_peminjaman', function (Blueprint $table) {
             $table->dropColumn('status');
+            $table->dropForeign(['id_buku_pinjam']);
             $table->dropColumn('id_buku_pinjam');
         });
     }

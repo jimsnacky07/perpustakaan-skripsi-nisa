@@ -9,6 +9,8 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegisterController extends Controller
 {
@@ -17,23 +19,22 @@ class RegisterController extends Controller
     | Register Controller
     |--------------------------------------------------------------------------
     |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
+    | Controller ini menangani registrasi user baru serta validasi datanya.
+    | Secara default menggunakan trait RegistersUsers untuk memproses register.
     |
     */
 
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
+     * Ke mana user diarahkan setelah registrasi (tidak dipakai karena kita override registered()).
      *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
-     * Create a new controller instance.
+     * Buat instance baru dari controller.
      *
      * @return void
      */
@@ -43,7 +44,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Validator untuk validasi request registrasi.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -52,27 +53,26 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'confirmed'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
             'nisn' => ['required', 'string', 'unique:anggotas', 'max:255'],
             'nama' => ['required', 'string', 'max:255'],
             'jk' => ['required', 'string', 'max:255'],
             'no_hp' => ['required', 'string', 'max:255'],
             'alamat' => ['required', 'string', 'max:255'],
             'kelas' => ['required', 'string', 'max:255'],
-
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Membuat user baru setelah registrasi valid.
      *
      * @param  array  $data
      * @return \App\Models\User
      */
     protected function create(array $data)
     {
-        $user =  User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -87,6 +87,21 @@ class RegisterController extends Controller
             'kelas' => $data['kelas'],
             'user_id' => $user->id,
         ]);
+
         return $user;
+    }
+
+    /**
+     * Override fungsi bawaan RegistersUsers agar setelah registrasi
+     * user diarahkan ke halaman login, bukan langsung login.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return \Illuminate\Http\Response
+     */
+    protected function registered(Request $request, $user)
+    {
+        Auth::logout(); // logout agar tidak auto login
+        return redirect('/login')->with('success', 'Akun berhasil dibuat, silakan login.');
     }
 }

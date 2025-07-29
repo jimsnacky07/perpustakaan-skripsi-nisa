@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('detail_peminjaman', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_peminjaman');
+            $table->unsignedBigInteger('id_peminjaman');
             $table->string('isbn_buku');
             $table->string('judul_buku');
             $table->string('jumlah_buku');
             $table->timestamps();
+            $table->foreign('id_peminjaman')->references('id')->on('peminjaman')->onDelete('cascade');
         });
     }
 

@@ -24,18 +24,8 @@ class DaftarBukuController extends Controller
         } else {
             $buku = Book::with('kategoriBuku')->paginate(6);
         }
-        // dd($buku);
+        
         return view('pages.daftarbuku.index', compact('buku'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -49,8 +39,29 @@ class DaftarBukuController extends Controller
         $userId = Auth::id();
         $anggota = Anggota::where('user_id', $userId)->first();
 
+        if (!$anggota) {
+            flash()->addError('Anda belum terdaftar sebagai anggota.');
+            return redirect(route('daftarbuku.index'));
+        }
+
         $idBukuDipinjam = $request->input('id_buku_pinjam');
 
+        // Pengecekan jumlah maksimal peminjaman (maksimal 3 buku)
+        $countPeminjaman = DB::table('peminjaman')
+            ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
+            ->where('id_anggota_peminjaman', $anggota->id)
+            ->where(function ($query) {
+                $query->where('detail_peminjaman.status', 0)
+                    ->orWhere('detail_peminjaman.status', 2);
+            })
+            ->count();
+
+        if ($countPeminjaman >= 3) {
+            flash()->addError('Anda sudah mencapai batas maksimal peminjaman (3 buku).');
+            return redirect(route('daftarbuku.index'));
+        }
+
+        // Pengecekan apakah anggota sedang meminjam buku yang belum dikembalikan
         $isMeminjam = DB::table('peminjaman')
             ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
             ->where('id_anggota_peminjaman', $anggota->id)
@@ -66,24 +77,12 @@ class DaftarBukuController extends Controller
             return redirect(route('daftarbuku.index'));
         }
 
-        $count = DB::table('peminjaman')
-            ->join('detail_peminjaman', 'peminjaman.id', '=', 'detail_peminjaman.id_peminjaman')
-            ->where('id_anggota_peminjaman', $anggota->id)
-            ->where('detail_peminjaman.status', 0)
-            ->count();
-
-        if ($count >= 10) {
-            flash()->addError('Kamu Telah Mencapai Limit Untuk Meminjam Buku');
-            return redirect(route('daftarbuku.index'));
-        }
-
         $today = Carbon::now()->toDateString();
 
         $peminjamanHariIni = Peminjaman::where('id_anggota_peminjaman', $anggota->id)
             ->whereDate('tgl_pinjam', $today)
             ->first();
 
-        //jika peminjaman tidak sama dengan hari ini maka simpan data ini
         if (!$peminjamanHariIni) {
             $simpanPeminjaman = DB::table('peminjaman')->insertGetId([
                 'kode_peminjaman' => date('YmdHis') . rand(0, 999),
@@ -111,7 +110,6 @@ class DaftarBukuController extends Controller
 
             return redirect(route('daftarbuku.index'))->with('success', "Buku berhasil dipinjam");
         } else {
-            //jika peminjammnya sama dengan hari ini, maka simpan saja detail peminjamannya dengan mengambil id peminjaman yang sebelumnya
             $idPeminjaman = $peminjamanHariIni->id;
             foreach ($request->input('id_buku_pinjam') as $key => $id_buku) {
                 $simpanDetailPeminjaman = DB::table('detail_peminjaman')->insert([
@@ -130,78 +128,7 @@ class DaftarBukuController extends Controller
 
             return redirect(route('daftarbuku.index'))->with('success', "Buku berhasil dipinjam");
         }
-
-
-
-        // $simpanPeminjaman = DB::table('peminjaman')->insertGetId([
-        //     'kode_peminjaman' => date('YmdHis') . rand(0, 999),
-        //     'tgl_pinjam' => Carbon::now()->toDateString(),
-        //     'tgl_kembali' => Carbon::now()->addMonth(3)->toDateString(),
-        //     'id_anggota_peminjaman' => $anggota->id,
-        // ]);
-
-        // $id = DB::getPdo()->lastInsertId();
-
-        // foreach ($request->input('id_buku_pinjam') as $key => $id_buku) {
-        //     $simpanDetailPeminjaman = DB::table('detail_peminjaman')->insert([
-        //         'id_peminjaman' => $id,
-        //         'isbn_buku' => $request->input('isbn_buku')[$key],
-        //         'judul_buku' => $request->input('judul_buku')[$key],
-        //         'jumlah_buku' => 1,
-        //         'status' => 2,
-        //         'id_buku_pinjam' => $id_buku,
-        //     ]);
-        // }
-
-        // $stockBuku = DB::table('books')
-        //     ->where('no_isbn', $request->input('isbn_buku')[$key])
-        //     ->decrement('jumlah_buku', 1);
-
-        // return redirect(route('daftarbuku.index'))->with('success', "Buku berhasil dipinjam");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    // Metode lain seperti show, edit, update, dan destroy bisa ditambahkan sesuai kebutuhan
 }

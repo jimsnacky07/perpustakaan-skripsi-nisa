@@ -21,8 +21,8 @@
     @yield('style')
 </head>
 
-<body class="hold-transition login-page">
-
+<body class="hold-transition login-page" style="background: url('/adminlte/dist/img/keren.jpg') no-repeat center center fixed; background-size: cover;">
+    
 
     @yield('content')
     <!-- /.login-box -->

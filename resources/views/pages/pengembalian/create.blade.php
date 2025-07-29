@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="card">
-                            <div class="card-header bg-success">
+                            <div class="card-header bg-primary">
                                 <b>
                                     Pengembalian Buku
 

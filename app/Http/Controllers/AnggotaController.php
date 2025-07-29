@@ -11,7 +11,7 @@ class AnggotaController extends Controller
 {
     public function index()
     {
-        $anggota = Anggota::latest()->with('user')->get();
+        $anggota = Anggota::latest()->with(['user', 'pengembalians', 'peminjamans'])->get();
         // dd($anggota);
         return view('pages.anggota.index', compact('anggota'));
     }
@@ -42,8 +42,8 @@ class AnggotaController extends Controller
             'user_id.unique' => 'User sudah terdaftar sebagai anggota'
         ]);
         //upload image
-        $image = $request->file('foto');
-        $image->storeAs('public/foto', $image->hashName());
+        // $image = $request->file('foto');
+        // $image->storeAs('public/foto', $image->hashName());
 
         $anggota = Anggota::create([
             'nisn' => $data['nisn'],
@@ -53,7 +53,7 @@ class AnggotaController extends Controller
             'alamat' => $data['alamat'],
             'user_id' => $data['user_id'],
             'kelas' => $data['kelas'],
-            'foto'     => $image->hashName(),
+            // 'foto'     => $image->hashName(),
         ]);
 
         if ($anggota) {

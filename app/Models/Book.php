@@ -37,4 +37,14 @@ class Book extends Model
     {
         return $this->belongsTo(JenisBuku::class, 'jenis_buku_id', 'id');
     }
+
+    public function bukuHilangs()
+    {
+        return $this->hasMany(BukuHilang::class, 'book_id');
+    }
+
+    public function bukuRusaks()
+    {
+        return $this->hasMany(BukuRusak::class, 'book_id');
+    }
 }
