@@ -13,10 +13,36 @@ class BukuHilang extends Model
      *
      * @var array
      */
-    protected $fillable = ['judul_buku', 'penerbit_buku', 'pengarang_buku', 'tanggal_hilang', 'book_id', 'keterangan'];
+    protected $fillable = ['judul_buku', 'penerbit_buku', 'pengarang_buku', 'book_id', 'keterangan', 'jumlah_hilang'];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'jumlah_hilang' => 'integer',
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'penerbit_buku' => '',
+        'pengarang_buku' => '',
+        'keterangan' => '',
+        'jumlah_hilang' => 1,
+    ];
 
     public function book()
     {
-        return $this->belongsTo(Book::class, 'book_id');
+        return $this->belongsTo(Book::class, 'book_id')->withDefault([
+            'judul_buku' => '-',
+            'penerbit_buku' => '-',
+            'pengarang_buku' => '-',
+            
+        ]);
     }
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Log in (v2)</title>
+    <title>Login | SMP 14 PADANG </title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
@@ -21,7 +21,7 @@
     @yield('style')
 </head>
 
-<body class="hold-transition login-page" style="background: url('/adminlte/dist/img/keren.jpg') no-repeat center center fixed; background-size: cover;">
+<body class="hold-transition login-page" style="background: url('/adminlte/dist/img/2.jpg') no-repeat center center fixed; background-size: cover;">
     
 
     @yield('content')
@@ -38,5 +38,3 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @yield('js')
 </body>
-
-</html>

@@ -81,11 +81,15 @@
                         <td style="text-align: center;">{{ $data->tahun_terbit }}</td>
                         <td style="text-align: center;">{{ $data->penerbit_buku }}</td>
                         <td style="text-align: center;">{{ $data->pengarang_buku }}</td>
-                        <td style="text-align: center;">{{ $data->nama_buku }}</td>
-                        <td style="text-align: center;">{{ $data->no_rak }} | {{ $data->nama_rak }}</td>
+                        <td style="text-align: center;">{{ $data->kategoriBuku->name ?? '-' }}</td>
+                        <td style="text-align: center;">{{ $data->rakBuku->no_rak ?? '-' }} | {{ $data->rakBuku->nama_rak ?? '-' }}</td>
                         <td style="text-align: center;">{{ $data->jumlah_buku }}</td>
                         <td style="text-align: center;">
-                            <img src="{{ Storage::url('public/buku/' . $data->gambar) }}" alt="Gambar Buku">
+                            @if($data->gambar)
+                                <img src="{{ Storage::url('public/buku/' . $data->gambar) }}" alt="Gambar Buku">
+                            @else
+                                -
+                            @endif
                         </td>
                     </tr>
                 @endforeach

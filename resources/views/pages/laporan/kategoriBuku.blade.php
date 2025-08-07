@@ -21,6 +21,14 @@
         .table tbody tr:nth-of-type(even) {
             background-color: #ffffff;
         }
+
+        .table {
+            border-color: #dee2e6;
+        }
+
+        .table td, .table th {
+            border: 1px solid #dee2e6;
+        }
     </style>
 </head>
 
@@ -28,7 +36,7 @@
     {{-- header laporan --}}
     @include('pages.laporan.header_laporan')
 
-    <div class="container">
+    <div class="container mt-3">
         <table>
             <tr>
                 <td>Tanggal Cetak</td>
@@ -45,6 +53,8 @@
                 <tr>
                     <th width="1%">No</th>
                     <th style="text-align: center;">Nama Kategori</th>
+                    <th style="text-align: center;">Jumlah Buku</th>
+                    <th style="text-align: center;">Total Stok</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,10 +62,44 @@
                     <tr>
                         <td>{{ $no + 1 }}</td>
                         <td style="text-align: center;">{{ $data->name }}</td>
+                        <td style="text-align: center;">{{ $data->books_count }}</td>
+                        <td style="text-align: center;">
+                            @php
+                                $totalStok = $data->books->sum('jumlah_buku');
+                            @endphp
+                            {{ $totalStok }}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered">
+                    <tr>
+                        <td><strong>Total Kategori</strong></td>
+                        <td><strong>{{ $kategoriBuku->count() }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Total Buku</td>
+                        <td>{{ $kategoriBuku->sum('books_count') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Stok</td>
+                        <td>
+                            @php
+                                $totalStok = $kategoriBuku->sum(function($kategori) {
+                                    return $kategori->books->sum('jumlah_buku');
+                                });
+                            @endphp
+                            {{ $totalStok }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 
         <br>
         <br>

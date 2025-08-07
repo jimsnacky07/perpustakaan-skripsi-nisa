@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('buku_hilangs', function (Blueprint $table) {
             $table->id();
             $table->string('judul_buku', 100);
-            $table->string('penerbit_buku', 100)->nullable();
-            $table->string('pengarang_buku', 191)->nullable();
+            $table->string('penerbit_buku', 100)->nullable()->default('');
+            $table->string('pengarang_buku', 191)->nullable()->default('');
             $table->date('tanggal_hilang')->nullable();
             $table->unsignedBigInteger('book_id')->nullable();
             $table->timestamps();

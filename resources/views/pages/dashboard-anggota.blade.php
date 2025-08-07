@@ -5,15 +5,15 @@
 @section('content')
     <div class="row row-cols-1 row-cols-md-2 g-4">
         <div class="col">
-            <div class="card bg-gradient-artistic-1 text-white rounded-3 shadow-lg border-0">
+            <div class="card bg-blue-1 text-white rounded-4 shadow-lg border-0">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="fs-3 fw-bold mb-0">{{ $countBuku }}</h3>
-                            <p class="text-white mb-0">Jumlah Buku</p>
+                            <h4 class="fs-3 fw-bold mb-0">{{ $countBuku }}</h4>
+                            <p class="text-white-50 mb-0">Jumlah Buku</p>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-book-open fa-3x"></i>
+                            <i class="fas fa-book-open fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -22,15 +22,15 @@
         </div>
 
         <div class="col">
-            <div class="card bg-gradient-artistic-2 text-white rounded-3 shadow-lg border-0">
+            <div class="card bg-blue-2 text-white rounded-4 shadow-lg border-0">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="fs-3 fw-bold mb-0">{{ $countJenisBuku }}</h3>
-                            <p class="text-white mb-0">Kategori Buku</p>
+                            <h4 class="fs-3 fw-bold mb-0">{{ $countJenisBuku }}</h4>
+                            <p class="text-white-50 mb-0">Kategori Buku</p>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-bookmark fa-3x"></i>
+                            <i class="fas fa-bookmark fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -39,15 +39,15 @@
         </div>
 
         <div class="col">
-            <div class="card bg-gradient-artistic-3 text-white rounded-3 shadow-lg border-0">
+            <div class="card bg-blue-3 text-white rounded-4 shadow-lg border-0">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="fs-3 fw-bold mb-0">{{ $jumlahBukuDipinjam }}</h3>
-                            <p class="text-white mb-0">Jumlah Buku Dipinjam</p>
+                            <h4 class="fs-3 fw-bold mb-0">{{ $jumlahBukuDipinjam }}</h4>
+                            <p class="text-white-50 mb-0">Jumlah Buku Dipinjam</p>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-book-reader fa-3x"></i>
+                            <i class="fas fa-book-reader fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -56,15 +56,15 @@
         </div>
 
         <div class="col">
-            <div class="card bg-gradient-artistic-4 text-white rounded-3 shadow-lg border-0">
+            <div class="card bg-blue-4 text-white rounded-4 shadow-lg border-0">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="fs-3 fw-bold mb-0">{{ $jumlahBukuDiKembalikan }}</h3>
-                            <p class="text-white mb-0">Jumlah Buku Dikembalikan</p>
+                            <h4 class="fs-3 fw-bold mb-0">{{ $jumlahBukuDiKembalikan }}</h4>
+                            <p class="text-white-50 mb-0">Jumlah Buku Dikembalikan</p>
                         </div>
                         <div class="col-auto">
-                            <i class="fas fa-book-dead fa-3x"></i>
+                            <i class="fas fa-book-dead fa-2x"></i>
                         </div>
                     </div>
                 </div>
@@ -73,12 +73,12 @@
         </div>
     </div>
 
-    <div class="card bg-gradient-artistic-info rounded-3 shadow-lg border-0">
+    <div class="card bg-blue-info rounded-4 shadow-lg border-0 mt-4">
         <div class="container p-4">
-            <h3 class="text-white">
-                <i class="fas fa-info-circle me-3"></i> Informasi Aturan Peminjaman Buku
-            </h3>
-            <ol class="text-white">
+            <h5 class="text-white">
+                <i class="fas fa-info-circle me-2"></i> Informasi Aturan Peminjaman Buku
+            </h5>
+            <ol class="text-white-50 small">
                 <li>Waktu peminjaman maksimal 3 bulan.</li>
                 <li>Setiap anggota hanya dapat meminjam maksimal 10 kali atau 10 buku.</li>
                 <li>Jika terlambat mengembalikan buku, dikenakan denda Rp.1.000 per hari.</li>
@@ -95,15 +95,14 @@
         .card {
             position: relative;
             overflow: hidden;
-            border-radius: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 1.25rem;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         .card::before {
@@ -113,31 +112,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
-            opacity: 0.6;
-            transition: opacity 0.3s ease;
+            background-image: linear-gradient(to bottom right, rgba(255,255,255,0.07), rgba(0,0,0,0.1));
+            opacity: 0.5;
+            transition: opacity 0.4s ease;
             z-index: -1;
         }
 
         .card:hover::before {
-            opacity: 0.4;
-        }
-
-        .card .card-body {
-            position: relative;
-            z-index: 1;
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .card .card-body h3 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .card .card-body p {
-            font-size: 1.25rem;
-            margin-bottom: 0;
+            opacity: 0.3;
         }
 
         .fa {
@@ -145,31 +127,35 @@
         }
 
         .card:hover .fa {
-            transform: scale(1.2);
+            transform: scale(1.15);
         }
 
-        .bg-gradient-artistic-1 {
-            background: linear-gradient(to right bottom, #4a90e2, #50e3c2); /* Soft blue to green */
+        .bg-blue-1 {
+            background: linear-gradient(135deg, #3a7bd5, #00d2ff);
         }
 
-        .bg-gradient-artistic-2 {
-            background: linear-gradient(to right bottom, #f39c12, #f1c40f); /* Orange to yellow */
+        .bg-blue-2 {
+            background: linear-gradient(135deg, #2b5876, #4e4376);
         }
 
-        .bg-gradient-artistic-3 {
-            background: linear-gradient(to right bottom, #e74c3c, #c0392b); /* Red to dark red */
+        .bg-blue-3 {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
         }
 
-        .bg-gradient-artistic-4 {
-            background: linear-gradient(to right bottom, #2ecc71, #27ae60); /* Green to darker green */
+        .bg-blue-4 {
+            background: linear-gradient(135deg, #1488cc, #2b32b2);
         }
 
-        .bg-gradient-artistic-info {
-            background: linear-gradient(to right bottom, #34495e, #2c3e50); /* Dark blue to darker blue */
+        .bg-blue-info {
+            background: linear-gradient(135deg, #283c86, #45a247);
         }
 
         .text-white {
             color: #fff !important;
+        }
+
+        .text-white-50 {
+            color: rgba(255, 255, 255, 0.85) !important;
         }
     </style>
 @endpush

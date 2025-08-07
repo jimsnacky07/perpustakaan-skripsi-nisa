@@ -27,4 +27,9 @@ class Pengembalian extends Model
     {
         return $this->belongsTo(Book::class, 'id_buku');
     }
+
+    public function peminjaman()
+    {
+        return $this->belongsTo(Peminjaman::class, 'id_peminjaman');
+    }
 }

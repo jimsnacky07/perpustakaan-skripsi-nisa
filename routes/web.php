@@ -97,12 +97,14 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin,pimpinan'])->group(
         Route::get('/pengembalian', 'index')->name('pengembalian');
         Route::get('/tambah-pengembalian', 'tambah')->name('pengembalian.create');
         Route::post('/simpan-pengembalian', 'store')->name('pengembalian.store');
+        Route::get('/getBukuDipinjam', 'getBukuDipinjam')->name('pengembalian.getBukuDipinjam');
         Route::post('/getkampung', 'getkampung')->name('getkampungzonasi');
     });
 
     //Buku Hilang
     Route::controller(BukuHilangController::class)->group(function () {
         Route::get('buku-hilang', 'index')->name('buku-hilang');
+        Route::get('buku-hilang/test', 'test')->name('buku-hilang.test');
         Route::post('buku-hilang', 'store')->name('buku-hilang.store');
         Route::get('fetchBukuHilang', 'fetchBukuHilang')->name('buku-hilang.fetch');
         Route::get('buku-hilang/edit', 'edit')->name('buku-hilang.edit');
@@ -118,6 +120,8 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin,pimpinan'])->group(
         Route::get('/laporan-buku', 'buku')->name('buku');
         Route::get('/laporan-rak', 'rakBuku')->name('rak-buku');
         Route::get('/laporan-riwayat-peminjaman', 'riwayatPeminjaman')->name('riwayat-peminjaman');
+        Route::get('/laporan-denda', 'denda')->name('denda');
+        Route::get('/laporan-statistik', 'statistik')->name('statistik');
         Route::post('laporan-peminjaman-buku', 'laporanPeminjamanBuku')->name('peminjaman-buku');
         Route::post('laporan-pengembalian-buku', 'laporanPengembalianBuku')->name('pengembalian-buku');
         Route::get('laporan-buku-hilang', 'laporanbukuhilang')->name('buku-hilang');

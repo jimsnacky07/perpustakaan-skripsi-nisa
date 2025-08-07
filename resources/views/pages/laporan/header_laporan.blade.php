@@ -12,4 +12,4 @@
      <hr style="border:1px solid black;">
      <br>
  </div>
- <h3 class="text-center">{{ $title }}</h3>
+ {{-- <h3 class="text-center">{{ $title }}</h3> --}}

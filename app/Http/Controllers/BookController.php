@@ -6,6 +6,7 @@ use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class BookController extends Controller
 {
@@ -22,7 +23,6 @@ class BookController extends Controller
             ->select('books.*', 'jenis_bukus.name', 'rak_bukus.no_rak', 'rak_bukus.nama_rak')
             ->get();
 
-        // dd($data);
         return view('pages.buku.index', $data);
     }
 
@@ -46,42 +46,51 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($data);
         $this->validate($request, [
-            'jenis_buku_id' => 'required',
-            'judul_buku' => 'required',
-            'no_isbn' => 'required',
-            'tahun_terbit' => 'required',
-            'penerbit_buku' => 'required',
-            'pengarang_buku' => 'required',
-            'rak_buku_id' => 'required',
-            'jumlah_buku' => 'required',
-            'gambar'     => 'required|image|mimes:png,jpg,jpeg',
+            'jenis_buku_id' => 'required|exists:jenis_bukus,id',
+            'judul_buku' => 'required|string|max:255',
+            'no_isbn' => 'required|string|unique:books,no_isbn',
+            'tahun_terbit' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'penerbit_buku' => 'required|string|max:255',
+            'pengarang_buku' => 'required|string|max:255',
+            'rak_buku_id' => 'required|exists:rak_bukus,id',
+            'jumlah_buku' => 'required|integer|min:0',
+            'gambar' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+        ], [
+            'no_isbn.unique' => 'ISBN sudah terdaftar dalam sistem',
+            'jumlah_buku.min' => 'Jumlah buku tidak boleh negatif',
+            'tahun_terbit.min' => 'Tahun terbit tidak valid',
+            'tahun_terbit.max' => 'Tahun terbit tidak boleh lebih dari tahun sekarang',
         ]);
 
-        //upload image
-        $image = $request->file('gambar');
-        $namabuku = $image->hashName();
-        $image->move(public_path('storage/buku'), $namabuku);
+        try {
+            //upload image
+            $image = $request->file('gambar');
+            $namabuku = $image->hashName();
+            $image->move(public_path('storage/buku'), $namabuku);
 
-        $buku = Book::create([
-            'jenis_buku_id' => $request->jenis_buku_id,
-            'judul_buku' => $request->judul_buku,
-            'no_isbn' => $request->no_isbn,
-            'tahun_terbit' => $request->tahun_terbit,
-            'penerbit_buku' => $request->penerbit_buku,
-            'pengarang_buku' => $request->pengarang_buku,
-            'rak_buku_id' => $request->rak_buku_id,
-            'jumlah_buku' => $request->jumlah_buku,
-            'gambar'     => $namabuku,
-        ]);
+            $buku = Book::create([
+                'jenis_buku_id' => $request->jenis_buku_id,
+                'judul_buku' => $request->judul_buku,
+                'no_isbn' => $request->no_isbn,
+                'tahun_terbit' => $request->tahun_terbit,
+                'penerbit_buku' => $request->penerbit_buku,
+                'pengarang_buku' => $request->pengarang_buku,
+                'rak_buku_id' => $request->rak_buku_id,
+                'jumlah_buku' => $request->jumlah_buku,
+                'gambar' => $namabuku,
+            ]);
 
+            Log::info('Buku baru ditambahkan', [
+                'judul' => $request->judul_buku,
+                'isbn' => $request->no_isbn,
+                'jumlah' => $request->jumlah_buku,
+                'user_id' => auth()->id()
+            ]);
 
-        if ($buku) {
-            //redirect dengan pesan sukses
             return redirect()->route('buku.index')->with(['success' => 'Data Berhasil Disimpan!']);
-        } else {
-            //redirect dengan pesan error
+        } catch (\Exception $e) {
+            Log::error('Gagal menambahkan buku', ['error' => $e->getMessage()]);
             return redirect()->route('buku.index')->with(['error' => 'Data Gagal Disimpan!']);
         }
     }
@@ -125,58 +134,79 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'jenis_buku_id' => 'required',
-            'judul_buku' => 'required',
-            'no_isbn' => 'required',
-            'tahun_terbit' => 'required',
-            'penerbit_buku' => 'required',
-            'pengarang_buku' => 'required',
-            'rak_buku_id' => 'required',
-            'jumlah_buku' => 'required',
-            'gambar'     => 'nullable|image|mimes:png,jpg,jpeg',
-        ]);
-
-        //get data Buku by ID
         $buku = Book::findOrFail($id);
 
-        if ($request->file('gambar') == "") {
+        $this->validate($request, [
+            'jenis_buku_id' => 'required|exists:jenis_bukus,id',
+            'judul_buku' => 'required|string|max:255',
+            'no_isbn' => 'required|string|unique:books,no_isbn,' . $id,
+            'tahun_terbit' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'penerbit_buku' => 'required|string|max:255',
+            'pengarang_buku' => 'required|string|max:255',
+            'rak_buku_id' => 'required|exists:rak_bukus,id',
+            'jumlah_buku' => 'required|integer|min:0',
+            'gambar' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
+        ], [
+            'no_isbn.unique' => 'ISBN sudah terdaftar dalam sistem',
+            'jumlah_buku.min' => 'Jumlah buku tidak boleh negatif',
+        ]);
 
-            $buku->update([
-                'jenis_buku_id' => $request->jenis_buku_id,
-                'judul_buku' => $request->judul_buku,
-                'no_isbn' => $request->no_isbn,
-                'tahun_terbit' => $request->tahun_terbit,
-                'penerbit_buku' => $request->penerbit_buku,
-                'pengarang_buku' => $request->pengarang_buku,
-                'rak_buku_id' => $request->rak_buku_id,
-                'jumlah_buku' => $request->jumlah_buku,
-            ]);
-        } else {
+        // Validasi stok minimum berdasarkan peminjaman aktif
+        $peminjamanAktif = DB::table('detail_peminjaman')
+            ->where('id_buku_pinjam', $id)
+            ->where('status', 0)
+            ->sum('jumlah_buku');
 
-            //hapus old image
-            Storage::disk('local')->delete('public/buku/' . $buku->gambar);
-
-            //upload new image
-            $image = $request->file('gambar');
-            $image->storeAs('public/buku', $image->hashName());
-
-            $buku->update([
-                'gambar'     => $image->hashName(),
-                'jenis_buku_id' => $request->jenis_buku_id,
-                'judul_buku' => $request->judul_buku,
-                'no_isbn' => $request->no_isbn,
-                'tahun_terbit' => $request->tahun_terbit,
-                'penerbit_buku' => $request->penerbit_buku,
-                'pengarang_buku' => $request->pengarang_buku,
-                'rak_buku_id' => $request->rak_buku_id,
-                'jumlah_buku' => $request->jumlah_buku,
-            ]);
+        $stokMinimum = $peminjamanAktif;
+        if ($request->jumlah_buku < $stokMinimum) {
+            return redirect()->back()->withErrors(['jumlah_buku' => "Jumlah buku tidak boleh kurang dari $stokMinimum (sedang dipinjam)"]);
         }
 
-        if ($buku) {
-            //redirect dengan pesan sukses
+        try {
+            if ($request->file('gambar') == "") {
+                $buku->update([
+                    'jenis_buku_id' => $request->jenis_buku_id,
+                    'judul_buku' => $request->judul_buku,
+                    'no_isbn' => $request->no_isbn,
+                    'tahun_terbit' => $request->tahun_terbit,
+                    'penerbit_buku' => $request->penerbit_buku,
+                    'pengarang_buku' => $request->pengarang_buku,
+                    'rak_buku_id' => $request->rak_buku_id,
+                    'jumlah_buku' => $request->jumlah_buku,
+                ]);
+            } else {
+                //hapus old image
+                Storage::disk('local')->delete('public/buku/' . $buku->gambar);
+
+                //upload new image
+                $image = $request->file('gambar');
+                $image->storeAs('public/buku', $image->hashName());
+
+                $buku->update([
+                    'gambar' => $image->hashName(),
+                    'jenis_buku_id' => $request->jenis_buku_id,
+                    'judul_buku' => $request->judul_buku,
+                    'no_isbn' => $request->no_isbn,
+                    'tahun_terbit' => $request->tahun_terbit,
+                    'penerbit_buku' => $request->penerbit_buku,
+                    'pengarang_buku' => $request->pengarang_buku,
+                    'rak_buku_id' => $request->rak_buku_id,
+                    'jumlah_buku' => $request->jumlah_buku,
+                ]);
+            }
+
+            Log::info('Buku diupdate', [
+                'judul' => $request->judul_buku,
+                'isbn' => $request->no_isbn,
+                'jumlah_lama' => $buku->getOriginal('jumlah_buku'),
+                'jumlah_baru' => $request->jumlah_buku,
+                'user_id' => auth()->id()
+            ]);
+
             return redirect()->route('buku.index')->with(['success' => 'Data Berhasil Diupdate!']);
+        } catch (\Exception $e) {
+            Log::error('Gagal mengupdate buku', ['error' => $e->getMessage()]);
+            return redirect()->route('buku.index')->with(['error' => 'Data Gagal Diupdate!']);
         }
     }
 
@@ -189,12 +219,31 @@ class BookController extends Controller
     public function destroy($id)
     {
         $buku = Book::findOrFail($id);
-        Storage::disk('local')->delete('public/buku/' . $buku->gambar);
-        $buku->delete();
 
-        if ($buku) {
-            //redirect dengan pesan sukses
+        // Cek apakah buku sedang dipinjam
+        $peminjamanAktif = DB::table('detail_peminjaman')
+            ->where('id_buku_pinjam', $id)
+            ->where('status', 0)
+            ->count();
+
+        if ($peminjamanAktif > 0) {
+            return redirect()->route('buku.index')->with(['error' => 'Buku tidak dapat dihapus karena sedang dipinjam!']);
+        }
+
+        try {
+            Storage::disk('local')->delete('public/buku/' . $buku->gambar);
+            $buku->delete();
+
+            Log::info('Buku dihapus', [
+                'judul' => $buku->judul_buku,
+                'isbn' => $buku->no_isbn,
+                'user_id' => auth()->id()
+            ]);
+
             return redirect()->route('buku.index')->with(['success' => 'Data Berhasil Dihapus!']);
+        } catch (\Exception $e) {
+            Log::error('Gagal menghapus buku', ['error' => $e->getMessage()]);
+            return redirect()->route('buku.index')->with(['error' => 'Data Gagal Dihapus!']);
         }
     }
 }

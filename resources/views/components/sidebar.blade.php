@@ -39,8 +39,8 @@
 
                 <li class="nav-item">
                     <a href="#"
-                        class="nav-link  {{ Route::is('user') || Route::is('jenis-buku') ? 'active open' : '' }}">
-                        <i class="nav-icon fas fa-copy"></i>
+                        class="nav-link  {{ Route::is('user') || Route::is('jenis-buku') || Route::is('rak-buku') || Route::is('buku.*') || Route::is('anggota.*') || Route::is('bukurusak.*') || Route::is('buku-hilang') || Route::is('grafik.*') ? 'active open' : '' }}">
+                        <i class="nav-icon fas fa-database"></i>
                         <p>
                             Data Master
                             <i class="fas fa-angle-left right"></i>
@@ -49,7 +49,7 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('user') }}" class="nav-link {{ Route::is('user') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Data User
                                 </p>
@@ -58,7 +58,7 @@
                         <li class="nav-item">
                             <a href="{{ route('jenis-buku') }}"
                                 class="nav-link {{ Route::is('jenis-buku') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-tags"></i>
                                 <p>
                                     Kategori Buku
                                 </p>
@@ -67,7 +67,7 @@
                         <li class="nav-item">
                             <a href="{{ route('buku-hilang') }}"
                                 class="nav-link {{ Route::is('buku-hilang') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-search"></i>
                                 <p>
                                     Buku Hilang
                                 </p>
@@ -77,7 +77,7 @@
                         <li class="nav-item">
                             <a href="{{ route('rak-buku') }}"
                                 class="nav-link {{ Route::is('rak-buku') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-boxes"></i>
                                 <p>
                                     Rak Buku
                                 </p>
@@ -86,7 +86,7 @@
                         <li class="nav-item">
                             <a href="{{ route('buku.index') }}"
                                 class="nav-link {{ Route::is('buku.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-book"></i>
                                 <p>
                                     Data Buku
                                 </p>
@@ -104,7 +104,7 @@
                         <li class="nav-item">
                             <a href="{{ route('anggota.index') }}"
                                 class="nav-link {{ Route::is('anggota.*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-user-graduate"></i>
                                 <p>
                                     Data Anggota
                                 </p>
@@ -128,7 +128,7 @@
                 <li class="nav-item">
                     <a href="#"
                         class="nav-link  {{ Route::is('peminjaman*') || Route::is('pengembalian*') ? 'active open' : '' }}">
-                        <i class="nav-icon fas fa-copy"></i>
+                        <i class="nav-icon fas fa-exchange-alt"></i>
                         <p>
                             Transaksi Buku
                             <i class="fas fa-angle-left right"></i>
@@ -138,7 +138,7 @@
                         <li class="nav-item">
                             <a href="{{ route('peminjaman') }}"
                                 class="nav-link {{ Route::is('peminjaman*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-hand-holding"></i>
                                 <p>
                                     Data Peminjaman
                                 </p>
@@ -148,7 +148,7 @@
                         <li class="nav-item">
                             <a href="{{ route('pengembalian') }}"
                                 class="nav-link {{ Route::is('pengembalian*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-undo"></i>
                                 <p>
                                     Data Pengembalian Buku
                                 </p>
@@ -161,8 +161,8 @@
 
                 <li class="nav-item">
                     <a href="#"
-                        class="nav-link  {{ Route::is('laporan.kategori-buku') || Route::is('laporan.rak-buku') ? 'active open' : '' }}">
-                        <i class="nav-icon fas fa-copy"></i>
+                        class="nav-link  {{ Route::is('laporan.kategori-buku') || Route::is('laporan.rak-buku') || Route::is('laporan.anggota') || Route::is('laporan.buku') || Route::is('laporan.riwayat-peminjaman') || Route::is('laporan.buku_masuk') || Route::is('laporan.buku_rusak') || Route::is('laporan.buku_hilang') || Route::is('laporan.denda') || Route::is('laporan.statistik') ? 'active open' : '' }}">
+                        <i class="nav-icon fas fa-file-alt"></i>
                         <p>
                             Laporan
                             <i class="fas fa-angle-left right"></i>
@@ -173,7 +173,7 @@
                             <a href="{{ route('laporan.kategori-buku') }}"
                                 class="nav-link {{ Route::is('laporan.kategori-buku') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-tags"></i>
                                 <p>
                                     Laporan Kategori Buku
                                 </p>
@@ -184,19 +184,9 @@
                             <a href="{{ route('laporan.rak-buku') }}"
                                 class="nav-link {{ Route::is('laporan.rak-buku') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-boxes"></i>
                                 <p>
                                     Laporan Rak Buku
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('laporan.buku-hilang') }}"
-                                class="nav-link {{ Route::is('laporan.buku-hilang') ? 'active' : '' }}"
-                                target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>
-                                    Laporan Buku Hilang
                                 </p>
                             </a>
                         </li>
@@ -204,7 +194,7 @@
                             <a href="{{ route('laporan.anggota') }}"
                                 class="nav-link {{ Route::is('laporan.anggota') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-user-graduate"></i>
                                 <p>
                                     Laporan Data Anggota
                                 </p>
@@ -213,7 +203,7 @@
                         <li class="nav-item">
                             <a href="{{ route('laporan.buku') }}"
                                 class="nav-link {{ Route::is('laporan.buku') ? 'active' : '' }}" target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-book"></i>
                                 <p>
                                     Laporan Data Buku
                                 </p>
@@ -223,19 +213,29 @@
                             <a href="{{ route('laporan.riwayat-peminjaman') }}"
                                 class="nav-link {{ Route::is('laporan.riwayat-peminjaman') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-history"></i>
                                 <p>
-                                    <!-- Grafik -->
-                                    <!-- </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('laporan.riwayat-peminjaman') }}"
-                                    class="nav-link {{ Route::is('laporan.riwayat-peminjaman') ? 'active' : '' }}"
-                                    target="_blank">
-                                    <i class="nav-icon fas fa-shopping-cart"></i>
-                                    <p> -->
                                     Laporan Riwayat Peminjaman Buku
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.denda') }}"
+                                class="nav-link {{ Route::is('laporan.denda') ? 'active' : '' }}"
+                                target="_blank">
+                                <i class="nav-icon fas fa-money-bill-wave"></i>
+                                <p>
+                                    Laporan Denda
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.statistik') }}"
+                                class="nav-link {{ Route::is('laporan.statistik') ? 'active' : '' }}"
+                                target="_blank">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>
+                                    Laporan Statistik
                                 </p>
                             </a>
                         </li>
@@ -259,7 +259,7 @@
                             <a href="{{ route('laporan.buku_hilang') }}"
                                 class="nav-link {{ Route::is('laporan.buku_hilang') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-book-medical"></i>
+                                <i class="nav-icon fas fa-search"></i>
                                 <p>Laporan Buku Hilang</p>
                             </a>
                         </li>
@@ -381,7 +381,7 @@
 
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">
-                        <i class="nav-icon fas fa-arrow-left"></i>
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>
                             Keluar
                         </p>
@@ -425,7 +425,7 @@
                 <li class="nav-item">
                     <a href="#"
                         class="nav-link  {{ Route::is('peminjaman*') || Route::is('pengembalian*') ? 'active open' : '' }}">
-                        <i class="nav-icon fas fa-copy"></i>
+                        <i class="nav-icon fas fa-exchange-alt"></i>
                         <p>
                             Transaksi Buku
                             <i class="fas fa-angle-left right"></i>
@@ -435,7 +435,7 @@
                         <li class="nav-item">
                             <a href="{{ route('peminjaman') }}"
                                 class="nav-link {{ Route::is('peminjaman*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-hand-holding"></i>
                                 <p>
                                     Data Peminjaman
                                 </p>
@@ -445,21 +445,19 @@
                         <li class="nav-item">
                             <a href="{{ route('pengembalian') }}"
                                 class="nav-link {{ Route::is('pengembalian*') ? 'active' : '' }}">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <i class="nav-icon fas fa-undo"></i>
                                 <p>
                                     Data Pengembalian Buku
                                 </p>
                             </a>
                         </li>
-
-
                     </ul>
                 </li>
 
                 <li class="nav-item">
                     <a href="#"
-                        class="nav-link  {{ Route::is('laporan.kategori-buku') || Route::is('laporan.rak-buku') ? 'active open' : '' }}">
-                        <i class="nav-icon fas fa-copy"></i>
+                        class="nav-link  {{ Route::is('laporan.kategori-buku') || Route::is('laporan.rak-buku') || Route::is('laporan.anggota') || Route::is('laporan.buku') || Route::is('laporan.riwayat-peminjaman') || Route::is('laporan.buku_masuk') || Route::is('laporan.buku_rusak') || Route::is('laporan.buku_hilang') || Route::is('laporan.denda') || Route::is('laporan.statistik') ? 'active open' : '' }}">
+                        <i class="nav-icon fas fa-file-alt"></i>
                         <p>
                             Laporan
                             <i class="fas fa-angle-left right"></i>
@@ -470,76 +468,88 @@
                             <a href="{{ route('laporan.kategori-buku') }}"
                                 class="nav-link {{ Route::is('laporan.kategori-buku') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>
-                                    Laporan Kategori Buku
-                                </p>
+                                <i class="nav-icon fas fa-tags"></i>
+                                <p>Laporan Kategori Buku</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('laporan.rak-buku') }}"
                                 class="nav-link {{ Route::is('laporan.rak-buku') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>
-                                    Laporan Rak Buku
-                                </p>
+                                <i class="nav-icon fas fa-boxes"></i>
+                                <p>Laporan Rak Buku</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('laporan.anggota') }}"
                                 class="nav-link {{ Route::is('laporan.anggota') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>
-                                    Laporan Data Anggota
-                                </p>
+                                <i class="nav-icon fas fa-user-graduate"></i>
+                                <p>Laporan Data Anggota</p>
                             </a>
-                            <p>
-                        <li class="nav-item">
-                            <a href="{{ route('laporan.bukurusak') }}"
-                                class="nav-link {{ Route::is('laporan.bukuhilang') ? 'active' : '' }}"
-                                target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>
-                                    Laporan Buku Hilang
-                                </p>
-
-
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('laporan.buku') }}"
                                 class="nav-link {{ Route::is('laporan.buku') ? 'active' : '' }}" target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>
-                                    Laporan Data Buku
-                                </p>
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Laporan Data Buku</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('laporan.riwayat-peminjaman') }}"
                                 class="nav-link {{ Route::is('laporan.riwayat-peminjaman') ? 'active' : '' }}"
                                 target="_blank">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>
-                                    Laporan Riwayat Peminjaman Buku
-                                </p>
+                                <i class="nav-icon fas fa-history"></i>
+                                <p>Laporan Riwayat Peminjaman Buku</p>
                             </a>
                         </li>
-
-
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.denda') }}"
+                                class="nav-link {{ Route::is('laporan.denda') ? 'active' : '' }}"
+                                target="_blank">
+                                <i class="nav-icon fas fa-money-bill-wave"></i>
+                                <p>Laporan Denda</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.statistik') }}"
+                                class="nav-link {{ Route::is('laporan.statistik') ? 'active' : '' }}"
+                                target="_blank">
+                                <i class="nav-icon fas fa-chart-pie"></i>
+                                <p>Laporan Statistik</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.buku_masuk') }}"
+                                class="nav-link {{ Route::is('laporan.buku_masuk') ? 'active' : '' }}"
+                                target="_blank">
+                                <i class="nav-icon fas fa-book"></i>
+                                <p>Laporan Buku Masuk</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.buku_rusak') }}"
+                                class="nav-link {{ Route::is('laporan.buku_rusak') ? 'active' : '' }}"
+                                target="_blank">
+                                <i class="nav-icon fas fa-book-dead"></i>
+                                <p>Laporan Buku Rusak</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('laporan.buku_hilang') }}"
+                                class="nav-link {{ Route::is('laporan.buku_hilang') ? 'active' : '' }}"
+                                target="_blank">
+                                <i class="nav-icon fas fa-search"></i>
+                                <p>Laporan Buku Hilang</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 
-
-
-
                 <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">
-                        <i class="nav-icon fas fa-arrow-left"></i>
-                        <p>
-                            Keluar
-                        </p>
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>Keluar</p>
                     </a>
                 </li>
             </ul>
@@ -582,7 +592,7 @@
             <li class="nav-item">
                 <a href="{{ route('daftarbuku.index') }}"
                     class="nav-link {{ Route::is('daftarbuku.index') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-shopping-cart"></i>
+                    <i class="nav-icon fas fa-book"></i>
                     <p>
                         Daftar Buku
                     </p>
@@ -591,7 +601,7 @@
             <li class="nav-item">
                 <a href="{{ route('riwayat-pinjam-buku.index') }}"
                     class="nav-link {{ Route::is('riwayat-pinjam-buku.index') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-shopping-cart"></i>
+                    <i class="nav-icon fas fa-hand-holding"></i>
                     <p>
                         Riwayat Pinjam Buku
                     </p>
@@ -600,7 +610,7 @@
             <li class="nav-item">
                 <a href="{{ route('riwayat-pinjam-buku.riwayat-pengembalian-buku') }}"
                     class="nav-link {{ Route::is('riwayat-pinjam-buku.riwayat-pengembalian-buku') ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-shopping-cart"></i>
+                    <i class="nav-icon fas fa-undo"></i>
                     <p>
                         Riwayat Pengembalian Buku
                     </p>
@@ -608,7 +618,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{ route('logout') }}" class="nav-link">
-                    <i class="nav-icon fas fa-arrow-left"></i>
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
                     <p>
                         Keluar
                     </p>

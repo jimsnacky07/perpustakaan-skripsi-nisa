@@ -71,7 +71,7 @@
                         <td>{{ $data->nama }}</td>
                         <td style="text-align: center;">{{ $data->jk == 'L' ? 'Laki - Laki' : 'Perempuan' }}</td>
                         <td style="text-align: center;">{{ $data->no_hp }}</td>
-                        <td>{{ $data->email }}</td>
+                        <td>{{ $data->user->email ?? '-' }}</td>
                         <td style="text-align: center;">{{ $data->alamat }}</td>
                     </tr>
                 @endforeach

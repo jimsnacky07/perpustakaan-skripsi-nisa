@@ -53,9 +53,9 @@
                                         @if (!in_array($data->id_anggota, $idAnggotaArr))
                                             <tr>
                                                 <td>{{ $i + 1 }}</td>
-                                                <td>{{ $data->nama }}</td>
-                                                <td>{{ $data->no_isbn }}</td>
-                                                <td>{{ $data->judul_buku }}</td>
+                                                <td>{{ $data->anggota->nama ?? '-' }}</td>
+                                                <td>{{ $data->book->no_isbn ?? '-' }}</td>
+                                                <td>{{ $data->book->judul_buku ?? '-' }}</td>
                                                 <td>{{ $data->qty }}</td>
                                                 <td>{{ date('d F Y', strtotime($data->tanggal_pengembalian)) }}</td>
                                                 <td>{{ $data->jumlah_hari_terlambat }} Hari</td>

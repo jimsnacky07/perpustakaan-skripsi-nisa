@@ -80,13 +80,25 @@
                 @foreach ($riwayatPeminjamanBuku as $no => $data)
                     <tr>
                         <td>{{ $no + 1 }}</td>
-                        <td>{{ $data->nama }}</td>
-                        <td style="text-align: center;">{{ $data->judul_buku }}</td>
-                        <td style="text-align: center;">{{ $data->jumlah_buku }}</td>
-                        <td style="text-align: center;">{{ date('d F Y', strtotime($data->tgl_pinjam)) }}</td>
-                        <td style="text-align: center;">{{ date('d F Y', strtotime($data->tgl_kembali)) }}</td>
-                        <td class="{{ $data->status == 0 ? 'status-dipinjam' : 'status-dikembalikan' }}" style="text-align: center;">
-                            {{ $data->status == 0 ? 'DIPINJAM' : 'DIKEMBALIKAN' }}
+                        <td>{{ $data['nama'] }}</td>
+                        <td style="text-align: center;">{{ $data['judul_buku'] }}</td>
+                        <td style="text-align: center;">{{ $data['jumlah_buku'] }}</td>
+                        <td style="text-align: center;">
+                            @if($data['tgl_pinjam'] && $data['tgl_pinjam'] != '-')
+                                {{ date('d F Y', strtotime($data['tgl_pinjam'])) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td style="text-align: center;">
+                            @if($data['tgl_kembali'] && $data['tgl_kembali'] != '-')
+                                {{ date('d F Y', strtotime($data['tgl_kembali'])) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td class="{{ $data['status'] == 0 ? 'status-dipinjam' : 'status-dikembalikan' }}" style="text-align: center;">
+                            {{ $data['status'] == 0 ? 'DIPINJAM' : 'DIKEMBALIKAN' }}
                         </td>
                     </tr>
                 @endforeach

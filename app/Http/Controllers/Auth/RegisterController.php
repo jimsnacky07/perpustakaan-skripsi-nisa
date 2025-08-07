@@ -19,22 +19,23 @@ class RegisterController extends Controller
     | Register Controller
     |--------------------------------------------------------------------------
     |
-    | Controller ini menangani registrasi user baru serta validasi datanya.
-    | Secara default menggunakan trait RegistersUsers untuk memproses register.
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
     |
     */
 
     use RegistersUsers;
 
     /**
-     * Ke mana user diarahkan setelah registrasi (tidak dipakai karena kita override registered()).
+     * Where to redirect users after registration.
      *
      * @var string
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
-     * Buat instance baru dari controller.
+     * Create a new controller instance.
      *
      * @return void
      */
@@ -44,7 +45,7 @@ class RegisterController extends Controller
     }
 
     /**
-     * Validator untuk validasi request registrasi.
+     * Get a validator for an incoming registration request.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -53,8 +54,8 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'email' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'confirmed'],
             'nisn' => ['required', 'string', 'unique:anggotas', 'max:255'],
             'nama' => ['required', 'string', 'max:255'],
             'jk' => ['required', 'string', 'max:255'],
@@ -65,14 +66,14 @@ class RegisterController extends Controller
     }
 
     /**
-     * Membuat user baru setelah registrasi valid.
+     * Create a new user instance after a valid registration.
      *
      * @param  array  $data
      * @return \App\Models\User
      */
     protected function create(array $data)
     {
-        $user = User::create([
+        $user =  User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
@@ -87,21 +88,21 @@ class RegisterController extends Controller
             'kelas' => $data['kelas'],
             'user_id' => $user->id,
         ]);
-
         return $user;
     }
 
     /**
-     * Override fungsi bawaan RegistersUsers agar setelah registrasi
-     * user diarahkan ke halaman login, bukan langsung login.
+     * Handle user after registration.
+     * Override to logout user and redirect to login page with message.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function registered(Request $request, $user)
     {
-        Auth::logout(); // logout agar tidak auto login
-        return redirect('/login')->with('success', 'Akun berhasil dibuat, silakan login.');
+        Auth::logout(); // logout user setelah registrasi
+
+        return redirect('/login')->with('success', 'Registrasi berhasil. Silakan login terlebih dahulu.');
     }
 }

@@ -16,4 +16,16 @@ class Peminjaman extends Model
         'tgl_kembali',
         'id_anggota_peminjaman',
     ];
+
+    // Relasi ke anggota
+    public function anggota()
+    {
+        return $this->belongsTo(Anggota::class, 'id_anggota_peminjaman', 'id');
+    }
+
+    // Relasi ke detail peminjaman
+    public function detailPeminjaman()
+    {
+        return $this->hasMany(DetailPeminjaman::class, 'id_peminjaman', 'id');
+    }
 }

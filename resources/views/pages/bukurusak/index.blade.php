@@ -19,7 +19,6 @@
                 <th>Jumlah Rusak</th>
                 <th>Penyebab</th>
                 <th>Keterangan</th>
-                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -30,14 +29,6 @@
                 <td>{{ $rusak->jumlahrusak }}</td>
                 <td>{{ $rusak->penyebab }}</td>
                 <td>{{ $rusak->keterangan }}</td>
-                <td>
-                    <a href="{{ route('bukurusak.edit', $rusak->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('bukurusak.destroy', $rusak->id) }}" method="POST" style="display:inline-block">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin hapus?')">Hapus</button>
-                    </form>
-                </td>
             </tr>
             @endforeach
         </tbody>

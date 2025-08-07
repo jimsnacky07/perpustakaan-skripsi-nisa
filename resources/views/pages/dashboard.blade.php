@@ -3,109 +3,134 @@
 @section('title', 'Dashboard')
 
 @section('content')
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        <div class="col">
+    <div class="row g-3">
+        @php
+            $cards = [
+                ['label' => 'Buku', 'count' => $countBuku, 'icon' => 'fa-book', 'color' => 'linear-gradient(135deg, #667eea, #764ba2)'],
+                ['label' => 'Kategori', 'count' => $countJenisBuku, 'icon' => 'fa-tags', 'color' => 'linear-gradient(135deg, #43cea2, #185a9d)'],
+                ['label' => 'Anggota', 'count' => $countAnggota, 'icon' => 'fa-users', 'color' => 'linear-gradient(135deg, #f7971e, #ffd200)'],
+                ['label' => 'Peminjam', 'count' => $countPeminjamanBuku, 'icon' => 'fa-hand-holding', 'color' => 'linear-gradient(135deg, #e53935, #e35d5b)'],
+            ];
+        @endphp
 
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3>{{ $countBuku }}</h3>
-                    <p>Buku</p>
+        @foreach($cards as $card)
+            <div class="col-12 col-sm-6 col-md-3">
+                <div class="glass-card" style="--card-bg: {{ $card['color'] }}">
+                    <div class="icon-box">
+                        <i class="fas {{ $card['icon'] }}"></i>
+                    </div>
+                    <div class="details-box">
+                        <div class="count" data-count="{{ $card['count'] }}">0</div>
+                        <div class="label">{{ $card['label'] }}</div>
+                    </div>
+                    <a href="#" class="view-more">Lihat Detail <i class="fas fa-arrow-right"></i></a>
                 </div>
-                <div class="icon">
-                    <i class="ion ion-bag"></i>
-                </div>
-                <a href="#" class="small-box-footer"> <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-        </div>
-
-        <div class="col">
-
-            <div class="small-box bg-success">
-                <div class="inner">
-                    <h3>{{ $countJenisBuku }}</h3>
-                    <p>Kategori Buku</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="#" class="small-box-footer"> <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-
-        <div class="col">
-
-            <div class="small-box bg-warning">
-                <div class="inner">
-                    <h3>{{ $countAnggota }}</h3>
-                    <p class="text-white">Anggota Perpustakaan</p>
-                </div>
-                <div class="icon">
-                    <i class="fa fa-user"></i>
-                </div>
-                <a href="#" class="small-box-footer"> <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
-
-        <div class="col">
-
-            <div class="small-box bg-danger">
-                <div class="inner">
-                    <h3>{{ $countPeminjamanBuku }}</h3>
-                    <p>Orang Peminjam Buku</p>
-                </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="#" class="small-box-footer"> <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-        </div>
+        @endforeach
     </div>
 @endsection
 
 @push('before-style')
     <style>
-        .small-box {
-            border-radius: 15px;
-            overflow: hidden;
+        .glass-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            backdrop-filter: blur(4px);
             position: relative;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: white;
-            transition: all 0.3s;
-            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            min-height: 160px;
         }
 
-        .small-box:hover {
-            transform: translateY(-5px);
+        .glass-card:hover {
+            transform: translateY(-5px) scale(1.01);
         }
 
-        .small-box .icon {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 32px;
+        .icon-box {
+            font-size: 30px;
+            background: rgba(255, 255, 255, 0.15);
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
         }
 
-        .small-box .inner {
-            padding-right: 50px;
+        .icon-box i {
+            animation: pulse 2s infinite;
         }
 
-        .small-box p {
-            font-size: 14px;
-            margin: 0;
-            opacity: 0.8;
+        .details-box .count {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
-        .small-box .small-box-footer {
+        .details-box .label {
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .view-more {
+            font-size: 13px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
             position: absolute;
             bottom: 15px;
-            left: 15px;
-            color: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s;
+            right: 20px;
         }
 
-        .small-box:hover .small-box-footer {
-            color: white;
+        .view-more:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive optimization */
+        @media (max-width: 576px) {
+            .glass-card {
+                padding: 15px;
+                min-height: 130px;
+            }
+            .details-box .count {
+                font-size: 22px;
+            }
         }
     </style>
+@endpush
+
+@push('after-script')
+    <script>
+        // Animasi Count Up
+        document.addEventListener("DOMContentLoaded", () => {
+            const counters = document.querySelectorAll(".count");
+            counters.forEach(counter => {
+                const updateCount = () => {
+                    const target = +counter.getAttribute("data-count");
+                    const count = +counter.innerText;
+                    const speed = 10; // Kecepatan naik angka
+
+                    const increment = Math.ceil(target / 40);
+
+                    if (count < target) {
+                        counter.innerText = count + increment;
+                        setTimeout(updateCount, speed);
+                    } else {
+                        counter.innerText = target;
+                    }
+                };
+                updateCount();
+            });
+        });
+    </script>
 @endpush

@@ -41,16 +41,17 @@
                                             <td>{{ $item->judul_buku }}</td>
                                             <td>{{ $item->tahun_terbit }}</td>
                                             <td>{{ $item->jumlah_buku }}</td>
-                                            <td><img src="{{ Storage::url('public/buku/' . $item->gambar) }}" alt=""
-                                                    width="50" class="img-thumbnail"></td>
+                                            <td>
+                                                @if($item->gambar)
+                                                    <img src="{{ Storage::url('public/buku/' . $item->gambar) }}" alt="" width="50" class="img-thumbnail">
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
                                             <td>
 
                                                 <a href="{{ route('buku.edit', $item->id) }}"
                                                     class="btn btn-primary btn-sm"><i class="fas fa-pencil-alt">
-                                                    </i></a>
-
-                                                <a href="{{ route('buku.show', $item->id) }}" class="btn btn-dark btn-sm"><i
-                                                        class="fas fa-eye">
                                                     </i></a>
 
                                                 <form action="{{ route('buku.destroy', $item->id) }}" method="POST"
