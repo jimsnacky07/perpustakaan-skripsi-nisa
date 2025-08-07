@@ -21,126 +21,80 @@
                     {{ date('d F Y') }}
                 </td>
             </tr>
+            @if(request('tglAwal') && request('tglAkhir'))
             <tr>
                 <td>Filter Tanggal</td>
                 <td>:</td>
-                {{-- {{ $tglAwal }} - {{ $tglAkhir }} --}}
-                <td style="text-align: center;">{{ strftime('%d %B %Y', strtotime($tglAwal)) }}</td>
+                <td style="text-align: center;">{{ date('d F Y', strtotime(request('tglAwal'))) }}</td>
                 <td style="text-align: center;">&nbsp;- &nbsp;</td>
-                <td style="text-align: center;">{{ strftime('%d %B %Y', strtotime($tglAkhir)) }}</td>
+                <td style="text-align: center;">{{ date('d F Y', strtotime(request('tglAkhir'))) }}</td>
             </tr>
+            @endif
         </table>
     </div>
     <br>
 
     <div class="container">
-
-        {{-- <table class="table table-bordered mb-4 table-striped">
-            <tr>
-                <th>No</th>
-                <th style="text-align: center;">Nama Peminjam</th>
-                <th style="text-align: center;">Judul Buku</th>
-                <th style="text-align: center;">Jumlah Pinjam</th>
-                <th style="text-align: center;">Tanggal Pinjam</th>
-                <th style="text-align: center;">Tanggal Wajib Kembali</th>
-            </tr>
-
-            @foreach ($laporanPeminjaman as $laporan)
-                <p>Nama: {{ $laporan->nama }}</p>
-                <ul>
-                    @foreach ($laporanPeminjaman as $peminjaman)
-                        @if ($peminjaman->nama == $laporan->nama)
-                            <li>{{ $peminjaman->judul_buku }}</li>
-                            <td style="text-align: center;">{{ $peminjaman->jumlah_buku }}</td>
-                            <td style="text-align: center;">{{ $peminjaman->tgl_pinjam }}</td>
-                            <td style="text-align: center;">{{ $peminjaman->tgl_kembali }}</td>
-                            </td>
-                        @endif
-                    @endforeach
-                </ul>
-            @endforeach
-
-            @foreach ($laporanPeminjaman as $no => $data)
-                <tr>
-                    <td>{{ $no + 1 }}</td>
-                    <td>{{ $data->nama }}</td>
-                    <td style="text-align: center;">{{ $data->judul_buku }}</td>
-                    <td style="text-align: center;">{{ $data->jumlah_buku }}</td>
-                    <td style="text-align: center;">{{ $data->tgl_pinjam }}</td>
-                    <td style="text-align: center;">{{ $data->tgl_kembali }}</td>
-                    <td style="text-align: center;">{{ $data->status == 0 ? 'DIPINJAM' : 'DIKEMBALIKAN' }}
-                    </td>
-
-
-                </tr>
-            @endforeach
-
-        </table> --}}
-
         <table class="table table-bordered mb-4 table-striped">
-            <tr>
-                <th>No</th>
-                <th style="text-align: center;">Nama Peminjam</th>
-                <th style="text-align: center;">Judul Buku</th>
-                <th style="text-align: center;">Jumlah Pinjam</th>
-                <th style="text-align: center;">Tanggal Pinjam</th>
-                <th style="text-align: center;">Tanggal Wajib Kembali</th>
-            </tr>
-
-            @php
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th style="text-align: center;">Nama Peminjam</th>
+                    <th style="text-align: center;">Judul Buku</th>
+                    <th style="text-align: center;">Jumlah Pinjam</th>
+                    <th style="text-align: center;">Tanggal Pinjam</th>
+                    <th style="text-align: center;">Tanggal Wajib Kembali</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
                 $no = 1;
-            @endphp
+                @endphp
 
-            @php
-                setlocale(LC_TIME, 'id_ID'); // Untuk bahasa Indonesia
-                // setlocale(LC_TIME, 'en_US'); // Untuk bahasa Inggris
-            @endphp
-
-            @foreach ($laporanPeminjaman as $laporan)
-                @if ($loop->first || $laporan->nama != $laporanPeminjaman[$loop->index - 1]->nama)
-                    <tr>
-                        <td>{{ $no++ }}</td>
-                        <td style="text-align: center;">{{ $laporan->nama }}</td>
-                        <td>
-                            <ul>
-                @endif
-
-                <li>{{ $laporan->judul_buku }} ({{ $laporan->isbn_buku }})</li>
-
-                @if ($loop->last || $laporan->nama != $laporanPeminjaman[$loop->index + 1]->nama)
-                    </ul>
-                    </td>
+                @foreach ($peminjaman as $laporan)
+                @if ($loop->first || $laporan->anggota->nama != $peminjaman[$loop->index - 1]->anggota->nama)
+                <tr>
+                    <td>{{ $no++ }}</td>
+                    <td style="text-align: center;">{{ $laporan->anggota->nama }}</td>
                     <td>
                         <ul>
-                            @foreach ($laporanPeminjaman as $peminjaman)
-                                @if ($peminjaman->nama == $laporan->nama)
-                                    <li>{{ $peminjaman->jumlah_buku }}</li>
-                                @endif
+                            @endif
+
+                            @foreach($laporan->detailPeminjaman as $detail)
+                            <li>{{ $detail->judul_buku }} ({{ $detail->isbn_buku }})</li>
                             @endforeach
+
+                            @if ($loop->last || $laporan->anggota->nama != $peminjaman[$loop->index + 1]->anggota->nama)
                         </ul>
                     </td>
-                    <td style="text-align: center;">{{ strftime('%d %B %Y', strtotime($laporan->tgl_pinjam)) }}</td>
-                    <td style="text-align: center;">{{ strftime('%d %B %Y', strtotime($laporan->tgl_kembali)) }}</td>
-                    </tr>
+                    <td style="text-align: center;">
+                        {{ $laporan->detailPeminjaman->sum(function($detail) { return (int)$detail->jumlah_buku; }) }}
+                    </td>
+                    <td style="text-align: center;">{{ date('d F Y', strtotime($laporan->tgl_pinjam)) }}</td>
+                    <td style="text-align: center;">{{ date('d F Y', strtotime($laporan->tgl_kembali)) }}</td>
+                </tr>
                 @endif
-            @endforeach
-
-            <tr>
-                <td colspan="3" style="text-align: right;"><strong>Total Jumlah Pinjam:</strong></td>
-                <td style="text-align: center;"><strong>{{ $laporanPeminjaman->sum('jumlah_buku') }}</strong></td>
-                <td colspan="2"></td>
-            </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right;"><strong>Total Jumlah Pinjam:</strong></td>
+                    <td style="text-align: center;"><strong>{{ $peminjaman->sum(function($p) {
+                            return $p->detailPeminjaman->sum(function($detail) {
+                            return (int)$detail->jumlah_buku;
+                            });
+                            }) }}</strong></td>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
         </table>
-
 
         <br>
         <br>
 
         <div class="float-end text-center" style="padding: 1cm;padding-top:0%">
-            <!-- <h6 class="text-center" style="margin-bottom: 2cm;">{{ date('d F Y') }}</h6> -->
             <span>Kepala Pustaka</span><br><br><br><br>
             <span>( ..................................... )</span><br>
-
         </div>
     </div>
     <script>

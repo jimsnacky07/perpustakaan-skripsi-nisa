@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BukuHilangController;
+use App\Http\Controllers\BukuRusakController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FakturController;
 use App\Http\Controllers\JenisBukuController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PeminjamanController;
@@ -12,8 +15,6 @@ use App\Http\Controllers\RiwayatPinjamBukuAnggota;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DaftarBukuController;
 use App\Http\Controllers\GrafikController;
-use App\Http\Controllers\BukuHilangController; // Tambahkan controller baru
-use App\Http\Controllers\BukuRusakController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -131,6 +132,21 @@ Route::prefix('admin')->middleware(['auth', 'user-role:admin,pimpinan'])->group(
     Route::controller(GrafikController::class)->group(function () {
         Route::get('/grafik', 'index')->name('grafik');
         Route::post('/pinjam-grafik/viewgrafikpinjam', 'viewGrafikPinjam')->name('view-grafik-pinjam');
+    });
+
+    //Faktur
+    Route::controller(FakturController::class)->group(function () {
+        Route::get('faktur', 'index')->name('faktur.index');
+        Route::get('faktur/{id}', 'show')->name('faktur.show');
+        Route::get('faktur/{id}/download', 'downloadPDF')->name('faktur.downloadPDF');
+        Route::post('faktur/{id}/mark-paid', 'markAsPaid')->name('faktur.markAsPaid');
+    });
+
+    // Generate Faktur dari Laporan
+    Route::controller(LaporanController::class)->group(function () {
+        Route::post('laporan/generate-faktur-peminjaman', 'generateFakturPeminjaman')->name('laporan.generateFakturPeminjaman');
+        Route::post('laporan/generate-faktur-pengembalian', 'generateFakturPengembalian')->name('laporan.generateFakturPengembalian');
+        Route::post('laporan/generate-faktur-denda', 'generateFakturDenda')->name('laporan.generateFakturDenda');
     });
 });
 

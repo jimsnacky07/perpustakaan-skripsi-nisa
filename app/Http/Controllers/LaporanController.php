@@ -10,6 +10,7 @@ use App\Models\JenisBuku;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
 use App\Models\Anggota;
+use App\Models\Faktur; // Added Faktur model
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -435,19 +436,19 @@ class LaporanController extends Controller
     public function laporanPeminjamanBuku(Request $request)
     {
         $request->validate([
-            'start' => 'nullable|date',
-            'end' => 'nullable|date|after_or_equal:start',
-            'anggota' => 'nullable|exists:anggotas,id',
+            'tglAwal' => 'nullable|date',
+            'tglAkhir' => 'nullable|date|after_or_equal:tglAwal',
+            'anggota_id' => 'nullable|exists:anggotas,id',
         ]);
 
         $peminjaman = Peminjaman::with(['anggota', 'detailPeminjaman.book']);
 
-        if ($request->filled('start') && $request->filled('end')) {
-            $peminjaman->whereBetween('tgl_pinjam', [$request->start, $request->end]);
+        if ($request->filled('tglAwal') && $request->filled('tglAkhir')) {
+            $peminjaman->whereBetween('tgl_pinjam', [$request->tglAwal, $request->tglAkhir]);
         }
 
-        if ($request->filled('anggota')) {
-            $peminjaman->where('id_anggota_peminjaman', $request->anggota);
+        if ($request->filled('anggota_id')) {
+            $peminjaman->where('id_anggota_peminjaman', $request->anggota_id);
         }
 
         $peminjaman = $peminjaman->get();
@@ -461,19 +462,19 @@ class LaporanController extends Controller
     public function laporanPengembalianBuku(Request $request)
     {
         $request->validate([
-            'start' => 'nullable|date',
-            'end' => 'nullable|date|after_or_equal:start',
-            'anggota' => 'nullable|exists:anggotas,id',
+            'tglAwal' => 'nullable|date',
+            'tglAkhir' => 'nullable|date|after_or_equal:tglAwal',
+            'anggota_id' => 'nullable|exists:anggotas,id',
         ]);
 
         $pengembalian = Pengembalian::with(['anggota', 'book']);
 
-        if ($request->filled('start') && $request->filled('end')) {
-            $pengembalian->whereBetween('tanggal_pengembalian', [$request->start, $request->end]);
+        if ($request->filled('tglAwal') && $request->filled('tglAkhir')) {
+            $pengembalian->whereBetween('tanggal_pengembalian', [$request->tglAwal, $request->tglAkhir]);
         }
 
-        if ($request->filled('anggota')) {
-            $pengembalian->where('id_anggota', $request->anggota);
+        if ($request->filled('anggota_id')) {
+            $pengembalian->where('id_anggota', $request->anggota_id);
         }
 
         $pengembalian = $pengembalian->get();
@@ -506,5 +507,211 @@ class LaporanController extends Controller
         $title = 'Laporan Buku Hilang';
 
         return view('pages.laporan.buku_hilang', compact('bukuHilang', 'title'));
+    }
+
+    // Method untuk generate faktur dari laporan
+    public function generateFakturPeminjaman(Request $request)
+    {
+        try {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+            $anggotaId = $request->input('anggota_id');
+
+            $query = Peminjaman::with(['anggota', 'detailPeminjaman.book']);
+
+            if ($startDate && $endDate) {
+                $query->whereBetween('tgl_pinjam', [$startDate, $endDate]);
+            }
+
+            if ($anggotaId) {
+                $query->where('id_anggota_peminjaman', $anggotaId);
+            }
+
+            $peminjamans = $query->get();
+
+            if ($peminjamans->isEmpty()) {
+                return redirect()->back()->with('error', 'Tidak ada data peminjaman untuk periode yang dipilih!');
+            }
+
+            // Generate faktur untuk setiap peminjaman
+            foreach ($peminjamans as $peminjaman) {
+                // Cek apakah faktur sudah ada
+                $existingFaktur = Faktur::where('jenis_faktur', 'peminjaman')
+                    ->where('id_transaksi', $peminjaman->id)
+                    ->first();
+
+                if (!$existingFaktur) {
+                    // Generate detail items
+                    $detailItems = [];
+                    foreach ($peminjaman->detailPeminjaman as $detail) {
+                        $detailItems[] = [
+                            'judul_buku' => $detail->book->judul_buku,
+                            'jumlah' => $detail->jumlah,
+                            'tanggal_pinjam' => $peminjaman->tgl_pinjam,
+                            'tanggal_kembali' => $peminjaman->tgl_kembali
+                        ];
+                    }
+
+                    Faktur::create([
+                        'nomor_faktur' => Faktur::generateNomorFaktur('peminjaman'),
+                        'jenis_faktur' => 'peminjaman',
+                        'id_transaksi' => $peminjaman->id,
+                        'id_anggota' => $peminjaman->id_anggota_peminjaman,
+                        'detail_items' => $detailItems,
+                        'total_amount' => 0,
+                        'status' => 'dibayar',
+                        'tanggal_faktur' => now(),
+                        'tanggal_jatuh_tempo' => $peminjaman->tgl_kembali,
+                        'keterangan' => 'Faktur Peminjaman Buku'
+                    ]);
+                }
+            }
+
+            return redirect()->route('faktur.index')->with('success', 'Faktur peminjaman berhasil dibuat!');
+        } catch (\Exception $e) {
+            Log::error('Gagal membuat faktur peminjaman', [
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back()->with('error', 'Gagal membuat faktur peminjaman!');
+        }
+    }
+
+    public function generateFakturPengembalian(Request $request)
+    {
+        try {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+            $anggotaId = $request->input('anggota_id');
+
+            $query = Pengembalian::with(['anggota', 'book']);
+
+            if ($startDate && $endDate) {
+                $query->whereBetween('tanggal_pengembalian', [$startDate, $endDate]);
+            }
+
+            if ($anggotaId) {
+                $query->where('id_anggota', $anggotaId);
+            }
+
+            $pengembalians = $query->get();
+
+            if ($pengembalians->isEmpty()) {
+                return redirect()->back()->with('error', 'Tidak ada data pengembalian untuk periode yang dipilih!');
+            }
+
+            // Generate faktur untuk setiap pengembalian
+            foreach ($pengembalians as $pengembalian) {
+                // Cek apakah faktur sudah ada
+                $existingFaktur = Faktur::where('jenis_faktur', 'pengembalian')
+                    ->where('id_transaksi', $pengembalian->id)
+                    ->first();
+
+                if (!$existingFaktur) {
+                    // Generate detail items
+                    $detailItems = [
+                        [
+                            'judul_buku' => $pengembalian->book->judul_buku,
+                            'tanggal_kembali' => $pengembalian->tanggal_pengembalian,
+                            'jumlah_hari_terlambat' => $pengembalian->jumlah_hari_terlambat,
+                            'denda_per_hari' => 1000,
+                            'total_denda' => $pengembalian->denda
+                        ]
+                    ];
+
+                    Faktur::create([
+                        'nomor_faktur' => Faktur::generateNomorFaktur('pengembalian'),
+                        'jenis_faktur' => 'pengembalian',
+                        'id_transaksi' => $pengembalian->id,
+                        'id_anggota' => $pengembalian->id_anggota,
+                        'detail_items' => $detailItems,
+                        'total_amount' => $pengembalian->denda,
+                        'status' => $pengembalian->denda > 0 ? 'belum_dibayar' : 'dibayar',
+                        'tanggal_faktur' => now(),
+                        'keterangan' => 'Faktur Pengembalian Buku'
+                    ]);
+                }
+            }
+
+            return redirect()->route('faktur.index')->with('success', 'Faktur pengembalian berhasil dibuat!');
+        } catch (\Exception $e) {
+            Log::error('Gagal membuat faktur pengembalian', [
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back()->with('error', 'Gagal membuat faktur pengembalian!');
+        }
+    }
+
+    public function generateFakturDenda(Request $request)
+    {
+        try {
+            $startDate = $request->input('start_date');
+            $endDate = $request->input('end_date');
+            $anggotaId = $request->input('anggota_id');
+
+            $query = Pengembalian::with(['anggota', 'book'])
+                ->where('denda', '>', 0);
+
+            if ($startDate && $endDate) {
+                $query->whereBetween('tanggal_pengembalian', [$startDate, $endDate]);
+            }
+
+            if ($anggotaId) {
+                $query->where('id_anggota', $anggotaId);
+            }
+
+            $dendaBelumDibayar = $query->get();
+
+            if ($dendaBelumDibayar->isEmpty()) {
+                return redirect()->back()->with('error', 'Tidak ada data denda untuk periode yang dipilih!');
+            }
+
+            // Group by anggota
+            $dendaByAnggota = $dendaBelumDibayar->groupBy('id_anggota');
+
+            foreach ($dendaByAnggota as $anggotaId => $pengembalians) {
+                // Cek apakah faktur denda sudah ada untuk anggota ini
+                $existingFaktur = Faktur::where('jenis_faktur', 'denda')
+                    ->where('id_anggota', $anggotaId)
+                    ->whereDate('tanggal_faktur', today())
+                    ->first();
+
+                if (!$existingFaktur) {
+                    // Generate detail items
+                    $detailItems = [];
+                    $totalDenda = 0;
+                    
+                    foreach ($pengembalians as $pengembalian) {
+                        $detailItems[] = [
+                            'judul_buku' => $pengembalian->book->judul_buku,
+                            'tanggal_pengembalian' => $pengembalian->tanggal_pengembalian,
+                            'jumlah_hari_terlambat' => $pengembalian->jumlah_hari_terlambat,
+                            'denda_per_hari' => 1000,
+                            'total_denda' => $pengembalian->denda
+                        ];
+                        $totalDenda += $pengembalian->denda;
+                    }
+
+                    Faktur::create([
+                        'nomor_faktur' => Faktur::generateNomorFaktur('denda'),
+                        'jenis_faktur' => 'denda',
+                        'id_transaksi' => null,
+                        'id_anggota' => $anggotaId,
+                        'detail_items' => $detailItems,
+                        'total_amount' => $totalDenda,
+                        'status' => 'belum_dibayar',
+                        'tanggal_faktur' => now(),
+                        'tanggal_jatuh_tempo' => now()->addDays(7),
+                        'keterangan' => 'Faktur Denda Terlambat'
+                    ]);
+                }
+            }
+
+            return redirect()->route('faktur.index')->with('success', 'Faktur denda berhasil dibuat!');
+        } catch (\Exception $e) {
+            Log::error('Gagal membuat faktur denda', [
+                'error' => $e->getMessage()
+            ]);
+            return redirect()->back()->with('error', 'Gagal membuat faktur denda!');
+        }
     }
 }

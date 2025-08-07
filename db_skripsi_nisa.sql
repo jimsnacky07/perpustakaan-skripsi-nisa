@@ -28,26 +28,29 @@ CREATE TABLE `anggotas` (
   `no_hp` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `alamat` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `user_id` bigint unsigned NOT NULL,
+  `status` enum('aktif','nonaktif') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'aktif',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `kelas` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `anggotas_nisn_unique` (`nisn`),
   KEY `anggotas_user_id_foreign` (`user_id`),
   CONSTRAINT `anggotas_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `anggotas` */
 
-insert  into `anggotas`(`id`,`nisn`,`nama`,`jk`,`no_hp`,`alamat`,`user_id`,`created_at`,`updated_at`,`kelas`) values 
-(44,'1212111','nisa','P','0984345','padang',51,'2025-08-05 04:07:14','2025-08-05 04:07:14','7'),
-(46,'21211','sinta','P','081234567','purus',53,'2025-08-05 04:36:13','2025-08-05 04:36:13','8'),
-(47,'676544','ragil','L','0845678','purus',54,'2025-08-05 06:33:35','2025-08-05 06:33:35','8'),
-(48,'74332634','juju','P','2425465775','pasbar',56,'2025-08-05 07:40:37','2025-08-05 07:40:37','8'),
-(50,'2220027','Yudha Bima Sakti','L','081234567890','Padang',58,'2025-08-05 17:19:07','2025-08-05 17:21:29','10'),
-(51,'2110001','Tya Putri','P','083156473898','JL. Bandar Buat',59,'2025-08-06 06:31:34','2025-08-06 06:31:34','7'),
-(52,'2110002','Herlina Efendi','P','083142637723','duri',60,'2025-08-06 08:04:53','2025-08-06 08:04:53','8'),
-(53,'210004','Tasya Putri','P','087635643','bungus',62,'2025-08-07 05:30:09','2025-08-07 05:30:09','8');
+insert  into `anggotas`(`id`,`nisn`,`nama`,`jk`,`no_hp`,`alamat`,`user_id`,`status`,`created_at`,`updated_at`,`kelas`,`deleted_at`) values 
+(44,'1212111','nisa','P','0984345','padang',51,'aktif','2025-08-05 04:07:14','2025-08-05 04:07:14','7',NULL),
+(46,'21211','sinta','P','081234567','purus',53,'aktif','2025-08-05 04:36:13','2025-08-05 04:36:13','8',NULL),
+(47,'676544','ragil','L','0845678','purus',54,'aktif','2025-08-05 06:33:35','2025-08-05 06:33:35','8',NULL),
+(48,'74332634','juju','P','2425465775','pasbar',56,'aktif','2025-08-05 07:40:37','2025-08-05 07:40:37','8',NULL),
+(50,'2220027','Yudha Bima Sakti','L','081234567890','Padang',58,'aktif','2025-08-05 17:19:07','2025-08-05 17:21:29','10',NULL),
+(51,'2110001','Tya Putri','P','083156473898','JL. Bandar Buat',59,'aktif','2025-08-06 06:31:34','2025-08-06 06:31:34','7',NULL),
+(52,'2110002','Herlina Efendi','P','083142637723','duri',60,'aktif','2025-08-06 08:04:53','2025-08-06 08:04:53','8',NULL),
+(53,'210004','Tasya Putri','P','087635643','bungus',62,'aktif','2025-08-07 05:30:09','2025-08-07 05:30:09','8',NULL),
+(54,'1212121212','Randu Coba 2','L','081234567890','Padang',38,'nonaktif','2025-08-07 17:45:09','2025-08-07 17:53:09','10','2025-08-07 17:53:09');
 
 /*Table structure for table `books` */
 
@@ -67,17 +70,17 @@ CREATE TABLE `books` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `books` */
 
 insert  into `books`(`id`,`jenis_buku_id`,`judul_buku`,`no_isbn`,`tahun_terbit`,`penerbit_buku`,`pengarang_buku`,`rak_buku_id`,`jumlah_buku`,`gambar`,`created_at`,`updated_at`) values 
-(50,'15','IPA','987-6546-764','2025','Grasindo','Ahmad Sabirin','23','48','CwU9x2x4J3rCoqetPpC1bq2wCAtW6KzO1WrLi6a7.jpg','2025-08-05 06:36:16','2025-08-05 06:36:16'),
-(51,'15','sejarah','9789790251977','2006','Grasindo','Dr.Nana Nurliani','23','99','hoQvaZrdQDXHLfTB2TbVeoIc6V5Izrd7Ieo6fVFK.jpg','2025-08-05 06:49:16','2025-08-05 06:49:16'),
+(50,'15','IPA','987-6546-764','2025','Grasindo','Ahmad Sabirin','23','47','CwU9x2x4J3rCoqetPpC1bq2wCAtW6KzO1WrLi6a7.jpg','2025-08-05 06:36:16','2025-08-05 06:36:16'),
+(51,'15','sejarah','9789790251977','2006','Grasindo','Dr.Nana Nurliani','23','98','hoQvaZrdQDXHLfTB2TbVeoIc6V5Izrd7Ieo6fVFK.jpg','2025-08-05 06:49:16','2025-08-07 17:33:54'),
 (52,'14','Laskar Pelangi','9786297561066','2005','JT Books','Andrea Hirata','24','49','wj7dDI7cAmR5od8z3f9Egkw5yNpcVQYysTLGoSXi.jpg','2025-08-05 06:51:09','2025-08-05 06:51:09'),
 (53,'15','Kugapai Cintamu','9786020340135','1974','Gramedia Pustaka Utama','Ashadi Siregar','23','100','vLWivbcJ0hIviZQsi66KwzxuklChk4WNhObrFhI7.jpg','2025-08-05 06:53:56','2025-08-05 06:53:56'),
 (54,'16','Bumi Manusia','98767-09978--99','2022','Grasindo','Clara','25','50','HBucufb31ROI9F9LHagWtau9cVSs6aBmFzXuSkN5.jpg','2025-08-05 17:17:19','2025-08-05 17:17:47'),
-(55,'17','Cara Ngoding Dengan AI','2352-1523-21412-1','2025','Gramedia','Lukas','25','102','KzPJYcfTYfLqVacTBYx3VadIzpBcwHajSsGTTVhC.png','2025-08-07 14:13:09','2025-08-07 14:14:33');
+(55,'17','Cara Ngoding Dengan AI','2352-1523-21412-1','2025','Gramedia','Lukas','25','100','KzPJYcfTYfLqVacTBYx3VadIzpBcwHajSsGTTVhC.png','2025-08-07 14:13:09','2025-08-07 17:32:56');
 
 /*Table structure for table `buku_hilangs` */
 
@@ -87,6 +90,7 @@ CREATE TABLE `buku_hilangs` (
   `judul_buku` varchar(100) NOT NULL,
   `penerbit_buku` varchar(100) NOT NULL,
   `pengarang_buku` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `jumlah_hilang` int NOT NULL DEFAULT '1',
   `book_id` bigint DEFAULT NULL,
   `keterangan` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -96,8 +100,10 @@ CREATE TABLE `buku_hilangs` (
 
 /*Data for the table `buku_hilangs` */
 
-insert  into `buku_hilangs`(`judul_buku`,`penerbit_buku`,`pengarang_buku`,`book_id`,`keterangan`,`created_at`,`updated_at`) values 
-('IPA','Grasindo','Ahmad Sabirin',50,'Coba 1','2025-08-07 14:01:01','2025-08-07 14:01:01');
+insert  into `buku_hilangs`(`judul_buku`,`penerbit_buku`,`pengarang_buku`,`jumlah_hilang`,`book_id`,`keterangan`,`created_at`,`updated_at`) values 
+('Cara Ngoding Dengan AI','Gramedia','Lukas',2,55,'Dicuri','2025-08-07 17:32:56','2025-08-07 17:32:56'),
+('IPA','Grasindo','Ahmad Sabirin',1,50,'Coba 1','2025-08-07 14:01:01','2025-08-07 14:01:01'),
+('sejarah','Grasindo','Dr.Nana Nurliani',1,51,'Dicuri','2025-08-07 17:33:54','2025-08-07 17:33:54');
 
 /*Table structure for table `buku_rusaks` */
 
@@ -116,6 +122,7 @@ CREATE TABLE `buku_rusaks` (
 /*Data for the table `buku_rusaks` */
 
 insert  into `buku_rusaks`(`judulbuku`,`jumlahrusak`,`penyebab`,`keterangan`,`created_at`,`updated_at`) values 
+('Cara Ngoding Dengan AI',1,'Sobek','Sobek Dimakan Rayap','2025-08-07 17:53:57','2025-08-07 17:53:57'),
 ('IPA',5,'basah','oke','2025-08-05 04:33:46','2025-08-05 04:33:46'),
 ('laskar pelangi',1,'robek','oke','2025-08-05 07:47:29','2025-08-05 07:47:29');
 
@@ -152,7 +159,7 @@ CREATE TABLE `detail_peminjaman` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `detail_peminjaman` */
 
@@ -166,7 +173,9 @@ insert  into `detail_peminjaman`(`id`,`id_peminjaman`,`id_buku_pinjam`,`isbn_buk
 (62,36,'52','9786297561066','Laskar Pelangi','1','0',NULL,NULL),
 (63,37,'50','987-6546-764','IPA','1','1',NULL,NULL),
 (65,39,'55','2352-1523-21412-1','Cara Ngoding Dengan AI','1','1',NULL,NULL),
-(66,40,'55','2352-1523-21412-1','Cara Ngoding Dengan AI','1','1',NULL,NULL);
+(66,40,'55','2352-1523-21412-1','Cara Ngoding Dengan AI','1','1',NULL,NULL),
+(67,41,'55','2352-1523-21412-1','Cara Ngoding Dengan AI','1','1',NULL,NULL),
+(68,42,'50','987-6546-764','IPA','1','1',NULL,NULL);
 
 /*Table structure for table `failed_jobs` */
 
@@ -185,6 +194,39 @@ CREATE TABLE `failed_jobs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `failed_jobs` */
+
+/*Table structure for table `faktur` */
+
+DROP TABLE IF EXISTS `faktur`;
+
+CREATE TABLE `faktur` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `nomor_faktur` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jenis_faktur` enum('peminjaman','pengembalian','denda') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_transaksi` bigint unsigned DEFAULT NULL,
+  `id_anggota` bigint unsigned NOT NULL,
+  `detail_items` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `status` enum('dibayar','belum_dibayar') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'belum_dibayar',
+  `tanggal_faktur` date NOT NULL,
+  `tanggal_jatuh_tempo` date DEFAULT NULL,
+  `keterangan` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `faktur_nomor_faktur_unique` (`nomor_faktur`),
+  KEY `faktur_id_anggota_foreign` (`id_anggota`),
+  CONSTRAINT `faktur_id_anggota_foreign` FOREIGN KEY (`id_anggota`) REFERENCES `anggotas` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table `faktur` */
+
+insert  into `faktur`(`id`,`nomor_faktur`,`jenis_faktur`,`id_transaksi`,`id_anggota`,`detail_items`,`total_amount`,`status`,`tanggal_faktur`,`tanggal_jatuh_tempo`,`keterangan`,`created_at`,`updated_at`) values 
+(1,'INV-PJM-20250807-001','peminjaman',40,50,'[{\"judul_buku\":\"Cara Ngoding Dengan AI\",\"jumlah\":null,\"tanggal_pinjam\":\"2025-08-07\",\"tanggal_kembali\":\"2025-11-07\"}]',0.00,'dibayar','2025-08-07','2025-11-07','Faktur Peminjaman Buku','2025-08-07 18:43:44','2025-08-07 18:43:44'),
+(2,'INV-PJM-20250807-002','peminjaman',41,54,'[{\"judul_buku\":\"Cara Ngoding Dengan AI\",\"jumlah\":null,\"tanggal_pinjam\":\"2025-08-07\",\"tanggal_kembali\":\"2025-11-07\"}]',0.00,'dibayar','2025-08-07','2025-11-07','Faktur Peminjaman Buku','2025-08-07 18:43:44','2025-08-07 18:43:44'),
+(3,'INV-PJM-20250807-003','peminjaman',42,54,'[{\"judul_buku\":\"IPA\",\"jumlah\":null,\"tanggal_pinjam\":\"2025-08-07\",\"tanggal_kembali\":\"2025-11-07\"}]',0.00,'dibayar','2025-08-07','2025-11-07','Faktur Peminjaman Buku','2025-08-07 18:43:44','2025-08-07 18:43:44'),
+(4,'INV-KMB-20250807-001','pengembalian',20,50,'[{\"judul_buku\":\"Cara Ngoding Dengan AI\",\"tanggal_kembali\":\"2025-08-07\",\"jumlah_hari_terlambat\":\"0\",\"denda_per_hari\":1000,\"total_denda\":\"0\"}]',0.00,'dibayar','2025-08-07',NULL,'Faktur Pengembalian Buku','2025-08-07 18:45:24','2025-08-07 18:45:24'),
+(5,'INV-KMB-20250807-002','pengembalian',21,54,'[{\"judul_buku\":\"Cara Ngoding Dengan AI\",\"tanggal_kembali\":\"2025-08-07\",\"jumlah_hari_terlambat\":\"0\",\"denda_per_hari\":1000,\"total_denda\":\"0\"}]',0.00,'dibayar','2025-08-07',NULL,'Faktur Pengembalian Buku','2025-08-07 18:45:24','2025-08-07 18:45:24');
 
 /*Table structure for table `jenis_bukus` */
 
@@ -216,7 +258,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `migrations` */
 
@@ -238,7 +280,10 @@ insert  into `migrations`(`id`,`migration`,`batch`) values
 (21,'2023_05_11_082129_add_tanggal_pengembalian_to_pengembalians',8),
 (22,'2023_05_13_121917_add_status_to_detail_peminjaman',9),
 (23,'2023_05_14_044852_add_tanggal_pengembalian_to_pengembalians',10),
-(24,'2023_05_20_030151_add_jumlah_hari_terlambat_to_pengembalians',11);
+(24,'2023_05_20_030151_add_jumlah_hari_terlambat_to_pengembalians',11),
+(25,'2025_08_07_172339_add_jumlah_hilang_to_buku_hilangs_table',12),
+(26,'2025_08_07_174847_add_status_and_deleted_at_to_anggotas_table',13),
+(27,'2025_08_07_180447_create_faktur_table',14);
 
 /*Table structure for table `password_resets` */
 
@@ -266,12 +311,14 @@ CREATE TABLE `peminjaman` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `peminjaman` */
 
 insert  into `peminjaman`(`id`,`kode_peminjaman`,`tgl_pinjam`,`tgl_kembali`,`id_anggota_peminjaman`,`created_at`,`updated_at`) values 
-(40,'2025080716130088','2025-08-07','2025-11-07','50',NULL,NULL);
+(40,'2025080716130088','2025-08-07','2025-11-07','50',NULL,NULL),
+(41,'20250807175424658','2025-08-07','2025-11-07','54',NULL,NULL),
+(42,'20250807181321688','2025-08-07','2025-11-07','54',NULL,NULL);
 
 /*Table structure for table `peminjaman_temp` */
 
@@ -285,7 +332,7 @@ CREATE TABLE `peminjaman_temp` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=186 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `peminjaman_temp` */
 
@@ -304,12 +351,13 @@ CREATE TABLE `pengembalians` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `pengembalians` */
 
 insert  into `pengembalians`(`id`,`id_anggota`,`id_buku`,`qty`,`tanggal_pengembalian`,`jumlah_hari_terlambat`,`denda`,`created_at`,`updated_at`) values 
-(20,'50','55','1','2025-08-07','0','0','2025-08-07 16:13:17','2025-08-07 16:13:17');
+(20,'50','55','1','2025-08-07','0','0','2025-08-07 16:13:17','2025-08-07 16:13:17'),
+(21,'54','55','1','2025-08-07','0','0','2025-08-07 17:55:34','2025-08-07 17:55:34');
 
 /*Table structure for table `personal_access_tokens` */
 
@@ -345,7 +393,7 @@ CREATE TABLE `rak_bukus` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `rak_bukus` */
 
@@ -370,7 +418,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*Data for the table `users` */
 

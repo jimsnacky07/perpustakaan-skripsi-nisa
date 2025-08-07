@@ -380,6 +380,13 @@
                 </li> --}}
 
                 <li class="nav-item">
+                    <a href="{{ route('faktur.index') }}" class="nav-link {{ Route::is('faktur.*') ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-file-invoice"></i>
+                        <p>Faktur</p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a href="{{ route('logout') }}" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>

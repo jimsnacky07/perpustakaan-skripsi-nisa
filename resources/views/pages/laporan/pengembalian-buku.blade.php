@@ -21,113 +21,60 @@
                     {{ date('d F Y') }}
                 </td>
             </tr>
+            @if(request('tglAwal') && request('tglAkhir'))
             <tr>
                 <td>Filter Tanggal</td>
                 <td>:</td>
-                {{-- {{ $tglAwal }} - {{ $tglAkhir }} --}}
-                <td style="text-align: center;">{{ strftime('%d %B %Y', strtotime($tglAwal)) }}</td>
+                <td style="text-align: center;">{{ date('d F Y', strtotime(request('tglAwal'))) }}</td>
                 <td style="text-align: center;">&nbsp;- &nbsp;</td>
-                <td style="text-align: center;">{{ strftime('%d %B %Y', strtotime($tglAkhir)) }}</td>
+                <td style="text-align: center;">{{ date('d F Y', strtotime(request('tglAkhir'))) }}</td>
             </tr>
+            @endif
         </table>
     </div>
     <br>
 
     <div class="container">
-
         <table class="table table-bordered mb-4 table-striped">
-            <tr>
-                <th>No</th>
-                <th style="text-align: center;">Nama Peminjam</th>
-                <th style="text-align: center;">Judul Buku</th>
-                <th style="text-align: center;">Jumlah Kembali</th>
-                <th style="text-align: center;">Tanggal Kembali</th>
-                <th style="text-align: center;">Jumlah Hari Terlambat</th>
-                <th style="width: 15%;">Denda</th>
-            </tr>
-
-            @foreach ($laporanPengembalian as $laporan)
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th style="text-align: center;">Nama Peminjam</th>
+                    <th style="text-align: center;">Judul Buku</th>
+                    <th style="text-align: center;">Jumlah Kembali</th>
+                    <th style="text-align: center;">Tanggal Kembali</th>
+                    <th style="text-align: center;">Jumlah Hari Terlambat</th>
+                    <th style="width: 15%;">Denda</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($pengembalian as $laporan)
                 <tr>
                     <td style="text-align: center;">{{ $loop->iteration }}</td>
-                    <td style="text-align: center;">{{ $laporan->nama }}</td>
-                    <td style="text-align: center;">{{ $laporan->judul_buku }}</td>
+                    <td style="text-align: center;">{{ $laporan->anggota->nama }}</td>
+                    <td style="text-align: center;">{{ $laporan->book->judul_buku }}</td>
                     <td style="text-align: center;">{{ $laporan->qty }}</td>
                     <td style="text-align: center;">{{ date('d F Y', strtotime($laporan->tanggal_pengembalian)) }}</td>
                     <td style="text-align: center;">{{ $laporan->jumlah_hari_terlambat }} Hari</td>
                     <td style="text-align: left;">Rp. {{ number_format($laporan->denda, '2', ',', '.') }}</td>
                 </tr>
-            @endforeach
-            <tr>
-                <td colspan="6" style="text-align: center;"><strong>Total Denda:</strong></td>
-                <td style="text-align: left;"><strong>Rp.
-                        {{ number_format($laporanPengembalian->sum('denda'), 2, ',', '.') }}</strong></td>
-            </tr>
-
-
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6" style="text-align: center;"><strong>Total Denda:</strong></td>
+                    <td style="text-align: left;"><strong>Rp.
+                            {{ number_format($pengembalian->sum('denda'), 2, ',', '.') }}</strong></td>
+                </tr>
+            </tfoot>
         </table>
-
-        {{-- <table class="table table-bordered mb-4 table-striped">
-            <tr>
-                <th>No</th>
-                <th style="text-align: center;">Nama Peminjam</th>
-                <th style="text-align: center;">Judul Buku</th>
-                <th style="text-align: center;">Jumlah Kembali</th>
-                <th style="text-align: center;">Tanggal Kembali</th>
-            </tr>
-
-            @php
-                $no = 1;
-            @endphp
-
-            @php
-                setlocale(LC_TIME, 'id_ID'); // Untuk bahasa Indonesia
-                // setlocale(LC_TIME, 'en_US'); // Untuk bahasa Inggris
-            @endphp
-
-            @foreach ($laporanPengembalian as $laporan)
-                @if ($loop->first || $laporan->nama != $laporanPengembalian[$loop->index - 1]->nama)
-                    <tr>
-                        <td>{{ $no++ }}</td>
-                        <td style="text-align: center;">{{ $laporan->nama }}</td>
-                        <td>
-                            <ul>
-                @endif
-
-                <li>{{ $laporan->judul_buku }} ({{ $laporan->isbn_buku }})</li>
-
-                @if ($loop->last || $laporan->nama != $laporanPengembalian[$loop->index + 1]->nama)
-                    </ul>
-                    </td>
-                    <td>
-                        <ul>
-                            @foreach ($laporanPengembalian as $peminjaman)
-                                @if ($peminjaman->nama == $laporan->nama)
-                                    <li>{{ $peminjaman->qty }}</li>
-                                @endif
-                            @endforeach
-                        </ul>
-                    </td>
-
-                    </tr>
-                @endif
-            @endforeach
-
-            <tr>
-                <td colspan="3" style="text-align: right;"><strong>Total Jumlah Pinjam:</strong></td>
-                <td style="text-align: center;"><strong>{{ $laporanPengembalian->sum('qty') }}</strong></td>
-                <td colspan="2"></td>
-            </tr>
-        </table> --}}
-
 
         <br>
         <br>
 
         <div class="float-end text-center" style="padding: 1cm;padding-top:0%">
-            <!-- <h6 class="text-center" style="margin-bottom: 2cm;">{{ date('d F Y') }}</h6> -->
             <span>Kepala Pustaka</span><br><br><br><br>
             <span>( ..................................... )</span><br>
-
         </div>
     </div>
     <script>

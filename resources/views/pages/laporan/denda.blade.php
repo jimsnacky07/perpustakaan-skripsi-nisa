@@ -29,7 +29,8 @@
             border-color: #dee2e6;
         }
 
-        .table td, .table th {
+        .table td,
+        .table th {
             border: 1px solid #dee2e6;
         }
 
@@ -56,13 +57,13 @@
             margin-bottom: 15px;
             background-color: #f8f9fa;
         }
-        
+
         .stat-number {
             font-size: 1.5rem;
             font-weight: bold;
             color: #007bff;
         }
-        
+
         .stat-label {
             color: #6c757d;
             font-size: 0.9rem;
@@ -108,25 +109,34 @@
                                     <select name="anggota" class="form-control">
                                         <option value="">Semua Anggota</option>
                                         @foreach($anggota as $a)
-                                            <option value="{{ $a->id }}" {{ request('anggota') == $a->id ? 'selected' : '' }}>
-                                                {{ $a->nama }}
-                                            </option>
+                                        <option value="{{ $a->id }}" {{ request('anggota')==$a->id ? 'selected' : '' }}>
+                                            {{ $a->nama }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col-md-2">
                                     <label>Min Denda</label>
-                                    <input type="number" name="min_denda" class="form-control" value="{{ request('min_denda') }}" placeholder="0">
+                                    <input type="number" name="min_denda" class="form-control"
+                                        value="{{ request('min_denda') }}" placeholder="0">
                                 </div>
                                 <div class="col-md-2">
                                     <label>Max Denda</label>
-                                    <input type="number" name="max_denda" class="form-control" value="{{ request('max_denda') }}" placeholder="0">
+                                    <input type="number" name="max_denda" class="form-control"
+                                        value="{{ request('max_denda') }}" placeholder="0">
                                 </div>
                                 <div class="col-md-2">
                                     <label>&nbsp;</label>
                                     <div>
-                                        <button type="submit" class="btn btn-primary">Filter</button>
-                                        <a href="{{ route('laporan.denda') }}" class="btn btn-secondary">Reset</a>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-filter"></i> Filter
+                                        </button>
+                                        <a href="{{ route('laporan.denda') }}" class="btn btn-secondary">
+                                            <i class="fas fa-refresh"></i> Reset
+                                        </a>
+                                        <button type="button" class="btn btn-success" onclick="generateFakturDenda()">
+                                            <i class="fas fa-file-invoice"></i> Generate Faktur
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -196,12 +206,12 @@
                     </thead>
                     <tbody>
                         @foreach($topAnggota as $no => $anggota)
-                            <tr>
-                                <td>{{ $no + 1 }}</td>
-                                <td>{{ $anggota['nama'] }}</td>
-                                <td>Rp {{ number_format($anggota['total_denda']) }}</td>
-                                <td>{{ $anggota['jumlah_transaksi'] }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ $no + 1 }}</td>
+                            <td>{{ $anggota['nama'] }}</td>
+                            <td>Rp {{ number_format($anggota['total_denda']) }}</td>
+                            <td>{{ $anggota['jumlah_transaksi'] }}</td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -223,23 +233,24 @@
             </thead>
             <tbody>
                 @foreach ($denda as $no => $data)
-                    <tr>
-                        <td>{{ $no + 1 }}</td>
-                        <td>{{ $data->anggota->nama ?? '-' }}</td>
-                        <td>{{ $data->book->judul_buku ?? '-' }}</td>
-                        <td style="text-align: center;">{{ $data->qty }}</td>
-                        <td style="text-align: center;">
-                            @if($data->tanggal_pengembalian)
-                                {{ date('d F Y', strtotime($data->tanggal_pengembalian)) }}
-                            @else
-                                -
-                            @endif
-                        </td>
-                        <td style="text-align: center;">{{ $data->jumlah_hari_terlambat }} hari</td>
-                        <td class="{{ $data->denda > 50000 ? 'denda-tinggi' : ($data->denda > 20000 ? 'denda-sedang' : 'denda-rendah') }}" style="text-align: center;">
-                            {{ number_format($data->denda) }}
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ $no + 1 }}</td>
+                    <td>{{ $data->anggota->nama ?? '-' }}</td>
+                    <td>{{ $data->book->judul_buku ?? '-' }}</td>
+                    <td style="text-align: center;">{{ $data->qty }}</td>
+                    <td style="text-align: center;">
+                        @if($data->tanggal_pengembalian)
+                        {{ date('d F Y', strtotime($data->tanggal_pengembalian)) }}
+                        @else
+                        -
+                        @endif
+                    </td>
+                    <td style="text-align: center;">{{ $data->jumlah_hari_terlambat }} hari</td>
+                    <td class="{{ $data->denda > 50000 ? 'denda-tinggi' : ($data->denda > 20000 ? 'denda-sedang' : 'denda-rendah') }}"
+                        style="text-align: center;">
+                        {{ number_format($data->denda) }}
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
@@ -268,6 +279,53 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function generateFakturDenda() {
+    var start = document.querySelector('input[name="start"]').value;
+    var end = document.querySelector('input[name="end"]').value;
+    var anggota = document.querySelector('select[name="anggota"]').value;
+    
+    if (!start || !end) {
+        alert('Mohon isi tanggal mulai dan akhir!');
+        return;
+    }
+    
+    // Buat form untuk generate faktur
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '{{ route("laporan.generateFakturDenda") }}';
+    
+    var csrfToken = document.createElement('input');
+    csrfToken.type = 'hidden';
+    csrfToken.name = '_token';
+    csrfToken.value = '{{ csrf_token() }}';
+    form.appendChild(csrfToken);
+    
+    var startDate = document.createElement('input');
+    startDate.type = 'hidden';
+    startDate.name = 'start_date';
+    startDate.value = start;
+    form.appendChild(startDate);
+    
+    var endDate = document.createElement('input');
+    endDate.type = 'hidden';
+    endDate.name = 'end_date';
+    endDate.value = end;
+    form.appendChild(endDate);
+    
+    if (anggota) {
+        var anggotaInput = document.createElement('input');
+        anggotaInput.type = 'hidden';
+        anggotaInput.name = 'anggota_id';
+        anggotaInput.value = anggota;
+        form.appendChild(anggotaInput);
+    }
+    
+    document.body.appendChild(form);
+    form.submit();
+}
+    </script>
 </body>
 
 </html>
